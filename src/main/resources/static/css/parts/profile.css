@@ -1,0 +1,294 @@
+/* cards */
+
+.card-box {
+    position: absolute;
+
+    width: 832px;
+    height: 810px;
+
+    top: 367px;
+    right: 490px;
+}
+
+.card {
+    position: relative;
+    z-index: 1;
+
+    width: 260px;
+    height: 390px;
+
+    float: left;
+
+    margin-left: 13px;
+    margin-top: 10px;
+}
+
+.card:hover  {
+    background-image: url(/images/cards/grow-monster-card.png);
+    transform: scale(1.2);
+    z-index: 2;
+}
+
+.grow-card {
+    position: relative;
+    z-index: 1;
+
+    width: 260px;
+    height: 390px;
+
+    float: left;
+
+    margin-left: 13px;
+    margin-top: 10px;
+}
+
+.grow-card:hover {
+    background-image: url(/images/cards/grow-monster-card.png);
+}
+
+/* end cards */
+
+/* species */
+.species {
+    position: relative;
+
+    top: 21px;
+    right: -26px;
+}
+
+div.species img {
+    width: 211px;
+    height: 240px;
+}
+
+div.monster-card {
+    position: absolute;
+}
+
+div.monster-fight-request {
+    position: absolute;
+    z-index: 2;
+}
+
+div.monster-fight-request button {
+    width: 260px;
+    height: 390px;
+
+    border-radius: 16px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+/* species end */
+
+
+/* stats */
+
+.stats {
+    position: absolute;
+    font-variant-numeric: oldstyle-nums;
+    color: #EDEADE;
+    font-size: 21px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.attack {
+    position: relative;
+    top: 40px;
+    right: -34px;
+}
+
+.defence {
+    position: relative;
+    top: 15px;
+    right: -180px;
+
+    transform: translateX(-50%);
+}
+
+.brains {
+    position: relative;
+    top: 50px;
+    right: -34px;
+}
+
+.tricks {
+    position: relative;
+    top: 25px;
+    right: -180px;
+
+    transform: translateX(-50%);
+}
+
+.total {
+    position: relative;
+    top: -33px;
+    right: -120px;
+
+    transform: translateX(-25%);
+}
+
+/* end stats */
+
+
+/* themes */
+
+.theme-box {
+    position: absolute;
+
+    width: 258px;
+    height: 95px;
+
+    top: 260px;
+    right: 1030px;
+}
+
+.theme-box form {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    float: left;
+
+    border-radius: 4px;
+    margin-top: 9px;
+    margin-right: 4px;
+}
+
+.theme-box img {
+    width: 35px;
+    height: 35px;
+
+    border: 2px solid #555;
+}
+
+.theme-box button {
+    cursor: pointer;
+    height: 34px;
+    padding: 0;
+    border: 0;
+}
+
+/* end themes */
+
+/* leftSide */
+
+.left-side-box {
+    position: absolute;
+
+    width: 320px;
+    height: 1020px;
+
+    top: 241px;
+    right: 1330px;
+}
+
+.left-side-name {
+    position: relative;
+
+    color: #FF00CC;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+
+    top: 50px;
+}
+
+/* end leftSide */
+
+/* right-side */
+
+.right-side-box {
+    position: absolute;
+
+    top: 540px;
+    right: 255px;
+
+    height: 632px;
+    width: 210px;
+
+    z-index: 1;
+}
+
+/* end right-side
+
+/* page 1/2 */
+
+.page-box {
+    position: absolute;
+
+    top: 1208px;
+    right: 815px;
+
+    height: 36px;
+    width: 193px;
+
+    z-index: 1;
+}
+
+
+/* end page 1/2 */
+
+/* buttons */
+.button-custom {
+    background-color: #4CAF50; /* Green */
+    color: #F3E5AB;
+    opacity: 0;
+
+    margin-top: 90px;
+    margin-left: 20px;
+    padding: 21px 85px;
+
+    display: inline-block;
+    border-radius: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button-standard {
+    background-color: #4CAF50; /* Green */
+    color: #F3E5AB;
+    opacity: 0;
+
+    margin-top: 33px;
+    margin-left: 20px;
+    padding: 19px 81px;
+
+    display: inline-block;
+    border-radius: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button-extra {
+    background-color: #4CAF50; /* Green */
+    color: #F3E5AB;
+    opacity: 0;
+
+    margin-top: 4px;
+    margin-left: 20px;
+    padding: 21px 93px;
+
+    display: inline-block;
+    border-radius: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button-super {
+    background-color: #4CAF50; /* Green */
+    color: #F3E5AB;
+    opacity: 0;
+
+    margin-top: 4px;
+    margin-left: 20px;
+    padding: 20px 91px;
+
+    display: inline-block;
+    border-radius: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+/* end buttons */

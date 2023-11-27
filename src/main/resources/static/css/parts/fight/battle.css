@@ -1,0 +1,103 @@
+/* background-images */
+
+.background-container {
+    position: relative;
+}
+
+.background-container > img {
+    position: absolute;
+}
+
+.win-wheel {
+    position: absolute;
+
+    top: 303px;
+    left: 705px;
+
+    height: 502px;
+
+    background-image: url(/images/fight/battle/win-wheel.png);
+}
+
+/* end background-images */
+
+/* information container */
+
+.information-container {
+    position: relative;
+}
+
+.fight-round-top {
+    position: absolute;
+
+    z-index: 1;
+}
+
+.my-chance-to-win {
+    position: absolute;
+
+    color: white;
+    font-size: 90px;
+    text-align: center;
+
+    top: 196px;
+    left: 320px;
+    z-index: 1;
+}
+
+.opponent-chance-to-win {
+    position: absolute;
+
+    color: white;
+    font-size: 90px;
+
+    top: 196px;
+    right: 320px;
+    z-index: 1;
+}
+
+.win-lose {
+    position: absolute;
+    top: 179px;
+    right: 886px;
+
+    z-index: 1;
+}
+
+/* end information container */
+
+/* card-info */
+
+.card-position {
+    position: absolute;
+    z-index: 1;
+
+    width: 260px;
+    height: 390px;
+
+    transform: scale(1.5);
+
+    top: 340px;
+}
+
+/* end card-info */
+
+/* next-button */
+
+.next-button {
+    position: absolute;
+
+    top: 50px;
+    right: 940px;
+
+    z-index: 1;
+}
+
+.next-button button {
+    background: 0;
+    border: 0;
+
+    cursor: pointer;
+}
+
+/* end next-button */

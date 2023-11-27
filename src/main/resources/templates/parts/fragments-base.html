@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragments-base</title>
+</head>
+<body>
+
+
+<div th:fragment="options(LoggedInUsername)">
+    <div class="options-box">
+        <form th:action="@{/fmm/my-profile}">
+            <button style="width: 194px;" class="options-name" th:text="${LoggedInUsername}"></button>
+        </form>
+        <form th:action="@{/fmm/mission}">
+            <button style="width: 158px;"></button>
+        </form>
+        <form th:action="@{/fmm/players}">
+            <button style="width: 201px;"></button>
+        </form>
+        <form th:action="@{/fmm/village}">
+            <button style="width: 148px;"></button>
+        </form>
+        <form th:action="@{/fmm/tribe}">
+            <button style="width: 128px;"></button>
+        </form>
+        <form th:action="@{/fmm/arcade}">
+            <button style="width: 156px;"></button>
+        </form>
+    </div>
+    <div class="options-messages">
+        <form th:action="@{/fmm/messages}">
+            <button></button>
+        </form>
+    </div>
+</div>
+
+
+<div th:fragment="background(pageType)">
+    <div>
+        <img th:src="@{/images/parts/{pageType}.png(pageType=${pageType})}" alt="background img"
+             style="position: absolute;">
+        <img th:src="@{/images/background/themes/{background}.png(background=${Background})}"
+             style="width: 1920px; height: 1080px; object-fit: cover;" alt="themed-background">
+    </div>
+</div>
+
+
+<div th:fragment="right-side">
+    <div class="right-side-box">
+        <form th:action="@{/landing-page}">
+            <button></button>
+        </form>
+        <div class="right-side-name" th:text="${User.username}"></div>
+        <div class="right-side-nuggets" th:text="${Nuggets}"></div>
+    </div>
+</div>
+
+
+<div th:fragment="messages-notification">
+    <div class="message-count" th:if="${MessagesReceivedCount &gt;= 1}">
+        <img th:src="@{/images/messages/fight-message-pink-dot.png}">
+        <div class="message-number">
+            <div th:text="${MessagesReceivedCount}"></div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="showMonsterCard" th:with="totalStats=${monster.attack} + ${monster.defence} + ${monster.brains} + ${monster.tricks}">
+    <div class="monster-card">
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='green', greaterThanOrEqualTo=0, lessThan=1000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='yellow', greaterThanOrEqualTo=1000, lessThan=2000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='orange', greaterThanOrEqualTo=2000, lessThan=4000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='red', greaterThanOrEqualTo=4000, lessThan=8000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='purple', greaterThanOrEqualTo=8000, lessThan=12000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='blue', greaterThanOrEqualTo=12000, lessThan=16000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='grey', greaterThanOrEqualTo=16000, lessThan=20000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='black', greaterThanOrEqualTo=20000, lessThan=40000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='hyperblue', greaterThanOrEqualTo=40000, lessThan=60000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='hyperwhite', greaterThanOrEqualTo=60000, lessThan=80000)}"></div>
+
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='ironhorse', greaterThanOrEqualTo=300000, lessThan=600000)}"></div>
+        <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='kaleidoscope', greaterThanOrEqualTo=10000000, lessThan=15000000)}"></div>
+    </div>
+
+    <div class="species">
+        <img th:src="@{/images/species/{species}.png(species=${monster.species})}" alt="species">
+    </div>
+
+    <div class="stats">
+        <div class="attack" th:text="${monster.attack}"></div>
+        <div class="defence" th:text="${monster.defence}"></div>
+        <div class="brains" th:text="${monster.brains}"></div>
+        <div class="tricks" th:text="${monster.tricks}"></div>
+        <div class="total" th:text="${totalStats}"></div>
+    </div>
+</div>
+
+
+<div th:fragment="card-colour(cardName, greaterThanOrEqualTo, lessThan)">
+    <div th:if="${totalStats} &gt;= ${greaterThanOrEqualTo} and ${totalStats} &lt; ${lessThan}">
+        <img th:src="@{/images/cards/coloured/{cardName}-card.png(cardName=${cardName})}"
+             th:alt="@{{cardName}-monster-card(cardName=${cardName})}">
+    </div>
+</div>
+
+
+</body>
+</html>

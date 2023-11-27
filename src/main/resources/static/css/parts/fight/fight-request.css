@@ -1,0 +1,185 @@
+/* general options */
+
+.next {
+    position: relative;
+
+    top: 66px;
+    right: -376px;
+
+    z-index: 1;
+}
+
+.next-button {
+    width: 127px;
+    height: 54px;
+
+    cursor: pointer;
+    border-radius: 32px;
+    opacity: 0;
+}
+
+.go-back {
+    position: relative;
+
+    top: -546px;
+    right: -409px;
+
+    z-index: 1;
+}
+
+.go-back button {
+    width: 40px;
+    height: 40px;
+
+    cursor: pointer;
+    border-radius: 16px;
+    opacity: 0;
+}
+
+.send-message {
+   position: absolute;
+
+    top: 555px;
+   right: 376px;
+
+    z-index: 1;
+}
+
+.send-message button {
+    width: 127px;
+    height: 54px;
+
+    cursor: pointer;
+    border-radius: 32px;
+    opacity: 0;
+}
+
+.send-message input[type=text] {
+    position: relative;
+
+    top: -315px;
+    right: -84px;
+
+    width: 97px;
+    height: 27px;
+
+    border: 0px;
+}
+
+/* end general options */
+
+/* select-monster-option 1 */
+
+.select-monster {
+    position: absolute;
+
+    top: 80px;
+    right: 320px;
+}
+
+.select-monster button {
+    width: 91px;
+    height: 105px;
+
+    cursor: pointer;
+    border-radius: 20px;
+    opacity: 0;
+}
+
+.left-button {
+    position: relative;
+
+    top: -113px;
+    right: -5px;
+}
+
+.right-button {
+    position: relative;
+
+    top: -218px;
+    right: -378px;
+}
+
+/* end select-monster-option */
+
+/* eat-bite-collect-option 2 */
+
+.eat-bite-collect {
+    position: absolute;
+
+    top: 80px;
+    right: 287px;
+}
+
+.eat-bite-collect button {
+    width: 18px;
+    height: 18px;
+
+    cursor: pointer;
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.bite-button {
+    position: relative;
+
+    top: -157px;
+    right: -55px;
+}
+
+.collect-button {
+    position: relative;
+
+    top: -139px;
+    right: -55px;
+}
+
+.eat-button {
+    position: relative;
+
+    top: -120px;
+    right: -55px;
+}
+
+.black-dot-bite {
+    position: relative;
+
+    top: -215px;
+    right: -60px;
+}
+
+.black-dot-collect {
+    position: relative;
+
+    top: -178px;
+    right: -60px;
+}
+
+.black-dot-eat {
+    position: relative;
+
+    top: -140px;
+    right: -60px;
+}
+
+/* end eat-bite-collect-option 2 */
+
+/* offer-nuggets-option 3 */
+
+.offer-nuggets {
+    position: absolute;
+
+    top: 80px;
+    right: 303px;
+}
+
+.offer-nuggets button {
+    width: 18px;
+    height: 18px;
+
+    cursor: pointer;
+    border-radius: 50%;
+    opacity: 0;
+}
+
+/* end offer-nuggets-option 3 */

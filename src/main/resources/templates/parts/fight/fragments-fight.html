@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragments: fight-request</title>
+</head>
+<body>
+
+<div th:fragment="fightInformation(requestOrOffer)">
+    <form th:action="@{/fmm/fight-{requestOrOffer}(requestOrOffer=${requestOrOffer})}">
+        <input type="hidden" th:value="${OpponentUser.username}" name="OpponentUsername"/>
+        <input type="hidden" th:value="${OpponentMonster.name}" name="OpponentMonsterName"/>
+        <input type="hidden" th:value="${N}" name="N"/>
+        <input type="hidden" th:value="${OptionIndex}" name="OptionIndex"/>
+        <input type="hidden" th:value="${TypeOfFight}" name="TypeOfFight"/>
+        <input type="hidden" th:value="${NuggetsForAccepting}" name="NuggetsForAccepting"/>
+        <button class="next-button"></button>
+    </form>
+</div>
+
+
+<div th:fragment="constant-fight-options">
+    <div class="general-option">
+        <img th:src="@{/images/fight/request/general-option.png}" alt="general-option">
+    </div>
+
+    <div class="my-monsters">
+        <div th:with="monster=${MyMonsters[N]},
+        totalStats=${monster.attack} + ${monster.defence} + ${monster.brains} + ${monster.tricks}">
+            <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+        </div>
+    </div>
+
+    <div class="opponent-monster">
+        <div th:with="monster=${OpponentMonster},
+            totalStats=${OpponentMonster.attack} + ${OpponentMonster.defence} + ${OpponentMonster.brains} + ${OpponentMonster.tricks}">
+            <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="battle-dto-options">
+    <input type="hidden" th:value="${BattleDto.MessageId}" name="MessageId"/>
+    <input type="hidden" th:value="${BattleDto.BattleIndex}" name="BattleIndex"/>
+    <input type="hidden" th:value="${BattleDto.PercentageChanceToWin}" name="PercentageChanceToWin"/>
+    <input type="hidden" th:value="${BattleDto.DidIWin}" name="DidIWin"/>
+    <input type="hidden" th:value="${BattleDto.DegreesChance}" name="DegreesChance"/>
+</div>
+
+</body>
+</html>

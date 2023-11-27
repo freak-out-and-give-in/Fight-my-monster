@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Players</title>
+
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/players.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<div class="drop-down-menu">
+    <div class="form-group row">
+        <form th:action="@{/fmm/opponent-profile}" th:object="${selectedUser}">
+            <select class="form-control" th:field="*{username}">
+                <option th:each="user : ${Users}"
+                        th:value="${user.username}"
+                        th:text="${user.username}">
+                </option>
+            </select>
+            <button type="submit"></button>
+        </form>
+    </div>
+</div>
+
+
+<div th:replace="~{parts/fragments-base.html :: messages-notification}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: options(LoggedInUsername=${User.username})}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: right-side}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: background(pageType='map')}"></div>
+
+
+</body>
+</html>

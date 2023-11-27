@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title> Inbox</title>
+
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/messages.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<div class="message-box">
+    <div class="per-message" th:each="Message : ${MessagesReceived}">
+        <div class="bubble">
+            <img th:src="@{/images/messages/received-fight-offer.png}" alt="received-fight-offer">
+            <span><br> I challenge</span>
+            <span th:text="${Message.toMonsterName}" style="color: purple"></span>
+            <span> to fight</span>
+            <span th:text="${Message.fromMonsterName}" style="color: purple"></span>
+
+            <span th:if="${Message.nuggetsForAccepting &gt; 0}"> for</span>
+            <span th:if="${Message.nuggetsForAccepting &gt; 0}" th:text="${Message.nuggetsForAccepting}"></span>
+            <span th:if="${Message.nuggetsForAccepting &gt; 0}"> nuggets!!!</span>
+            <span th:unless="${Message.nuggetsForAccepting &gt; 0}"> .</span>
+            <br>
+
+            <span> Winner</span>
+            <span th:if="${Message.typeOfFight == 'BITE'}"> bites</span>
+            <span th:if="${Message.typeOfFight == 'COLLECT'}"> collects</span>
+            <span th:if="${Message.typeOfFight == 'EAT'}"> eats</span>
+            <span> the loser</span>
+        </div>
+
+        <div class="fight-offer">
+            <form th:action="@{/fmm/messages/fight-offer}">
+                <input type="hidden" th:value="${Message.messageId}" name="MessageId"/>
+                <button></button>
+            </form>
+        </div>
+
+        <div class="decline-fight-offer">
+            <form th:action="@{/fmm/messages/decline-fight-offer}" method="post">
+                <input type="hidden" th:value="${Message.messageId}" name="MessageId"/>
+                <button></button>
+            </form>
+        </div>
+
+        <div class="from-user">
+            <u th:text="${Message.user.username}"></u>
+            <span> said to you</span>
+            <br>
+
+            <span> (</span>
+            <span th:text="${Message.timeSent}"></span>
+            <span> )</span>
+
+            <br>
+            <img th:src="@{/images/messages/actions-logo.png}" alt="actions-logo">
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="~{parts/fragments-base.html :: messages-notification}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: options(LoggedInUsername=${User.username})}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: right-side}"></div>
+
+
+<div>
+    <img th:src="@{/images/messages/messages.png}" alt="background img" style="position: absolute;">
+    <img th:src="@{/images/background/themes/{background}.png(background=${Background})}"
+         style="width: 1920px; height: 1080px; object-fit: cover;" alt="themed-background">
+</div>
+
+
+</body>
+</html>

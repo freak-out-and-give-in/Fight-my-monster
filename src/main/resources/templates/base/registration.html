@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+
+    <link th:href="@{/css/base/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base/registration.css}" rel="stylesheet"/>
+</head>
+<body th:style="'background-image:url(' + @{/images/base/sign-up.png} + '); background-repeat: no-repeat, repeat; background-size: cover;'">
+
+
+<div class="register-box">
+
+    <form class="register-form" th:action="@{/users}" method="post">
+        <input id="username" type="text" name="username">
+        <input id="password" type="password" name="password">
+        <input id="checkbox" type="checkbox" name="acceptTermsAndConditions" style="cursor: pointer;">
+        <input id="submit" type="submit" name="submit" style="cursor: pointer;">
+    </form>
+
+    <form th:action="@{/login}" method="get">
+        <input id="sign-in" type="submit" name="submit" style="cursor: pointer;" value="Login">
+    </form>
+
+</div>
+
+
+</body>
+</html>

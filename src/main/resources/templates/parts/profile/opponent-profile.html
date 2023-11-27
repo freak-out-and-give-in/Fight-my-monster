@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Opponent's profile</title>
+
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/profile.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<div class="card-box">
+    <div th:replace="~{parts/profile/fragments-profile.html :: showMonstersOpponentProfile}"></div>
+</div>
+
+
+<div th:replace="~{parts/fragments-base.html :: messages-notification}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: options(LoggedInUsername=${LoggedInUsername})}"></div>
+
+
+<div class="right-side-box">
+    <div class="right-side-name" th:text="${User.username}" style="top: 17px;"></div>
+    <div class="right-side-nuggets" th:text="${Nuggets}" style="top: 147px;"></div>
+</div>
+
+
+<div th:replace="~{parts/profile/fragments-profile.html :: leftSide}"></div>
+
+
+<div th:replace="~{parts/profile/fragments-profile.html :: backgroundWithProfile}"></div>
+
+
+</body>
+</html>

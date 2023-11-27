@@ -1,0 +1,49 @@
+body {
+    overflow: hidden;
+    margin: 0;
+}
+
+.background-image {
+    position: absolute;
+}
+
+.fight-request-box {
+    position: absolute;
+
+    width: 880px;
+    height: 610px;
+
+    top: 100px;
+    right: 520px;
+
+    z-index: 1;
+}
+
+/* general-option (constants) */
+
+.general-option {
+    position: absolute;
+}
+
+.fight-offer-request {
+    position: absolute;
+
+    top: 31px;
+    right: 320px;
+}
+
+.my-monsters {
+    position: relative;
+
+    top: 140px;
+    right: -52px;
+}
+
+.opponent-monster {
+    position: relative;
+
+    top: -104px;
+    right: -569px;
+}
+
+/* end general-option */

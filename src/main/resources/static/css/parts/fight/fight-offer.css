@@ -1,0 +1,83 @@
+/* general options */
+
+.go-back {
+    position: relative;
+
+    top: -492px;
+    right: -409px;
+
+    z-index: 1;
+}
+
+.go-back button {
+    width: 40px;
+    height: 40px;
+
+    cursor: pointer;
+    border-radius: 16px;
+    opacity: 0;
+}
+
+/* end general options */
+
+/* some text */
+
+.fight-type span {
+    position: relative;
+
+    top: -340px;
+    right: -325px;
+
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    -webkit-text-stroke: 1px white;
+}
+
+.nuggets-to-be-paid {
+    position: relative;
+
+    top: -170px;
+
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    -webkit-text-stroke: 1px white;
+}
+
+/* end some text */
+
+/* fight offer buttons */
+
+.decline-fight-offer {
+    position: relative;
+
+    right: -298px;
+}
+
+.decline-fight-offer button {
+    width: 140px;
+    height: 52px;
+
+    cursor: pointer;
+    border-radius: 28px;
+    opacity: 0;
+}
+
+.accept-fight-offer {
+    position: relative;
+
+    top: -52px;
+    right: -450px;
+}
+
+.accept-fight-offer button {
+    width: 108px;
+    height: 52px;
+
+    cursor: pointer;
+    border-radius: 28px;
+    opacity: 0;
+}
+
+/* end fight offer buttons */

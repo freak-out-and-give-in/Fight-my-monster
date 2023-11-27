@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Fight-offer</title>
+
+    <link th:href="@{/css/parts/profile.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/fight/fight.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/fight/fight-offer.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<div class="fight-request-box">
+    <div th:replace="~{parts/fight/fragments-fight.html :: constant-fight-options}"></div>
+
+    <div class="go-back">
+        <form th:action="@{/fmm/messages}">
+            <button></button>
+        </form>
+    </div>
+
+
+    <div class="fight-offer-request">
+        <img th:src="@{/images/fight/request/general-option-fight-offer.png}" alt="general-option-fight-offer">
+    </div>
+
+    <div class="fight-type">
+        <span> Winner</span>
+        <span th:text="${Message.typeOfFight}"></span>
+    </div>
+
+    <div class="nuggets-to-be-paid">
+        <span th:if="${Message.nuggetsForAccepting &gt; 0}" th:text="${Message.nuggetsForAccepting}"></span>
+        <span th:unless="${Message.nuggetsForAccepting &gt; 0}"> None</span>
+    </div>
+
+    <div class="decline-fight-offer">
+        <form th:action="@{/fmm/messages/decline-fight-offer}" method="post">
+            <input type="hidden" th:value="${Message.messageId}" name="MessageId"/>
+            <button></button>
+        </form>
+    </div>
+    <div class="accept-fight-offer">
+        <form th:action="@{/fmm/battle}" th:object="${BattleDto}">
+            <input type="hidden" th:value="${MessageId}" name="MessageId"/>
+            <input type="hidden" th:value="0" name="BattleIndex"/>
+            <input type="hidden" th:value="-1" name="PercentageChanceToWin"/>
+            <input type="hidden" th:value="FALSE" name="DidIWin"/>
+            <input type="hidden" th:value="0" name="DegreesChance"/>
+            <button></button>
+        </form>
+    </div>
+</div>
+
+
+<div class="background-image">
+    <img th:src="@{/images/fight/request/blue-background.png}" alt="background img">
+</div>
+
+
+</body>
+</html>

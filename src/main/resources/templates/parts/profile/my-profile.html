@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>My profile</title>
+
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/profile.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<div class="card-box">
+    <div th:replace="~{parts/profile/fragments-profile.html :: showMonstersMyProfile}"></div>
+
+    <div th:if="${#lists.size(Monsters) != 6}" th:each="i: ${#numbers.sequence(0, 5 - #lists.size(Monsters))}">
+        <div class="grow-card">
+            <form th:action="@{/fmm/{username}(username=${User.username})/monsters}" method="post">
+                <button class="button-custom" th:name="level" th:value="CUSTOM"> Custom</button>
+                <button class="button-standard" th:name="level" th:value="STANDARD"> Standard</button>
+                <button class="button-extra" th:name="level" th:value="EXTRA"> Extra</button>
+                <button class="button-super" th:name="level" th:value="SUPER"> Super</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="theme-box">
+    <div th:replace="~{parts/profile/fragments-profile.html :: theme(backgroundName='spots')}"></div>
+    <div th:replace="~{parts/profile/fragments-profile.html :: theme(backgroundName='galaxy')}"></div>
+    <div th:replace="~{parts/profile/fragments-profile.html :: theme(backgroundName='black-green-stripes')}"></div>
+    <div th:replace="~{parts/profile/fragments-profile.html :: theme(backgroundName='lollipops')}"></div>
+    <div th:replace="~{parts/profile/fragments-profile.html :: theme(backgroundName='purple-layers')}"></div>
+    <div th:replace="~{parts/profile/fragments-profile.html :: theme(backgroundName='metal')}"></div>
+    <div th:replace="~{parts/profile/fragments-profile.html :: theme(backgroundName='ground')}"></div>
+    <div th:replace="~{parts/profile/fragments-profile.html :: theme(backgroundName='screws')}"></div>
+    <div th:replace="~{parts/profile/fragments-profile.html :: theme(backgroundName='slime')}"></div>
+</div>
+
+
+<div th:replace="~{parts/fragments-base.html :: messages-notification}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: options(LoggedInUsername=${User.username})}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: right-side}"></div>
+
+
+<div th:replace="~{parts/profile/fragments-profile :: leftSide}"></div>
+
+
+<div th:replace="~{parts/profile/fragments-profile.html :: backgroundWithProfile}"></div>
+
+
+</body>
+</html>

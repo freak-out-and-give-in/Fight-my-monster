@@ -1,0 +1,102 @@
+/* right-side */
+
+.right-side-box {
+    position: absolute;
+
+    top: 236px;
+    right: 190px;
+
+    height: 632px;
+    width: 210px;
+
+    z-index: 1;
+}
+
+/* end right-side */
+
+/* messages */
+
+.message-box {
+    position: absolute;
+
+    top: 434px;
+    right: 423px;
+
+    width: 1173px;
+    height: 611px;
+
+    z-index: 1;
+}
+
+.per-message {
+    position: relative;
+
+    width: 1006px;
+    height: 140px;
+}
+
+.bubble {
+    position: relative;
+
+    margin: 40px;
+}
+
+.bubble span {
+    position: relative;
+    color: black;
+
+    top: -120px;
+    right: -20px;
+
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.fight-offer {
+    position: relative;
+
+    top: -150px;
+    right: -58px;
+}
+
+.fight-offer button {
+    width: 225px;
+    height: 50px;
+
+    border-radius: 28px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.decline-fight-offer {
+    position: relative;
+
+    top: -201px;
+    right: -290px;
+}
+
+.decline-fight-offer button {
+    width: 120px;
+    height: 50px;
+
+    border-radius: 28px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.from-user {
+    position: relative;
+
+    top: -320px;
+    right: -820px;
+
+    width: 200px;
+
+    text-align: center;
+}
+
+.from-user span, u {
+    color: white;
+}
+
+/* end messages */

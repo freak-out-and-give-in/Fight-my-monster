@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Landing-page</title>
+
+    <link th:href="@{/css/base/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base/landing-page.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<div id="sign-up-box">
+    <form th:action="@{/registration}">
+        <button class="sign-up-button" style="cursor: pointer;"> Sign up</button>
+    </form>
+</div>
+
+<div id="sign-in-box">
+    <form th:action="@{/login}">
+        <button class="sign-in-button" style="cursor: pointer;"> Sign in</button>
+    </form>
+</div>
+
+
+<video autoplay muted loop>
+    <source th:src="@{/images/base/landing-page.mp4}" type="video/mp4">
+</video>
+
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+
+    <link th:href="@{/css/base/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base/login.css}" rel="stylesheet"/>
+</head>
+<body th:style="'background-image:url(' + @{/images/base/sign-in.png} + '); background-repeat: no-repeat, repeat; background-size: cover;'">
+
+
+<audio autoplay loop>
+    <source th:src="@{/images/base/fmm-login-tune-loop.mov}" type="audio/mp3">
+</audio>
+
+
+<div class="login-box">
+
+    <form class="login-form" th:action="@{/login}" method="post">
+        <input id="username" type="text" name="username">
+        <input id="password" type="password" name="password">
+        <input id="submit" type="submit" name="submit" style="cursor: pointer;" value="Login">
+    </form>
+
+    <div style="text-indent: 35px; color: white; float: right;" th:if="${param.error}">
+        Invalid username and password.
+    </div>
+    <div style="text-indent: 35px; color: white; float: right;" th:if="${param.logout}">
+        You have been logged out.
+    </div>
+
+</div>
+
+
+</body>
+</html>

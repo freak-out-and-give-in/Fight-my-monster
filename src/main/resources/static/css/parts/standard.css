@@ -1,0 +1,142 @@
+body {
+    overflow-x: hidden;
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+img {
+    vertical-align: middle;
+}
+
+/* options */
+
+.options-box {
+    position: absolute;
+
+    top: 134px;
+    right: 171px;
+
+    height: 50px;
+    width: 1485px;
+
+    z-index: 1;
+}
+
+.options-box form {
+    position: relative;
+    display: inline-block;
+
+    margin-right: 80px;
+    border-radius: 22px;
+}
+
+.options-box button {
+    height: 50px;
+
+    cursor: pointer;
+    border-radius: 22px;
+
+    background-color: transparent;
+    border-color: transparent;
+
+    top: -15px;
+}
+
+.options-name {
+    position: relative;
+
+    color: white;
+    font-size: 23px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.options-messages {
+    position: absolute;
+
+    top: 15px;
+    right: 350px;
+
+    z-index: 1;
+}
+
+.options-messages button {
+    cursor: pointer;
+
+    width: 450px;
+    height: 75px;
+
+    opacity: 0;
+}
+
+/* end options */
+
+/* right-side */
+
+.right-side-box form {
+    position: relative;
+
+    top: 44px;
+    right: -76px;
+}
+
+.right-side-box form button {
+    cursor: pointer;
+
+    width: 60px;
+    height: 21px;
+
+    border: 1px;
+    border-radius: 8px;
+
+    opacity: 0;
+}
+
+.right-side-name {
+    position: relative;
+
+    color: purple;
+    font-size: 21px;
+    font-weight: bold;
+    text-align: center;
+
+    top: -7px;
+}
+
+.right-side-nuggets {
+    position: relative;
+
+    font-variant-numeric: oldstyle-nums;
+    color: goldenrod;
+    font-size: 21px;
+    font-weight: bold;
+    text-align: center;
+
+    top: 123px;
+}
+
+/* end right-side
+
+/* messages */
+
+.message-count {
+    position: absolute;
+
+    top: 22px;
+    right: 700px;
+
+    z-index: 1;
+}
+
+.message-number {
+    position: relative;
+    color: white;
+    font-size: 30px;
+    text-align: center;
+
+    top: -44px;
+}
+
+/* end messages */

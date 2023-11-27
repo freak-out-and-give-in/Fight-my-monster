@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragments</title>
+</head>
+<body>
+
+
+<div th:fragment="showMonstersMyProfile">
+    <div th:each="monster : ${Monsters}">
+        <div class="card">
+            <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+        </div>
+
+    </div>
+</div>
+
+
+<div th:fragment="showMonstersOpponentProfile">
+    <div th:each="monster : ${Monsters}">
+        <div class="card">
+            <div class="monster-fight-request">
+                <form th:action="@{/fmm/fight-request}" th:object="${FightRequestDto}">
+                    <input type="hidden" th:value="${User.username}" name="OpponentUsername"/>
+                    <input type="hidden" th:value="${monster.name}" name="OpponentMonsterName"/>
+                    <input type="hidden" th:value="0" name="N"/>
+                    <input type="hidden" th:value="1" name="OptionIndex"/>
+                    <input type="hidden" th:value="BITE" name="TypeOfFight"/>
+                    <input type="hidden" th:value="0" name="NuggetsForAccepting"/>
+                    <button></button>
+                </form>
+            </div>
+            <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+        </div>
+
+    </div>
+</div>
+
+
+<div th:fragment="theme(backgroundName)">
+    <form th:action="@{/fmm/{username}(username=${User.username})/background}" method="post">
+        <button th:name="background" th:value="${backgroundName}">
+            <img th:src="@{/images/background/templates/template-{backgroundName}.png(backgroundName=${backgroundName})}"
+                 th:alt="@{{backgroundName}-template(backgroundName=${backgroundName})}">
+        </button>
+    </form>
+</div>
+
+
+<div th:fragment="backgroundWithProfile">
+    <div>
+        <img th:src="@{/images/parts/profile.png}" alt="background img" style="position: absolute;">
+        <img th:src="@{/images/background/themes/{background}.png(background=${Background})}" alt="themed-background">
+    </div>
+</div>
+
+
+<div th:fragment="leftSide">
+    <div class="left-side-box">
+        <div class="left-side-name" th:text="${User.username}"></div>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Battle</title>
+
+    <link th:href="@{/css/parts/profile.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/fight/battle.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/fight/fight.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<div class="card-position" style="left: 130px;" th:with="monster=${MyMonster}">
+    <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+</div>
+<div class="card-position" style="right: 130px;" th:with="monster=${OpponentMonster}">
+    <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+</div>
+
+<div class="information-container">
+    <div class="fight-round-top"><img th:src="@{/images/fight/battle/fight-round-top.png}" alt="fight-round-top"></div>
+    <div class="my-chance-to-win" th:text="${PercentageChanceToWin}"></div>
+    <div class="opponent-chance-to-win" th:text="${100 - PercentageChanceToWin}"></div>
+</div>
+
+<div class="background-container">
+    <img th:src="@{/images/fight/battle-backgrounds/{BattleBackground}.png(BattleBackground=${BattleBackground})}"
+         alt="background img" style="top: 150px; width: 1920px; height: 930px;">
+    <img th:src="@{/images/fight/battle/lose-wheel.png}" alt="lose-wheel" style="top: 240px; right: 642px;">
+    <div class="win-wheel" th:style="'width: '+@{${ChanceToWinGraphic}}+'px;'"></div>
+</div>
+
+
+<div th:if="${BattleIndex == 1}">
+    <div class="next-button">
+        <form th:action="@{/fmm/battle}" th:object="${BattleDto}">
+            <div th:replace="~{parts/fight/fragments-fight.html :: battle-dto-options}"></div>
+            <button> <img th:src="@{/images/fight/battle/next-button.png}" alt="next-button"></button>
+        </form>
+    </div>
+</div>
+
+<div th:if="${BattleIndex == 2}">
+    <div class="next-button">
+        <form th:action="@{/fmm/battle}" th:object="${BattleDto}">
+            <div th:replace="~{parts/fight/fragments-fight.html :: battle-dto-options}"></div>
+            <button> <img th:src="@{/images/fight/battle/next-button.png}" alt="you-win"></button>
+        </form>
+    </div>
+</div>
+
+<div th:if="${BattleIndex &gt;= 2}">
+    <div class="information-container">
+        <div class="win-lose">
+            <div th:if="${DidIWin}">
+                <img th:src="@{/images/fight/battle/you-win.png}" alt="you-win">
+            </div>
+            <div th:unless="${DidIWin}">
+                <img th:src="@{/images/fight/battle/you-lose.png}" alt="you-lose">
+            </div>
+        </div>
+
+    </div>
+    <div class="background-container">
+        <img th:src="@{/images/fight/battle/wheel-arrow.png}" alt="wheel-arrow"
+             th:style="'top: 351px; right: 908px; transform: rotate('+@{${DegreesChance}}+'deg);'">
+    </div>
+</div>
+
+<div th:if="${BattleIndex == 3}">
+    <div class="next-button">
+        <form th:action="@{/fmm/my-profile}">
+            <button> <img th:src="@{/images/fight/battle/next-button.png}" alt="you-win"></button>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>
