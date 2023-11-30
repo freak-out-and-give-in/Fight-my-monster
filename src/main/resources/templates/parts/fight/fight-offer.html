@@ -42,12 +42,8 @@
         </form>
     </div>
     <div class="accept-fight-offer">
-        <form th:action="@{/fmm/battle}" th:object="${BattleDto}">
+        <form th:action="@{/fmm/battle/1}">
             <input type="hidden" th:value="${MessageId}" name="MessageId"/>
-            <input type="hidden" th:value="0" name="BattleIndex"/>
-            <input type="hidden" th:value="-1" name="PercentageChanceToWin"/>
-            <input type="hidden" th:value="FALSE" name="DidIWin"/>
-            <input type="hidden" th:value="0" name="DegreesChance"/>
             <button></button>
         </form>
     </div>

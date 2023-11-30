@@ -40,13 +40,39 @@
 </div>
 
 
-<div th:fragment="battle-dto-options">
-    <input type="hidden" th:value="${BattleDto.MessageId}" name="MessageId"/>
-    <input type="hidden" th:value="${BattleDto.BattleIndex}" name="BattleIndex"/>
-    <input type="hidden" th:value="${BattleDto.PercentageChanceToWin}" name="PercentageChanceToWin"/>
-    <input type="hidden" th:value="${BattleDto.DidIWin}" name="DidIWin"/>
-    <input type="hidden" th:value="${BattleDto.DegreesChance}" name="DegreesChance"/>
+<div th:fragment="battle-form-and-monsters" th:object="${BattleForm}">
+    <input type="hidden" th:field="*{myMonsterBefore.species}"/>
+    <input type="hidden" th:field="*{myMonsterBefore.attack}"/>
+    <input type="hidden" th:field="*{myMonsterBefore.defence}"/>
+    <input type="hidden" th:field="*{myMonsterBefore.brains}"/>
+    <input type="hidden" th:field="*{myMonsterBefore.tricks}"/>
+
+    <input type="hidden" th:field="*{opponentMonsterBefore.species}"/>
+    <input type="hidden" th:field="*{opponentMonsterBefore.attack}"/>
+    <input type="hidden" th:field="*{opponentMonsterBefore.defence}"/>
+    <input type="hidden" th:field="*{opponentMonsterBefore.brains}"/>
+    <input type="hidden" th:field="*{opponentMonsterBefore.tricks}"/>
+
+    <input type="hidden" th:field="*{myMonsterAfter.species}"/>
+    <input type="hidden" th:field="*{myMonsterAfter.attack}"/>
+    <input type="hidden" th:field="*{myMonsterAfter.defence}"/>
+    <input type="hidden" th:field="*{myMonsterAfter.brains}"/>
+    <input type="hidden" th:field="*{myMonsterAfter.tricks}"/>
+
+    <input type="hidden" th:field="*{opponentMonsterAfter.species}"/>
+    <input type="hidden" th:field="*{opponentMonsterAfter.attack}"/>
+    <input type="hidden" th:field="*{opponentMonsterAfter.defence}"/>
+    <input type="hidden" th:field="*{opponentMonsterAfter.brains}"/>
+    <input type="hidden" th:field="*{opponentMonsterAfter.tricks}"/>
+
+    <input type="hidden" th:field="*{battleIndex}"/>
+    <input type="hidden" th:field="*{shownPercentageChanceToWin}"/>
+    <input type="hidden" th:field="*{didIWin}"/>
+    <input type="hidden" th:field="*{degreesChance}"/>
+    <input type="hidden" th:field="*{chanceToWinGraphic}"/>
+    <input type="hidden" th:field="*{battleBackground}"/>
 </div>
+
 
 </body>
 </html>

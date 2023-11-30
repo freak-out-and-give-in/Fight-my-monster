@@ -1,16 +1,16 @@
 package com.fmm.controller;
 
-import com.fmm.dto.BattleDto;
-import com.fmm.dto.FightRequestDto;
+import com.fmm.dto.*;
 import com.fmm.model.Message;
-import com.fmm.service.MessageService;
 import com.fmm.model.Monster;
-import com.fmm.service.MonsterService;
-import com.fmm.model.UserInfo;
-import com.fmm.service.UserInfoService;
 import com.fmm.model.User;
+import com.fmm.model.UserInfo;
+import com.fmm.service.MessageService;
+import com.fmm.service.MonsterService;
+import com.fmm.service.UserInfoService;
 import com.fmm.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 @RestController
 public class FightController {
@@ -32,13 +35,16 @@ public class FightController {
 
     private final MessageService messageService;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
     public FightController(UserService userService, MonsterService monsterService, UserInfoService userInfoService,
-                           MessageService messageService) {
+                           MessageService messageService, ModelMapper modelMapper) {
         this.userService = userService;
         this.monsterService = monsterService;
         this.userInfoService = userInfoService;
         this.messageService = messageService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/fmm/fight-request")
@@ -81,7 +87,6 @@ public class FightController {
         Long myId = userService.getUser(request.getUserPrincipal().getName()).getId();
 
         List<Monster> myMonsters = Collections.singletonList(monsterService.getMonster(myId, message.getToMonsterName()));
-
         Monster opponentMonster = monsterService.getMonster(message.getUser().getId(), message.getFromMonsterName());
 
 
@@ -96,65 +101,91 @@ public class FightController {
     }
 
     @Transactional
-    @GetMapping("/fmm/battle")
-    public ModelAndView showBattlePage(HttpServletRequest request, @ModelAttribute("BattleDto") BattleDto battleDto) {
-        Message message = messageService.getMessage(battleDto.getMessageId());
+    @GetMapping("/fmm/battle/1")
+    public ModelAndView showBattlePagePart1(HttpServletRequest request, @ModelAttribute("MessageId") long messageId) {
+        Message message = messageService.getMessage(messageId);
         User myUser = userService.getUser(request.getUserPrincipal().getName());
         User opponentUser = message.getUser();
+        MessageDto messageDto = convertToDto(message);
 
-        Monster myMonster = monsterService.getMonster(myUser.getId(), message.getToMonsterName());
-        Monster opponentMonster = monsterService.getMonster(opponentUser.getId(), message.getFromMonsterName());
+        Monster myMonster = monsterService.getMonster(myUser.getId(), messageDto.getToMonsterName());
+        Monster opponentMonster = monsterService.getMonster(opponentUser.getId(), messageDto.getFromMonsterName());
+
+        MonsterDto myMonsterDto = convertToDto(myMonster);
+        MonsterDto opponentMonsterDto = convertToDto(opponentMonster);
+
+        double realPercentageChanceToWin = calculatePercentageChanceToWin(myMonsterDto, opponentMonsterDto);
+
+        BattleForm battleForm = new BattleForm();
+        battleForm.setMyMonsterBefore(myMonsterDto);
+        battleForm.setOpponentMonsterBefore(opponentMonsterDto);
+        battleForm.setChanceToWinGraphic((int) (realPercentageChanceToWin * 5.08)); //the width of the win-wheel is 508px
+        battleForm.setBattleBackground(new Random().nextInt(17));
+        battleForm.setBattleIndex(1);
+
+        battleForm.setShownPercentageChanceToWin((int) realPercentageChanceToWin);
+        battleForm.setDegreesChance(calculateDegreesChance());
+        battleForm.setDidIWin(calculateTheWinner(battleForm.getDegreesChance(), realPercentageChanceToWin));
+        fight(messageDto, battleForm.isDidIWin(), myUser, opponentUser, myMonster, opponentMonster);
+        messageService.deleteMessage(message);
+
+        battleForm.setMyMonsterAfter(convertToDto(myMonster));
+        battleForm.setOpponentMonsterAfter(convertToDto(opponentMonster));
 
         ModelAndView mav = new ModelAndView("/parts/fight/battle");
-        mav.addObject("MyMonster", myMonster);
-        mav.addObject("OpponentMonster", opponentMonster);
-
-        battleDto.setBattleIndex(battleDto.getBattleIndex() + 1);
-        if (battleDto.getBattleIndex() == 1) { //aka on the first time this method is called
-            battleDto.setPercentageChanceToWin(calculatePercentageChanceToWin(myMonster, opponentMonster));
-            battleDto.setDegreesChance(calculateDegreesChance());
-            battleDto.setDidIWin(calculateTheWinner(battleDto.getDegreesChance(), battleDto.getPercentageChanceToWin()));
-            fight(message, battleDto.isDidIWin(), myUser, opponentUser, myMonster, opponentMonster);
-        }
-
-        double chanceToWinGraphic = (battleDto.getPercentageChanceToWin() * 5.08); //the width of the win-wheel is 508px
-
-        mav.addObject("PercentageChanceToWin", (int) battleDto.getPercentageChanceToWin());
-        mav.addObject("ChanceToWinGraphic", chanceToWinGraphic);
-        mav.addObject("DegreesChance", battleDto.getDegreesChance());
-        mav.addObject("DidIWin", battleDto.isDidIWin());
-        mav.addObject("BattleBackground", new Random().nextInt(17));
-        mav.addObject("BattleIndex", battleDto.getBattleIndex());
+        mav.addObject("BattleForm", battleForm);
 
         return mav;
     }
 
-    private void fight(Message message, boolean didIWin, User myUser, User opponentUser, Monster myMonster, Monster opponentMonster) {
-        exchangeNuggetsForAccepting(message, myUser, opponentUser);
+    @Transactional
+    @GetMapping("/fmm/battle/2")
+    public ModelAndView showBattlePagePart2(@ModelAttribute("BattleForm") BattleForm battleForm) {
+        ModelAndView mav = new ModelAndView("/parts/fight/battle");
+
+        battleForm.setBattleIndex(2);
+        mav.addObject("BattleForm", battleForm);
+
+        return mav;
+    }
+
+    @Transactional
+    @GetMapping("/fmm/battle/3")
+    public ModelAndView showBattlePagePart3(@ModelAttribute("BattleForm") BattleForm battleForm) {
+        ModelAndView mav = new ModelAndView("/parts/fight/battle");
+
+        battleForm.setBattleIndex(3);
+        mav.addObject("BattleForm", battleForm);
+
+        return mav;
+    }
+
+    private void fight(MessageDto messageDto, boolean didIWin, User myUser, User opponentUser, Monster myMonster, Monster opponentMonster) {
+        exchangeNuggetsForAccepting(messageDto, myUser, opponentUser);
 
         if (didIWin) {
-            executeWinCondition(myUser, opponentUser, message.getTypeOfFight(), myMonster, opponentMonster);
+            executeWinCondition(myUser, opponentUser, messageDto.getTypeOfFight(), myMonster, opponentMonster);
         } else {
-            executeWinCondition(opponentUser, myUser, message.getTypeOfFight(), opponentMonster, myMonster);
+            executeWinCondition(opponentUser, myUser, messageDto.getTypeOfFight(), opponentMonster, myMonster);
         }
     }
 
-    private void exchangeNuggetsForAccepting(Message message, User myUser, User opponentUser) {
-        if (message.getNuggetsForAccepting() > 0) {
+    private void exchangeNuggetsForAccepting(MessageDto messageDto, User myUser, User opponentUser) {
+        if (messageDto.getNuggetsForAccepting() > 0) {
             UserInfo opponentUserInfo = userInfoService.getUserInfo(opponentUser.getId());
-            opponentUserInfo.setNuggets(opponentUserInfo.getNuggets().subtract(BigInteger.valueOf(message.getNuggetsForAccepting())));
+            opponentUserInfo.setNuggets(opponentUserInfo.getNuggets().subtract(BigInteger.valueOf(messageDto.getNuggetsForAccepting())));
             userInfoService.updateUserInfo(opponentUserInfo);
 
             UserInfo myUserInfo = userInfoService.getUserInfo(myUser.getId());
-            myUserInfo.setNuggets(myUserInfo.getNuggets().add(BigInteger.valueOf(message.getNuggetsForAccepting())));
+            myUserInfo.setNuggets(myUserInfo.getNuggets().add(BigInteger.valueOf(messageDto.getNuggetsForAccepting())));
             userInfoService.updateUserInfo(myUserInfo);
         }
     }
 
-    private double calculatePercentageChanceToWin(Monster myMonster, Monster opponentMonster) {
-        long myMonsterTotalStats = myMonster.getAttack() + myMonster.getDefence() + myMonster.getTricks() + myMonster.getBrains();
-        long opponentMonsterTotalStats = opponentMonster.getAttack() + opponentMonster.getDefence() + opponentMonster.getTricks() +
-                opponentMonster.getBrains();
+    private double calculatePercentageChanceToWin(MonsterDto myMonsterDto, MonsterDto opponentMonsterDto) {
+        long myMonsterTotalStats = myMonsterDto.getAttack() + myMonsterDto.getDefence() + myMonsterDto.getTricks() + myMonsterDto.getBrains();
+        long opponentMonsterTotalStats = opponentMonsterDto.getAttack() + opponentMonsterDto.getDefence() + opponentMonsterDto.getTricks() +
+                opponentMonsterDto.getBrains();
 
 
         return (double) myMonsterTotalStats / (myMonsterTotalStats + opponentMonsterTotalStats) * 100;
@@ -222,6 +253,14 @@ public class FightController {
             monsterService.updateMonster(losingMonster);
             monsterService.updateMonster(winningMonster);
         }
+    }
+
+    private MonsterDto convertToDto(Monster monster) {
+        return modelMapper.map(monster, MonsterDto.class);
+    }
+
+    private MessageDto convertToDto(Message message) {
+        return modelMapper.map(message, MessageDto.class);
     }
 
 }

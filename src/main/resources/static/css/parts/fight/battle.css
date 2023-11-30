@@ -30,7 +30,7 @@
 .fight-round-top {
     position: absolute;
 
-    z-index: 1;
+    z-index: 2;
 }
 
 .my-chance-to-win {
@@ -42,7 +42,7 @@
 
     top: 196px;
     left: 320px;
-    z-index: 1;
+    z-index: 2;
 }
 
 .opponent-chance-to-win {
@@ -53,7 +53,7 @@
 
     top: 196px;
     right: 320px;
-    z-index: 1;
+    z-index: 2;
 }
 
 .win-lose {
@@ -90,7 +90,7 @@
     top: 50px;
     right: 940px;
 
-    z-index: 1;
+    z-index: 2;
 }
 
 .next-button button {
