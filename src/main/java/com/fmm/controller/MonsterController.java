@@ -47,15 +47,18 @@ public class MonsterController {
 
     @Transactional
     @PostMapping("/fmm/{username}/monsters")
-    public RedirectView addMonster(@RequestParam(value="level") Level level, HttpServletRequest request) {
+    public RedirectView growMonster(@RequestParam(value="level") Level level, HttpServletRequest request) {
         Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
         User user = userService.getUser(id);
 
-        monsterService.addMonster(new Monster(user, "", level));
+        //max of 42 monsters (7 pages)
+        if ((long) monsterService.getAliveMonsters(id).size() < 42) {
+            monsterService.addMonster(new Monster(user, "", level));
 
-        UserInfo userInfo = userInfoService.getUserInfo(id);
-        userInfo.setNuggets(userInfo.getNuggets().subtract(BigInteger.valueOf(level.getCost())));
-        userInfoService.updateUserInfo(userInfo);
+            UserInfo userInfo = userInfoService.getUserInfo(id);
+            userInfo.setNuggets(userInfo.getNuggets().subtract(BigInteger.valueOf(level.getCost())));
+            userInfoService.updateUserInfo(userInfo);
+        }
 
         return new RedirectView("/fmm/my-profile");
     }

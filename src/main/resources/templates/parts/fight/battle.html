@@ -26,19 +26,19 @@
 
 <div th:if="${BattleForm.battleIndex &lt;= 2}">
     <div class="card-position" style="left: 130px;" th:with="monster=${BattleForm.myMonsterBefore}">
-        <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+        <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
     </div>
     <div class="card-position" style="right: 130px;" th:with="monster=${BattleForm.opponentMonsterBefore}">
-        <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+        <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
     </div>
 </div>
 
 <div th:if="${BattleForm.battleIndex == 3}">
     <div class="card-position" style="left: 130px;" th:with="monster=${BattleForm.myMonsterAfter}">
-        <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+        <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
     </div>
     <div class="card-position" style="right: 130px;" th:with="monster=${BattleForm.opponentMonsterAfter}">
-        <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+        <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
     </div>
 </div>
 

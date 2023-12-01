@@ -67,7 +67,7 @@
 </div>
 
 
-<div th:fragment="showMonsterCard" th:with="totalStats=${monster.attack} + ${monster.defence} + ${monster.brains} + ${monster.tricks}">
+<div th:fragment="show-monster-card" th:with="totalStats=${monster.attack} + ${monster.defence} + ${monster.brains} + ${monster.tricks}">
     <div class="monster-card">
         <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='green', greaterThanOrEqualTo=0, lessThan=1000)}"></div>
         <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='yellow', greaterThanOrEqualTo=1000, lessThan=2000)}"></div>

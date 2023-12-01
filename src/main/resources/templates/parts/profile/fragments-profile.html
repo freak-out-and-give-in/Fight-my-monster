@@ -7,16 +7,6 @@
 <body>
 
 
-<div th:fragment="showMonstersMyProfile">
-    <div th:each="monster : ${Monsters}">
-        <div class="card">
-            <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
-        </div>
-
-    </div>
-</div>
-
-
 <div th:fragment="showMonstersOpponentProfile">
     <div th:each="monster : ${Monsters}">
         <div class="card">
@@ -31,7 +21,7 @@
                     <button></button>
                 </form>
             </div>
-            <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+            <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
         </div>
 
     </div>

@@ -27,14 +27,14 @@
     <div class="my-monsters">
         <div th:with="monster=${MyMonsters[N]},
         totalStats=${monster.attack} + ${monster.defence} + ${monster.brains} + ${monster.tricks}">
-            <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+            <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
         </div>
     </div>
 
     <div class="opponent-monster">
         <div th:with="monster=${OpponentMonster},
             totalStats=${OpponentMonster.attack} + ${OpponentMonster.defence} + ${OpponentMonster.brains} + ${OpponentMonster.tricks}">
-            <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+            <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
         </div>
     </div>
 </div>

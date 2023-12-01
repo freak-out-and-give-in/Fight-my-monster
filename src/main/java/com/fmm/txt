@@ -1,88 +1,26 @@
-dtos:
+fragments-profile:
+<div th:fragment="showMonstersMyProfile">
+    <div th:each="monster : ${Monsters}">
+        <div class="card">
+            <div th:replace="~{parts/fragments-base.html :: showMonsterCard}"></div>
+        </div>
 
-w/ convertToDto method:
-UserController (complete and ok)
-
-in parameters:
-FightController
+    </div>
+</div>
 
 
-1:
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.species}" th:name="MyMonsterBefore.species"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.attack}" th:name="MyMonsterBefore.attack"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.defence}" th:name="MyMonsterBefore.defence"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.brains}" th:name="MyMonsterBefore.brains"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.tricks}" th:name="MyMonsterBefore.tricks"/>
+my-profile:
+<div class="card-box">
+    <div th:replace="~{parts/profile/fragments-profile.html :: showMonstersMyProfile}"></div>
 
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.species}" th:name="OpponentMonsterBefore.species"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.attack}" th:name="OpponentMonsterBefore.attack"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.defence}" th:name="OpponentMonsterBefore.defence"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.brains}" th:name="OpponentMonsterBefore.brains"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.tricks}" th:name="OpponentMonsterBefore.tricks"/>
-
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.species}" th:name="MyMonsterAfter.species"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.attack}" th:name="MyMonsterAfter.attack"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.defence}" th:name="MyMonsterAfter.defence"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.brains}" th:name="MyMonsterAfter.brains"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.tricks}" th:name="MyMonsterAfter.tricks"/>
-
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.species}" th:name="OpponentMonsterAfter.species"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.attack}" th:name="OpponentMonsterAfter.attack"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.defence}" th:name="OpponentMonsterAfter.defence"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.brains}" th:name="OpponentMonsterAfter.brains"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.tricks}" th:name="OpponentMonsterAfter.tricks"/>
-//
-
-//also done the above using name and not th:name, didn't work
-
-2:
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.species}" name="MyMonsterBeforeSpecies"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.attack}" name="MyMonsterBeforeAttack"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.defence}" name="MyMonsterBeforeDefence"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.brains}" name="MyMonsterBeforeBrains"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterBefore.tricks}" name="MyMonsterBeforeTricks"/>
-
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.species}" name="OpponentMonsterBeforeSpecies"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.attack}" name="OpponentMonsterBeforeAttack"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.defence}" name="OpponentMonsterBeforeDefence"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.brains}" name="OpponentMonsterBeforeBrains"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterBefore.tricks}" name="OpponentMonsterBeforeTricks"/>
-
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.species}" name="MyMonsterAfterSpecies"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.attack}" name="MyMonsterAfterAttack"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.defence}" name="MyMonsterAfterDefence"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.brains}" name="MyMonsterAfterBrains"/>
-    <input type="hidden" th:value="${BattleDto.MyMonsterAfter.tricks}" name="MyMonsterAfterTricks"/>
-
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.species}" name="OpponentMonsterAfterSpecies"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.attack}" name="OpponentMonsterAfterAttack"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.defence}" name="OpponentMonsterAfterDefence"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.brains}" name="OpponentMonsterAfterBrains"/>
-    <input type="hidden" th:value="${BattleDto.OpponentMonsterAfter.tricks}" name="OpponentMonsterAfterTricks"/>
-//
-3:
-th:object="${BattleDto}">
-    <input type="hidden" th:field="*{MyMonsterBefore.species}"/>
-    <input type="hidden" th:field="*{MyMonsterBefore.attack}"/>
-    <input type="hidden" th:field="*{MyMonsterBefore.defence}"/>
-    <input type="hidden" th:field="*{MyMonsterBefore.brains}"/>
-    <input type="hidden" th:field="*{MyMonsterBefore.tricks}"/>
-
-    <input type="hidden" th:field="*{OpponentMonsterBefore.species}"/>
-    <input type="hidden" th:field="*{OpponentMonsterBefore.attack}"/>
-    <input type="hidden" th:field="*{OpponentMonsterBefore.defence}"/>
-    <input type="hidden" th:field="*{OpponentMonsterBefore.brains}"/>
-    <input type="hidden" th:field="*{OpponentMonsterBefore.tricks}"/>
-
-    <input type="hidden" th:field="*{MyMonsterAfter.species}"/>
-    <input type="hidden" th:field="*{MyMonsterAfter.attack}"/>
-    <input type="hidden" th:field="*{MyMonsterAfter.defence}"/>
-    <input type="hidden" th:field="*{MyMonsterAfter.brains}"/>
-    <input type="hidden" th:field="*{MyMonsterAfter.tricks}"/>
-
-    <input type="hidden" th:field="*{OpponentMonsterAfter.species}"/>
-    <input type="hidden" th:field="*{OpponentMonsterAfter.attack}"/>
-    <input type="hidden" th:field="*{OpponentMonsterAfter.defence}"/>
-    <input type="hidden" th:field="*{OpponentMonsterAfter.brains}"/>
-    <input type="hidden" th:field="*{OpponentMonsterAfter.tricks}"/>
-//
+    <div th:if="${#lists.size(Monsters) != 6}" th:each="i: ${#numbers.sequence(0, 5 - #lists.size(Monsters))}">
+        <div class="grow-card">
+            <form th:action="@{/fmm/{username}(username=${User.username})/monsters}" method="post">
+                <button class="button-custom" th:value="CUSTOM" th:name="level" > Custom</button>
+                <button class="button-standard" th:value="STANDARD" th:name="level" > Standard</button>
+                <button class="button-extra" th:value="EXTRA" th:name="level" > Extra</button>
+                <button class="button-super" th:value="SUPER" th:name="level" > Super</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -15,6 +15,19 @@
 </div>
 
 
+<div class="page-box">
+    <div class="next-page">
+        <img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow">
+        <form th:action="@{/fmm/opponent-profile}" th:each="i, stat: ${#numbers.sequence(1, totalPages)}">
+            <input type="hidden" th:value="${User.username}" name="username"/>
+            <input type="hidden" th:value="${stat.index} + 1" name="pageNumber"/>
+            <button><img th:src="@{/images/parts/next-page-button.png}" alt="next-page-button"></button>
+        </form>
+        <img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow" style="transform: rotate(180deg);">
+    </div>
+</div>
+
+
 <div th:replace="~{parts/fragments-base.html :: messages-notification}"></div>
 
 

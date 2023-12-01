@@ -11,17 +11,33 @@
 
 
 <div class="card-box">
-    <div th:replace="~{parts/profile/fragments-profile.html :: showMonstersMyProfile}"></div>
+    <div th:each="monster : ${Monsters}">
+        <div class="card">
+            <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
+        </div>
+    </div>
 
     <div th:if="${#lists.size(Monsters) != 6}" th:each="i: ${#numbers.sequence(0, 5 - #lists.size(Monsters))}">
         <div class="grow-card">
             <form th:action="@{/fmm/{username}(username=${User.username})/monsters}" method="post">
-                <button class="button-custom" th:name="level" th:value="CUSTOM"> Custom</button>
-                <button class="button-standard" th:name="level" th:value="STANDARD"> Standard</button>
-                <button class="button-extra" th:name="level" th:value="EXTRA"> Extra</button>
-                <button class="button-super" th:name="level" th:value="SUPER"> Super</button>
+                <button class="button-custom" th:value="CUSTOM" th:name="level"> Custom</button>
+                <button class="button-standard" th:value="STANDARD" th:name="level"> Standard</button>
+                <button class="button-extra" th:value="EXTRA" th:name="level"> Extra</button>
+                <button class="button-super" th:value="SUPER" th:name="level"> Super</button>
             </form>
         </div>
+    </div>
+</div>
+
+
+<div class="page-box">
+    <div class="next-page">
+        <img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow">
+        <form th:action="@{/fmm/my-profile}" th:each="i, stat: ${#numbers.sequence(1, totalPages)}">
+            <input type="hidden" th:value="${stat.index} + 1" name="pageNumber"/>
+            <button><img th:src="@{/images/parts/next-page-button.png}" alt="next-page-button"></button>
+        </form>
+        <img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow" style="transform: rotate(180deg);">
     </div>
 </div>
 
