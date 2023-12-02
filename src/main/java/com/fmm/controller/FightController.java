@@ -1,6 +1,9 @@
 package com.fmm.controller;
 
-import com.fmm.dto.*;
+import com.fmm.dto.BattleForm;
+import com.fmm.dto.FightRequestDto;
+import com.fmm.dto.MessageDto;
+import com.fmm.dto.MonsterDto;
 import com.fmm.model.Message;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
@@ -24,6 +27,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/fmm")
@@ -56,16 +61,24 @@ public class FightController {
         User myUser = userService.getUser(myId);
 
         User opponentUser = userService.getUser(fightRequestDto.getOpponentUsername());
-        Monster opponentMonster = monsterService.getMonster(opponentUser.getId(), fightRequestDto.getOpponentMonsterName());
+        MonsterDto opponentMonster = convertToDto(monsterService.getMonster(opponentUser.getId(), fightRequestDto.getOpponentMonsterName()));
 
 
-        List<Monster> myMonsters = monsterService.getMonsters(myId);
+        List<MonsterDto> myMonsters = monsterService.getMonsters(myId).stream().map(this::convertToDto).collect(Collectors.toList());
 
+        int myChanceBarAmount = 1;
         int n = fightRequestDto.getN();
-        if (n > myMonsters.size() - 1) {
-            n = 0;
+        if (n >= myMonsters.size()) {
+            fightRequestDto.setN(0);
         } else if (n < 0) {
-            n = myMonsters.size() - 1;
+            fightRequestDto.setN(myMonsters.size() - 1);
+        }
+
+        n = fightRequestDto.getN();
+        if (n != 0) {
+            MonsterDto myCurrentMonster = myMonsters.get(n);
+            myChanceBarAmount = getMyChanceBarAmount(myCurrentMonster, opponentMonster);
+            fightRequestDto.setMyChanceBarAmount(myChanceBarAmount);
         }
 
 
@@ -79,8 +92,23 @@ public class FightController {
         mav.addObject("OptionIndex", fightRequestDto.getOptionIndex());
         mav.addObject("TypeOfFight", fightRequestDto.getTypeOfFight());
         mav.addObject("NuggetsForAccepting", fightRequestDto.getNuggetsForAccepting());
+        mav.addObject("MyChanceBarAmount", myChanceBarAmount);
 
         return mav;
+    }
+
+    private int getMyChanceBarAmount(MonsterDto myCurrentMonster, MonsterDto opponentMonster) {
+        long myTotalStats = myCurrentMonster.getAttack() + myCurrentMonster.getDefence() + myCurrentMonster.getTricks() + myCurrentMonster.getBrains();
+        long opponentTotalStats = opponentMonster.getAttack() + opponentMonster.getDefence() + opponentMonster.getTricks() + opponentMonster.getBrains();
+        int myChanceBarAmount = (int) Math.round(((double) myTotalStats / (myTotalStats + opponentTotalStats) * 10));
+
+        if (myChanceBarAmount <= 0) {
+            myChanceBarAmount = 1;
+        } else if (myChanceBarAmount >= 10) {
+            myChanceBarAmount = 9;
+        }
+
+        return myChanceBarAmount;
     }
 
     @GetMapping("/messages/fight-offer")
@@ -88,9 +116,11 @@ public class FightController {
         Message message = messageService.getMessage(messageId);
         Long myId = userService.getUser(request.getUserPrincipal().getName()).getId();
 
-        List<Monster> myMonsters = Collections.singletonList(monsterService.getMonster(myId, message.getToMonsterName()));
-        Monster opponentMonster = monsterService.getMonster(message.getUser().getId(), message.getFromMonsterName());
+        List<MonsterDto> myMonsters = Stream.of
+                (monsterService.getMonster(myId, message.getToMonsterName())).map(this::convertToDto).collect(Collectors.toList());
+        MonsterDto opponentMonster = convertToDto(monsterService.getMonster(message.getUser().getId(), message.getFromMonsterName()));
 
+        int myChanceBarAmount = getMyChanceBarAmount(myMonsters.get(0), opponentMonster);
 
         ModelAndView mav = new ModelAndView("/parts/fight/fight-offer");
         mav.addObject("Message", message);
@@ -98,6 +128,7 @@ public class FightController {
         mav.addObject("OpponentMonster", opponentMonster);
         mav.addObject("N", 0);
         mav.addObject("OptionIndex", 0);
+        mav.addObject("MyChanceBarAmount", myChanceBarAmount);
 
         return mav;
     }
@@ -140,7 +171,6 @@ public class FightController {
         return mav;
     }
 
-    @Transactional
     @GetMapping("/battle/2")
     public ModelAndView showBattlePagePart2(@ModelAttribute("BattleForm") BattleForm battleForm) {
         ModelAndView mav = new ModelAndView("/parts/fight/battle");
@@ -151,7 +181,6 @@ public class FightController {
         return mav;
     }
 
-    @Transactional
     @GetMapping("/battle/3")
     public ModelAndView showBattlePagePart3(@ModelAttribute("BattleForm") BattleForm battleForm) {
         ModelAndView mav = new ModelAndView("/parts/fight/battle");

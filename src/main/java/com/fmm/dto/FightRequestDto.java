@@ -3,11 +3,18 @@ package com.fmm.dto;
 public class FightRequestDto {
 
     private String opponentUsername;
+
     private String opponentMonsterName;
+
     private int n;
+
     private int optionIndex;
+
     private String typeOfFight;
+
     private long nuggetsForAccepting;
+
+    private int myChanceBarAmount;
 
     public String getOpponentUsername() {
         return opponentUsername;
@@ -55,5 +62,13 @@ public class FightRequestDto {
 
     public void setNuggetsForAccepting(long nuggetsForAccepting) {
         this.nuggetsForAccepting = nuggetsForAccepting;
+    }
+
+    public int getMyChanceBarAmount() {
+        return myChanceBarAmount;
+    }
+
+    public void setMyChanceBarAmount(int myChanceBarAmount) {
+        this.myChanceBarAmount = myChanceBarAmount;
     }
 }

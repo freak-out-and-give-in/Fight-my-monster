@@ -20,6 +20,23 @@
         </form>
     </div>
 
+    <div class="my-chance-box">
+        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, MyChanceBarAmount)}">
+            <img th:src="@{/images/fight/request/chance-bar-full.png}" alt="chance-bar-full">
+        </div>
+        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, (10 - MyChanceBarAmount))}">
+            <img th:src="@{/images/fight/request/chance-bar-empty.png}" alt="chance-bar-empty">
+        </div>
+    </div>
+    <div class="opponent-chance-box">
+        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, (10 - MyChanceBarAmount))}">
+            <img th:src="@{/images/fight/request/chance-bar-full.png}" alt="chance-bar-full">
+        </div>
+        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, MyChanceBarAmount)}">
+            <img th:src="@{/images/fight/request/chance-bar-empty.png}" alt="chance-bar-empty">
+        </div>
+    </div>
+
 
     <div class="fight-offer-request">
         <img th:src="@{/images/fight/request/general-option-fight-offer.png}" alt="general-option-fight-offer">

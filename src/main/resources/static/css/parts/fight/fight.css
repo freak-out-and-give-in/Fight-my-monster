@@ -46,4 +46,29 @@ body {
     right: -569px;
 }
 
+.my-chance-box {
+    position: relative;
+
+    top: -37px;
+    right: -112px;
+
+    width: 190px;
+    height: 9px;
+}
+
+.opponent-chance-box {
+    position: relative;
+
+    top: -57px;
+    right: -640px;
+
+    width: 190px;
+    height: 9px;
+}
+
+.chance-bars {
+    float: left;
+    margin-left: 2px;
+}
+
 /* end general-option */
