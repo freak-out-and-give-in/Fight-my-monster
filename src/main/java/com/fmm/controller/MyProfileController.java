@@ -63,6 +63,10 @@ public class MyProfileController {
 
         int totalPages = 1 + (aliveMonsterList.size() / 6);
 
+        if (totalPages >= 8) {
+            totalPages = 7;
+        }
+
         ModelAndView mav = new ModelAndView("/parts/profile/my-profile");
         mav.addObject("User", user);
         mav.addObject("Monsters", monsterDtoList);
@@ -92,6 +96,10 @@ public class MyProfileController {
         }
 
         int totalPages = 1 + (aliveMonsterList.size() / 6);
+
+        if (totalPages >= 8) {
+            totalPages = 7;
+        }
 
         ModelAndView mav = new ModelAndView("/parts/profile/my-profile");
         mav.addObject("User", user);

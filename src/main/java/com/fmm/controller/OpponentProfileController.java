@@ -63,6 +63,10 @@ public class OpponentProfileController {
 
         int totalPages = 1 + (aliveMonsterList.size() / 6);
 
+        if (totalPages >= 8) {
+            totalPages = 7;
+        }
+
         ModelAndView mav = new ModelAndView("/parts/profile/opponent-profile");
         mav.addObject("User", opponentUser);
         mav.addObject("LoggedInUsername", loggedInUsername);
@@ -96,6 +100,10 @@ public class OpponentProfileController {
         }
 
         int totalPages = 1 + (aliveMonsterList.size() / 6);
+
+        if (totalPages >= 8) {
+            totalPages = 7;
+        }
 
         ModelAndView mav = new ModelAndView("/parts/profile/opponent-profile");
         mav.addObject("User", opponentUser);
