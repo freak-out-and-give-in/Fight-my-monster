@@ -13,10 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -24,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/fmm/messages")
 public class MessageController {
 
     private final UserService userService;
@@ -46,7 +44,7 @@ public class MessageController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/fmm/messages")
+    @GetMapping("")
     public ModelAndView showMessagesPage(HttpServletRequest request) {
         Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
         User user = userService.getUser(id);
@@ -61,7 +59,7 @@ public class MessageController {
         return mav;
     }
 
-    @PostMapping("/fmm/messages/send-message")
+    @PostMapping("/send-message")
     public ModelAndView sendMessage(HttpServletRequest request, @ModelAttribute("MessageDto") MessageDto messageDto) {
         Long myId = userService.getUser(request.getUserPrincipal().getName()).getId();
         User myUser = userService.getUser(myId);
@@ -99,7 +97,7 @@ public class MessageController {
         return mav;
     }
 
-    @PostMapping("/fmm/messages/decline-fight-offer")
+    @PostMapping("/decline-fight-offer")
     public RedirectView declineFightOffer(@ModelAttribute("MessageId") Long messageId) {
         messageService.deleteMessage(messageService.getMessage(messageId));
 

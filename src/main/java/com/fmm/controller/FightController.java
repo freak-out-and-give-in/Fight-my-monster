@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 @RestController
+@RequestMapping("/fmm")
 public class FightController {
 
     private final UserService userService;
@@ -47,7 +49,7 @@ public class FightController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/fmm/fight-request")
+    @GetMapping("/fight-request")
     public ModelAndView showFightRequestPage(HttpServletRequest request,
                                              @ModelAttribute("FightRequestDto") FightRequestDto fightRequestDto) {
         Long myId = userService.getUser(request.getUserPrincipal().getName()).getId();
@@ -81,7 +83,7 @@ public class FightController {
         return mav;
     }
 
-    @GetMapping("/fmm/messages/fight-offer")
+    @GetMapping("/messages/fight-offer")
     public ModelAndView showFightOfferPage(HttpServletRequest request, @ModelAttribute("MessageId") long messageId) {
         Message message = messageService.getMessage(messageId);
         Long myId = userService.getUser(request.getUserPrincipal().getName()).getId();
@@ -101,7 +103,7 @@ public class FightController {
     }
 
     @Transactional
-    @GetMapping("/fmm/battle/1")
+    @GetMapping("/battle/1")
     public ModelAndView showBattlePagePart1(HttpServletRequest request, @ModelAttribute("MessageId") long messageId) {
         Message message = messageService.getMessage(messageId);
         User myUser = userService.getUser(request.getUserPrincipal().getName());
@@ -139,7 +141,7 @@ public class FightController {
     }
 
     @Transactional
-    @GetMapping("/fmm/battle/2")
+    @GetMapping("/battle/2")
     public ModelAndView showBattlePagePart2(@ModelAttribute("BattleForm") BattleForm battleForm) {
         ModelAndView mav = new ModelAndView("/parts/fight/battle");
 
@@ -150,7 +152,7 @@ public class FightController {
     }
 
     @Transactional
-    @GetMapping("/fmm/battle/3")
+    @GetMapping("/battle/3")
     public ModelAndView showBattlePagePart3(@ModelAttribute("BattleForm") BattleForm battleForm) {
         ModelAndView mav = new ModelAndView("/parts/fight/battle");
 

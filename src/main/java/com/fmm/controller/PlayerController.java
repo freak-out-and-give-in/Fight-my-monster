@@ -7,10 +7,12 @@ import com.fmm.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@RequestMapping("/fmm/players")
 public class PlayerController {
 
     private final UserService userService;
@@ -26,7 +28,7 @@ public class PlayerController {
         this.messageService = messageService;
     }
 
-    @GetMapping("/fmm/players")
+    @GetMapping("")
     public ModelAndView showPlayersPage(HttpServletRequest request) {
         Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
         User user = userService.getUser(id);

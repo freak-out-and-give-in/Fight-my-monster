@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/fmm")
 public class MyProfileController {
 
     private final UserService userService;
@@ -42,7 +44,7 @@ public class MyProfileController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/fmm/my-profile")
+    @GetMapping("/my-profile")
     public ModelAndView showMyProfilePage(HttpServletRequest request) {
         Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
         User user = userService.getUser(id);
@@ -73,7 +75,7 @@ public class MyProfileController {
         return mav;
     }
 
-    @GetMapping(value = "/fmm/my-profile", params = "pageNumber")
+    @GetMapping(value = "/my-profile", params = "pageNumber")
     public ModelAndView showMyProfilePage(HttpServletRequest request, @ModelAttribute("pageNumber") int pageNumber) {
         Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
         User user = userService.getUser(id);

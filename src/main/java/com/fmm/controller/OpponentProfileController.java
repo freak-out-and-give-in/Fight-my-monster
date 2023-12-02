@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/fmm/opponent-profile")
 public class OpponentProfileController {
 
     private final UserService userService;
@@ -41,7 +43,7 @@ public class OpponentProfileController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/fmm/opponent-profile")
+    @GetMapping("")
     public ModelAndView showOpponentProfilePage(@ModelAttribute("selectedUser") User opponentUser, HttpServletRequest request) {
         User myUser = userService.getUser(userService.getUser(request.getUserPrincipal().getName()).getId());
         String loggedInUsername = myUser.getUsername();
@@ -74,7 +76,7 @@ public class OpponentProfileController {
         return mav;
     }
 
-    @GetMapping(value = "/fmm/opponent-profile", params = "pageNumber")
+    @GetMapping(value = "", params = "pageNumber")
     public ModelAndView showOpponentProfilePage(@ModelAttribute("selectedUser") User opponentUser, @ModelAttribute("pageNumber") int pageNumber,
                                                 HttpServletRequest request) {
         User myUser = userService.getUser(userService.getUser(request.getUserPrincipal().getName()).getId());

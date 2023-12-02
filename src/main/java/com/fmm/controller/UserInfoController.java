@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.math.BigInteger;
 
 @RestController
+@RequestMapping("/fmm")
 public class UserInfoController {
 
     private final UserInfoService userInfoService;
@@ -27,7 +29,7 @@ public class UserInfoController {
     }
 
     @Transactional
-    @PostMapping("/fmm/{username}/background")
+    @PostMapping("/{username}/background")
     public RedirectView setBackground(@RequestParam(value="background") String background, HttpServletRequest request) {
         Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
         UserInfo userInfo = userInfoService.getUserInfo(id);
@@ -38,7 +40,7 @@ public class UserInfoController {
         return new RedirectView("/fmm/my-profile");
     }
 
-    @PostMapping("/fmm/{username}/nuggets")
+    @PostMapping("/{username}/nuggets")
     public RedirectView addNuggets(HttpServletRequest request, BigInteger amount) {
         Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
         UserInfo userInfo = userInfoService.getUserInfo(id);

@@ -32,12 +32,28 @@
 
 <div class="page-box">
     <div class="next-page">
-        <img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow">
+        <form th:action="@{/fmm/my-profile}" th:if="${pageNumber} - 1 &gt;= 1">
+            <input type="hidden" th:value="${pageNumber} - 1" name="pageNumber"/>
+            <button style="background: none;"><img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow"></button>
+        </form>
+        <form th:unless="${pageNumber} - 1 &gt;= 1">
+            <img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow">
+        </form>
+
         <form th:action="@{/fmm/my-profile}" th:each="i, stat: ${#numbers.sequence(1, totalPages)}">
             <input type="hidden" th:value="${stat.index} + 1" name="pageNumber"/>
             <button><img th:src="@{/images/parts/next-page-button.png}" alt="next-page-button"></button>
         </form>
-        <img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow" style="transform: rotate(180deg);">
+
+        <form th:action="@{/fmm/my-profile}" th:if="${pageNumber} + 1 &lt;= ${totalPages}">
+            <input type="hidden" th:value="${pageNumber} + 1" name="pageNumber"/>
+            <button style="background: none;">
+                <img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow" style="transform: rotate(180deg);">
+            </button>
+        </form>
+        <form th:unless="${pageNumber} + 1 &lt;= ${totalPages}">
+            <img th:src="@{/images/parts/next-page-arrow.png}" alt="next-page-arrow" style="transform: rotate(180deg);">
+        </form>
     </div>
 </div>
 
