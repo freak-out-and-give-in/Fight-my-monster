@@ -20,6 +20,7 @@
     <div th:if="${#lists.size(Monsters) != 6}" th:each="i: ${#numbers.sequence(0, 5 - #lists.size(Monsters))}">
         <div class="grow-card">
             <form th:action="@{/fmm/{username}(username=${User.username})/monsters}" method="post">
+                <input type="hidden" th:value="${pageNumber}" name="pageNumber">
                 <button class="button-custom" th:value="CUSTOM" th:name="level"> Custom</button>
                 <button class="button-standard" th:value="STANDARD" th:name="level"> Standard</button>
                 <button class="button-extra" th:value="EXTRA" th:name="level"> Extra</button>

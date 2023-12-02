@@ -1,19 +1,24 @@
 package com.fmm.controller;
 
+import com.fmm.dto.MonsterDto;
 import com.fmm.enumeration.Level;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
 import com.fmm.model.UserInfo;
+import com.fmm.service.MessageService;
 import com.fmm.service.MonsterService;
 import com.fmm.service.UserInfoService;
 import com.fmm.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,11 +31,18 @@ public class MonsterController {
 
     private final MonsterService monsterService;
 
+    private final MessageService messageService;
+
+    private final ModelMapper modelMapper;
+
     @Autowired
-    public MonsterController(UserService userService, UserInfoService userInfoService, MonsterService monsterService) {
+    public MonsterController(UserService userService, UserInfoService userInfoService, MonsterService monsterService, MessageService messageService,
+                             ModelMapper modelMapper) {
         this.userService = userService;
         this.userInfoService = userInfoService;
         this.monsterService = monsterService;
+        this.messageService = messageService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/{username}/monsters")
@@ -42,7 +54,7 @@ public class MonsterController {
 
     @Transactional
     @PostMapping("/{username}/monsters")
-    public RedirectView growMonster(@RequestParam(value="level") Level level, HttpServletRequest request) {
+    public ModelAndView growMonster(@RequestParam(value="level") Level level, @ModelAttribute("pageNumber") int pageNumber, HttpServletRequest request) {
         Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
         User user = userService.getUser(id);
 
@@ -55,7 +67,35 @@ public class MonsterController {
             userInfoService.updateUserInfo(userInfo);
         }
 
-        return new RedirectView("/fmm/my-profile");
+        // below returns to my-profile, specifically so its on the same page as when it left
+        UserInfo userInfo = userInfoService.getUserInfo(id);
+
+        List<Monster> aliveMonsterList = monsterService.getAliveMonsters(id);
+        List<MonsterDto> monsterDtoList = new ArrayList<>();
+        for (int i = ((pageNumber - 1) * 6); i < 6 + ((pageNumber - 1) * 6); i++) {
+            if (i >= aliveMonsterList.size()) {
+                break;
+            }
+
+            monsterDtoList.add(convertToDto(aliveMonsterList.get(i)));
+        }
+
+        int totalPages = 1 + (aliveMonsterList.size() / 6);
+
+        ModelAndView mav = new ModelAndView("/parts/profile/my-profile");
+        mav.addObject("User", user);
+        mav.addObject("Monsters", monsterDtoList);
+        mav.addObject("Background", userInfo.getCurrentBackground());
+        mav.addObject("Nuggets", userInfo.getNuggets());
+        mav.addObject("MessagesReceivedCount", (long) messageService.getMessagesForMe(id).size());
+        mav.addObject("pageNumber", pageNumber);
+        mav.addObject("totalPages", totalPages);
+
+        return mav;
+    }
+
+    private MonsterDto convertToDto(Monster monster) {
+        return modelMapper.map(monster, MonsterDto.class);
     }
 
 }
