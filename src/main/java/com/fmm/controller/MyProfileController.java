@@ -46,11 +46,11 @@ public class MyProfileController {
 
     @GetMapping("/my-profile")
     public ModelAndView showMyProfilePage(HttpServletRequest request) {
-        Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
-        User user = userService.getUser(id);
-        UserInfo userInfo = userInfoService.getUserInfo(id);
+        User myUser = userService.getUser(request.getUserPrincipal().getName());
+        Long myId = myUser.getId();
+        UserInfo userInfo = userInfoService.getUserInfo(myId);
 
-        List<Monster> aliveMonsterList = monsterService.getAliveMonsters(id);
+        List<Monster> aliveMonsterList = monsterService.getAliveMonsters(myId);
         List<MonsterDto> monsterDtoList = new ArrayList<>();
 
         for (Monster monster: aliveMonsterList) {
@@ -68,11 +68,11 @@ public class MyProfileController {
         }
 
         ModelAndView mav = new ModelAndView("/parts/profile/my-profile");
-        mav.addObject("User", user);
+        mav.addObject("User", myUser);
         mav.addObject("Monsters", monsterDtoList);
         mav.addObject("Background", userInfo.getCurrentBackground());
         mav.addObject("Nuggets", userInfo.getNuggets());
-        mav.addObject("MessagesReceivedCount", (long) messageService.getMessagesForMe(id).size());
+        mav.addObject("MessagesReceivedCount", (long) messageService.getMessagesForMe(myId).size());
         mav.addObject("pageNumber", 1);
         mav.addObject("totalPages", totalPages);
 
@@ -81,11 +81,11 @@ public class MyProfileController {
 
     @GetMapping(value = "/my-profile", params = "pageNumber")
     public ModelAndView showMyProfilePage(HttpServletRequest request, @ModelAttribute("pageNumber") int pageNumber) {
-        Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
-        User user = userService.getUser(id);
-        UserInfo userInfo = userInfoService.getUserInfo(id);
+        User myUser = userService.getUser(request.getUserPrincipal().getName());
+        Long myId = myUser.getId();
+        UserInfo userInfo = userInfoService.getUserInfo(myId);
 
-        List<Monster> aliveMonsterList = monsterService.getAliveMonsters(id);
+        List<Monster> aliveMonsterList = monsterService.getAliveMonsters(myId);
         List<MonsterDto> monsterDtoList = new ArrayList<>();
         for (int i = ((pageNumber - 1) * 6); i < 6 + ((pageNumber - 1) * 6); i++) {
             if (i >= aliveMonsterList.size()) {
@@ -102,11 +102,11 @@ public class MyProfileController {
         }
 
         ModelAndView mav = new ModelAndView("/parts/profile/my-profile");
-        mav.addObject("User", user);
+        mav.addObject("User", myUser);
         mav.addObject("Monsters", monsterDtoList);
         mav.addObject("Background", userInfo.getCurrentBackground());
         mav.addObject("Nuggets", userInfo.getNuggets());
-        mav.addObject("MessagesReceivedCount", (long) messageService.getMessagesForMe(id).size());
+        mav.addObject("MessagesReceivedCount", (long) messageService.getMessagesForMe(myId).size());
         mav.addObject("pageNumber", pageNumber);
         mav.addObject("totalPages", totalPages);
 

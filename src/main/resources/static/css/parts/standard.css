@@ -73,6 +73,108 @@ img {
 
 /* end options */
 
+/* cards */
+
+.card {
+    position: relative;
+    z-index: 1;
+
+    width: 260px;
+    height: 390px;
+
+    float: left;
+
+    margin-left: 13px;
+    margin-top: 10px;
+}
+
+/* end cards */
+
+
+/* species */
+.species {
+    position: relative;
+
+    top: 21px;
+    right: -26px;
+}
+
+div.species img {
+    width: 211px;
+    height: 240px;
+}
+
+div.monster-card {
+    position: absolute;
+}
+
+div.monster-fight-request {
+    position: absolute;
+    z-index: 2;
+}
+
+div.monster-fight-request button {
+    width: 260px;
+    height: 390px;
+
+    border-radius: 16px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+/* species end */
+
+
+/* stats */
+
+.stats {
+    position: absolute;
+    font-variant-numeric: oldstyle-nums;
+    color: #EDEADE;
+    font-size: 21px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.attack {
+    position: relative;
+    top: 40px;
+    right: -34px;
+}
+
+.defence {
+    position: relative;
+    top: 15px;
+    right: -180px;
+
+    transform: translateX(-50%);
+}
+
+.brains {
+    position: relative;
+    top: 50px;
+    right: -34px;
+}
+
+.tricks {
+    position: relative;
+    top: 25px;
+    right: -180px;
+
+    transform: translateX(-50%);
+}
+
+.total {
+    position: relative;
+    top: -33px;
+    right: -120px;
+
+    transform: translateX(-25%);
+}
+
+/* end stats */
+
 /* right-side */
 
 .right-side-box form {
@@ -140,3 +242,80 @@ img {
 }
 
 /* end messages */
+
+/* select-monster-option 1 */
+
+.select-monster {
+    position: absolute;
+
+    top: 80px;
+    right: 320px;
+
+    z-index: 1;
+}
+
+.select-monster button {
+    width: 91px;
+    height: 105px;
+
+    cursor: pointer;
+    border-radius: 20px;
+    opacity: 0;
+}
+
+.my-monsters {
+    position: relative;
+
+    top: 140px;
+    right: -52px;
+}
+
+.left-button {
+    position: relative;
+
+    top: -113px;
+    right: -5px;
+}
+
+.right-button {
+    position: relative;
+
+    top: -218px;
+    right: -378px;
+}
+
+.go-back {
+    position: relative;
+
+    top: -546px;
+    right: -409px;
+
+    z-index: 1;
+}
+
+.go-back button {
+    width: 40px;
+    height: 40px;
+
+    cursor: pointer;
+    border-radius: 16px;
+    opacity: 0;
+}
+
+/* end select-monster-option */
+
+/* show-monster-box */
+
+.show-monster-box {
+    position: absolute;
+
+    width: 880px;
+    height: 610px;
+
+    top: 100px;
+    right: 520px;
+
+    z-index: 1;
+}
+
+/* show-monster-box */

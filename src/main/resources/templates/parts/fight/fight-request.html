@@ -2,16 +2,16 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Fight-request</title>
+    <title> Fight-request</title>
 
-    <link th:href="@{/css/parts/profile.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet"/>
     <link th:href="@{/css/parts/fight/fight.css}" rel="stylesheet"/>
     <link th:href="@{/css/parts/fight/fight-request.css}" rel="stylesheet"/>
 </head>
 <body>
 
 
-<div class="fight-request-box">
+<div class="show-monster-box">
     <div th:replace="~{parts/fight/fragments-fight.html :: constant-fight-options}"></div>
 
     <div class="next" th:with="OptionIndex=${OptionIndex+1}">

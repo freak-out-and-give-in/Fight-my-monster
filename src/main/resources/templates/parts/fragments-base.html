@@ -2,7 +2,9 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Fragments-base</title>
+    <title> Fragments-base</title>
+
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet">
 </head>
 <body>
 
@@ -45,6 +47,15 @@
     </div>
 </div>
 
+<div th:fragment="background-village(pageType)">
+    <div>
+        <img th:src="@{/images/village/{pageType}.png(pageType=${pageType})}" alt="background img"
+             style="position: absolute;">
+        <img th:src="@{/images/background/themes/{background}.png(background=${Background})}"
+             style="width: 1920px; height: 1080px; object-fit: cover;" alt="themed-background">
+    </div>
+</div>
+
 
 <div th:fragment="right-side">
     <div class="right-side-box">
@@ -67,7 +78,8 @@
 </div>
 
 
-<div th:fragment="show-monster-card" th:with="totalStats=${monster.attack} + ${monster.defence} + ${monster.brains} + ${monster.tricks}">
+<div th:fragment="show-monster-card"
+     th:with="totalStats=${monster.attack} + ${monster.defence} + ${monster.brains} + ${monster.tricks}">
     <div class="monster-card">
         <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='green', greaterThanOrEqualTo=0, lessThan=1000)}"></div>
         <div th:replace="~{parts/fragments-base.html :: card-colour(cardName='yellow', greaterThanOrEqualTo=1000, lessThan=2000)}"></div>
@@ -102,6 +114,16 @@
     <div th:if="${totalStats} &gt;= ${greaterThanOrEqualTo} and ${totalStats} &lt; ${lessThan}">
         <img th:src="@{/images/cards/coloured/{cardName}-card.png(cardName=${cardName})}"
              th:alt="@{{cardName}-monster-card(cardName=${cardName})}">
+    </div>
+</div>
+
+
+<div th:fragment="my-monsters">
+    <div class="my-monsters">
+        <div th:with="monster=${MyMonsters[N]},
+        totalStats=${monster.attack} + ${monster.defence} + ${monster.brains} + ${monster.tricks}">
+            <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
+        </div>
     </div>
 </div>
 

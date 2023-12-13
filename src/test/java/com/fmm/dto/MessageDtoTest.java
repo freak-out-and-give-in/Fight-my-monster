@@ -12,7 +12,7 @@ class MessageDtoTest {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    public void testMessageDto() {
+    void testMessageDto() {
         User user = new User("jerry", "sein");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);

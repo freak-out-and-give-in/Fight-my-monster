@@ -1,0 +1,49 @@
+.village-buttons button {
+    position: absolute;
+
+    border-radius: 70px;
+    cursor: pointer;
+    opacity: 0;
+
+    z-index: 1;
+}
+
+.dojo-button {
+    top: 280px;
+    right: 1210px;
+
+    width: 300px;
+    height: 720px;
+}
+
+.monster-market-button {
+    top: 600px;
+    right: 940px;
+
+    width: 235px;
+    height: 310px;
+}
+
+.monster-builder-button {
+    top: 270px;
+    right: 715px;
+
+    width: 200px;
+    height: 510px;
+}
+
+.monster-trader-button {
+    top: 725px;
+    right: 580px;
+
+    width: 250px;
+    height: 315px;
+}
+
+.potions-pete-button {
+    top: 410px;
+    right: 310px;
+
+    width: 240px;
+    height: 430px;
+}

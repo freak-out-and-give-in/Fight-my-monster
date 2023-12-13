@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title> Potions-pete</title>
+
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet">
+    <link th:href="@{/css/parts/village/potions-pete.css}" rel="stylesheet">
+</head>
+<body>
+
+
+<div class="potion-box">
+    <div class="potion-div">
+        <form th:action="@{/fmm/village/potions-pete/{potion}}">
+            <input type="hidden" th:value="DEMON_ATTACK" name="potion"/>
+            <button class="potion-button"></button>
+        </form>
+        <span class="potion-description" style="left: 85px;"> Increases Attack X4. Lasts for 2 fights</span>
+    </div>
+    <div class="potion-div">
+        <form th:action="@{/fmm/village/potions-pete/{potion}}">
+            <input type="hidden" th:value="TRICKS_MAKER" name="potion"/>
+            <button class="potion-button"></button>
+        </form>
+        <span class="potion-description" style="left: -203px;"> Increases Tricks X4. Lasts for 2 fights</span>
+    </div>
+    <div class="potion-div">
+        <form th:action="@{/fmm/village/potions-pete/{potion}}">
+            <input type="hidden" th:value="TOUGH_GUY" name="potion"/>
+            <button class="potion-button"></button>
+        </form>
+        <span class="potion-description" style="left: -473px;"> Increases Defense and Brains X2. Lasts for 4 fights</span>
+    </div>
+    <div class="potion-div">
+        <form th:action="@{/fmm/village/potions-pete/{potion}}">
+            <input type="hidden" th:value="ADVANTAGE_KILLER" name="potion"/>
+            <button class="potion-button"></button>
+        </form>
+        <span class="potion-description" style="left: -768px;"> Cancel the advantage of the opponent. Lasts for 3 fights</span>
+    </div>
+</div>
+
+
+<div th:replace="~{parts/fragments-base.html :: messages-notification}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: options(LoggedInUsername=${User.username})}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: background-village(pageType='potions-pete/potions-pete-background')}"></div>
+
+
+</body>
+</html>

@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Village</title>
+    <title> Village</title>
+
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/village/village.css}" rel="stylesheet"/>
 </head>
 <body>
+
+
+<div class="village-buttons">
+    <form th:action="@{/fmm/village/dojo}">
+        <button class="dojo-button"></button>
+    </form>
+    <form th:action="@{/fmm/village/monster-market}">
+        <button class="monster-market-button"></button>
+    </form>
+    <form th:action="@{/fmm/village/monster-builder}">
+        <button class="monster-builder-button"></button>
+    </form>
+    <form th:action="@{/fmm/village/monster-trader}">
+        <button class="monster-trader-button"></button>
+    </form>
+    <form th:action="@{/fmm/village/potions-pete}">
+        <button class="potions-pete-button"></button>
+    </form>
+</div>
+
+
+<div th:replace="~{parts/fragments-base.html :: messages-notification}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: options(LoggedInUsername=${User.username})}"></div>
+
+
+<div th:replace="~{parts/fragments-base.html :: background-village(pageType='village')}"></div>
 
 </body>
 </html>
