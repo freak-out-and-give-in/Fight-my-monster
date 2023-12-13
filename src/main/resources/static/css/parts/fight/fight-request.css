@@ -18,24 +18,6 @@
     opacity: 0;
 }
 
-.go-back {
-    position: relative;
-
-    top: -546px;
-    right: -409px;
-
-    z-index: 1;
-}
-
-.go-back button {
-    width: 40px;
-    height: 40px;
-
-    cursor: pointer;
-    border-radius: 16px;
-    opacity: 0;
-}
-
 .send-message {
    position: absolute;
 
@@ -67,40 +49,6 @@
 }
 
 /* end general options */
-
-/* select-monster-option 1 */
-
-.select-monster {
-    position: absolute;
-
-    top: 80px;
-    right: 320px;
-}
-
-.select-monster button {
-    width: 91px;
-    height: 105px;
-
-    cursor: pointer;
-    border-radius: 20px;
-    opacity: 0;
-}
-
-.left-button {
-    position: relative;
-
-    top: -113px;
-    right: -5px;
-}
-
-.right-button {
-    position: relative;
-
-    top: -218px;
-    right: -378px;
-}
-
-/* end select-monster-option */
 
 /* eat-bite-collect-option 2 */
 

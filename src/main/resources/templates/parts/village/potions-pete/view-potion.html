@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>View-potion</title>
+
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/village/view-potion.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="show-monster-box" th:with="N=${SelectPotionDto.N}">
+    <div th:replace="~{/parts/fragments-base.html :: my-monsters}"></div>
+
+    <div class="cross">
+        <form th:action="@{/fmm/village/potions-pete}">
+            <button><img th:src="@{/images/village/go-back.png}" alt="go-back"></button>
+        </form>
+    </div>
+
+    <div class="select-monster">
+        <img th:src="@{/images/fight/request/option1-select-monster.png}" alt="select-monster">
+
+        <div class="left-button">
+            <form th:action="@{/fmm/village/potions-pete/{potion}}">
+                <input type="hidden" th:value="${selectPotionDto.N - 1}" name="N"/>
+                <input type="hidden" th:value="${selectPotionDto.Potion}" name="potion"/>
+                <button class="next-button"></button>
+            </form>
+        </div>
+        <div class="right-button">
+            <form th:action="@{/fmm/village/potions-pete/{potion}}">
+                <input type="hidden" th:value="${selectPotionDto.N + 1}" name="N"/>
+                <input type="hidden" th:value="${selectPotionDto.Potion}" name="potion"/>
+                <button class="next-button"></button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div style="position: absolute;">
+    <img th:src="@{/images/fight/request/blue-background.png}" alt="background img">
+</div>
+
+</body>
+</html>

@@ -57,12 +57,11 @@ public class FightController {
     @GetMapping("/fight-request")
     public ModelAndView showFightRequestPage(HttpServletRequest request,
                                              @ModelAttribute("FightRequestDto") FightRequestDto fightRequestDto) {
-        Long myId = userService.getUser(request.getUserPrincipal().getName()).getId();
-        User myUser = userService.getUser(myId);
+        User myUser = userService.getUser(request.getUserPrincipal().getName());
+        Long myId = myUser.getId();
 
         User opponentUser = userService.getUser(fightRequestDto.getOpponentUsername());
         MonsterDto opponentMonster = convertToDto(monsterService.getMonster(opponentUser.getId(), fightRequestDto.getOpponentMonsterName()));
-
 
         List<MonsterDto> myMonsters = monsterService.getMonsters(myId).stream().map(this::convertToDto).collect(Collectors.toList());
 

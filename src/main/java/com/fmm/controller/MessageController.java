@@ -46,23 +46,22 @@ public class MessageController {
 
     @GetMapping("")
     public ModelAndView showMessagesPage(HttpServletRequest request) {
-        Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
-        User user = userService.getUser(id);
+        User myUser = userService.getUser(request.getUserPrincipal().getName());
+        Long myId = myUser.getId();
 
         ModelAndView mav = new ModelAndView("/parts/messages/messages");
-        mav.addObject("User", user);
-        mav.addObject("Background", userInfoService.getUserInfo(id).getCurrentBackground());
-        mav.addObject("Nuggets", userInfoService.getUserInfo(id).getNuggets());
-        mav.addObject("MessagesReceived", messageService.getMessagesForMe(id));
-        mav.addObject("MessagesReceivedCount", (long) messageService.getMessagesForMe(id).size());
+        mav.addObject("User", myUser);
+        mav.addObject("Background", userInfoService.getUserInfo(myId).getCurrentBackground());
+        mav.addObject("Nuggets", userInfoService.getUserInfo(myId).getNuggets());
+        mav.addObject("MessagesReceived", messageService.getMessagesForMe(myId));
+        mav.addObject("MessagesReceivedCount", (long) messageService.getMessagesForMe(myId).size());
 
         return mav;
     }
 
     @PostMapping("/send-message")
     public ModelAndView sendMessage(HttpServletRequest request, @ModelAttribute("MessageDto") MessageDto messageDto) {
-        Long myId = userService.getUser(request.getUserPrincipal().getName()).getId();
-        User myUser = userService.getUser(myId);
+        User myUser = userService.getUser(request.getUserPrincipal().getName());
 
         messageService.addMessage(new Message(myUser, messageDto.getToAccountId(), messageDto.getTypeOfFight(),
                 messageDto.getToMonsterName(), messageDto.getFromMonsterName(), messageDto.getNuggetsForAccepting()));

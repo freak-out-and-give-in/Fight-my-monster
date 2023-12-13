@@ -31,22 +31,22 @@ public class UserInfoController {
     @Transactional
     @PostMapping("/{username}/background")
     public RedirectView setBackground(@RequestParam(value="background") String background, HttpServletRequest request) {
-        Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
-        UserInfo userInfo = userInfoService.getUserInfo(id);
+        Long myId = userService.getUser(request.getUserPrincipal().getName()).getId();
+        UserInfo myUserInfo = userInfoService.getUserInfo(myId);
 
-        userInfo.setCurrentBackground(background);
-        userInfoService.updateUserInfo(userInfo);
+        myUserInfo.setCurrentBackground(background);
+        userInfoService.updateUserInfo(myUserInfo);
 
         return new RedirectView("/fmm/my-profile");
     }
 
     @PostMapping("/{username}/nuggets")
     public RedirectView addNuggets(HttpServletRequest request, BigInteger amount) {
-        Long id = userService.getUser(request.getUserPrincipal().getName()).getId();
-        UserInfo userInfo = userInfoService.getUserInfo(id);
+        Long myId = userService.getUser(request.getUserPrincipal().getName()).getId();
+        UserInfo myUserInfo = userInfoService.getUserInfo(myId);
 
-        userInfo.setNuggets(userInfo.getNuggets().add(amount));
-        userInfoService.updateUserInfo(userInfo);
+        myUserInfo.setNuggets(myUserInfo.getNuggets().add(amount));
+        userInfoService.updateUserInfo(myUserInfo);
 
         return new RedirectView("/fmm/my-profile");
     }

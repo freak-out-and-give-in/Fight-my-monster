@@ -1,0 +1,52 @@
+.potion-box {
+    position: absolute;
+
+    top: 449px;
+    right: 600px;
+
+    width: 1161px;
+    height: 250px;
+
+    z-index: 1;
+}
+
+.potion-div {
+    position: relative;
+
+    float: left;
+    margin-left: 150px;
+
+    width: 135px;
+    height: 250px;
+}
+
+.potion-button {
+    position: absolute;
+
+    width: 135px;
+    height: 250px;
+
+    border-radius: 20px;
+    cursor: pointer;
+
+    opacity: 0;
+}
+
+.potion-description {
+    position: absolute;
+    visibility: hidden;
+
+    top: 420px;
+
+    width: 800px;
+
+    color: white;
+    text-align: center;
+    font-size: 44px;
+    font-weight: bold;
+    -webkit-text-stroke: 1px black;
+}
+
+.potion-div:hover .potion-description {
+    visibility: visible;
+}

@@ -1,0 +1,16 @@
+.cross {
+    position: absolute;
+
+    width: 41px;
+    height: 30px;
+
+    top: 0px;
+    right: 436px;
+}
+
+.cross button {
+    border: 0;
+    background-color: transparent;
+
+    cursor: pointer;
+}

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Fragments: fight-request</title>
+    <title> Fragments: fight-request</title>
 </head>
 <body>
 
@@ -25,12 +25,7 @@
         <img th:src="@{/images/fight/request/general-option.png}" alt="general-option">
     </div>
 
-    <div class="my-monsters">
-        <div th:with="monster=${MyMonsters[N]},
-        totalStats=${monster.attack} + ${monster.defence} + ${monster.brains} + ${monster.tricks}">
-            <div th:replace="~{parts/fragments-base.html :: show-monster-card}"></div>
-        </div>
-    </div>
+    <div th:replace="~{/parts/fragments-base.html :: my-monsters}"></div>
 
     <div class="opponent-monster">
         <div th:with="monster=${OpponentMonster},

@@ -7,18 +7,6 @@ body {
     position: absolute;
 }
 
-.fight-request-box {
-    position: absolute;
-
-    width: 880px;
-    height: 610px;
-
-    top: 100px;
-    right: 520px;
-
-    z-index: 1;
-}
-
 /* general-option (constants) */
 
 .general-option {
@@ -32,13 +20,6 @@ body {
     right: 320px;
 }
 
-.my-monsters {
-    position: relative;
-
-    top: 140px;
-    right: -52px;
-}
-
 .opponent-monster {
     position: relative;
 
@@ -49,7 +30,7 @@ body {
 .my-chance-box {
     position: relative;
 
-    top: -37px;
+    top: -30px;
     right: -112px;
 
     width: 190px;
@@ -59,7 +40,7 @@ body {
 .opponent-chance-box {
     position: relative;
 
-    top: -57px;
+    top: -50px;
     right: -640px;
 
     width: 190px;

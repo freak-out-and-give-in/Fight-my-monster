@@ -14,7 +14,7 @@ class MonsterDtoTest {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    public void testConvertMonsterToDto() {
+    void testConvertMonsterToDto() {
         User user = new User("fig", "tree");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);

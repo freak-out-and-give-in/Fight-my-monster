@@ -45,8 +45,7 @@ public class OpponentProfileController {
 
     @GetMapping("")
     public ModelAndView showOpponentProfilePage(@ModelAttribute("selectedUser") User opponentUser, HttpServletRequest request) {
-        User myUser = userService.getUser(userService.getUser(request.getUserPrincipal().getName()).getId());
-        String loggedInUsername = myUser.getUsername();
+        User myUser = userService.getUser(request.getUserPrincipal().getName());
 
         opponentUser = userService.getUser(opponentUser.getUsername());
         Long opponentId = opponentUser.getId();
@@ -69,7 +68,7 @@ public class OpponentProfileController {
 
         ModelAndView mav = new ModelAndView("/parts/profile/opponent-profile");
         mav.addObject("User", opponentUser);
-        mav.addObject("LoggedInUsername", loggedInUsername);
+        mav.addObject("LoggedInUsername", myUser.getUsername());
         mav.addObject("Monsters", monsterDtoList);
         mav.addObject("Background", userInfoService.getUserInfo(opponentId).getCurrentBackground());
         mav.addObject("Nuggets", userInfoService.getUserInfo(opponentId).getNuggets());
@@ -83,8 +82,7 @@ public class OpponentProfileController {
     @GetMapping(value = "", params = "pageNumber")
     public ModelAndView showOpponentProfilePage(@ModelAttribute("selectedUser") User opponentUser, @ModelAttribute("pageNumber") int pageNumber,
                                                 HttpServletRequest request) {
-        User myUser = userService.getUser(userService.getUser(request.getUserPrincipal().getName()).getId());
-        String loggedInUsername = myUser.getUsername();
+        User myUser = userService.getUser(request.getUserPrincipal().getName());
 
         opponentUser = userService.getUser(opponentUser.getUsername());
         Long opponentId = opponentUser.getId();
@@ -107,7 +105,7 @@ public class OpponentProfileController {
 
         ModelAndView mav = new ModelAndView("/parts/profile/opponent-profile");
         mav.addObject("User", opponentUser);
-        mav.addObject("LoggedInUsername", loggedInUsername);
+        mav.addObject("LoggedInUsername", myUser.getUsername());
         mav.addObject("Monsters", monsterDtoList);
         mav.addObject("Background", userInfoService.getUserInfo(opponentId).getCurrentBackground());
         mav.addObject("Nuggets", userInfoService.getUserInfo(opponentId).getNuggets());

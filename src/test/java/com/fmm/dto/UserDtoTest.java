@@ -16,7 +16,7 @@ class UserDtoTest {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    public void testConvertUserToDto() {
+    void testConvertUserToDto() {
         User user = new User("lake", "new322");
         user.setId(1L);
         user.setRoles(List.of(new Role("ROLE_USER")));
