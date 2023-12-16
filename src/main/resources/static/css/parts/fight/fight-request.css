@@ -3,10 +3,12 @@
 .next {
     position: relative;
 
+    width: 127px;
+
     top: 66px;
     right: -376px;
 
-    z-index: 1;
+    z-index: 2;
 }
 
 .next-button {
@@ -24,7 +26,7 @@
     top: 555px;
    right: 376px;
 
-    z-index: 1;
+    z-index: 2;
 }
 
 .send-message button {
@@ -92,21 +94,27 @@
 .black-dot-bite {
     position: relative;
 
-    top: -215px;
+    width: 8px;
+
+    top: -211px;
     right: -60px;
 }
 
 .black-dot-collect {
     position: relative;
 
-    top: -178px;
+    width: 8px;
+
+    top: -174px;
     right: -60px;
 }
 
 .black-dot-eat {
     position: relative;
 
-    top: -140px;
+    width: 8px;
+
+    top: -136px;
     right: -60px;
 }
 

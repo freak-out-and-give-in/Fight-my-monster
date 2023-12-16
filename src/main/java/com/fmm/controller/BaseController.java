@@ -19,23 +19,20 @@ public class BaseController {
 
     @GetMapping("/landing-page")
     public ModelAndView showLandingPage() {
-        ModelAndView mav = new ModelAndView("/base/landing-page");
 
-        return mav;
+        return new ModelAndView("/base/landing-page");
     }
 
     @GetMapping("/registration")
     public ModelAndView showRegistrationPage() {
-        ModelAndView mav = new ModelAndView("/base/registration");
 
-        return mav;
+        return new ModelAndView("/base/registration");
     }
 
     @GetMapping("/login")
     public ModelAndView showLoginPage() {
-        ModelAndView mav = new ModelAndView("/base/login");
 
-        return mav;
+        return new ModelAndView("/base/login");
     }
 
 }

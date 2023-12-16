@@ -51,11 +51,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         Privilege deletePrivilege
                 = createPrivilegeIfNotFound("DELETE_PRIVILEGE");
 
-        List<Privilege> adminPrivileges = Arrays.asList(
+        List<Privilege> adminPrivileges = Collections.singletonList(
                 deletePrivilege);
 
         createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
-        createRoleIfNotFound("ROLE_USER", Arrays.asList(deletePrivilege));
+        createRoleIfNotFound("ROLE_USER", Collections.singletonList(deletePrivilege));
 
         //default admin made on creation is below
         Role adminRole = roleRepository.findByName("ROLE_ADMIN");

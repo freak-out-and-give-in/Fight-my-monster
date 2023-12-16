@@ -7,11 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MonsterDtoTest {
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Test
     void testConvertMonsterToDto() {
@@ -19,6 +18,7 @@ class MonsterDtoTest {
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
         Monster monster = new Monster(user, "", Level.CUSTOM);
+        monster.setPotion("DEMON_ATTACK");
 
         MonsterDto monsterDto = modelMapper.map(monster, MonsterDto.class);
 
@@ -30,7 +30,7 @@ class MonsterDtoTest {
         assertThat(monster.getBrains()).isEqualTo(monsterDto.getBrains());
         assertThat(monster.getTricks()).isEqualTo(monsterDto.getTricks());
         assertThat(monster.isAlive()).isEqualTo(monsterDto.isAlive());
-        assertThat(monster.getPotionEquipped()).isEqualTo(monsterDto.getPotionEquipped());
+        assertThat(monster.getPotion()).isEqualTo(monsterDto.getPotion());
     }
 
 }

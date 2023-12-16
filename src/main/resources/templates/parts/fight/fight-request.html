@@ -11,10 +11,10 @@
 <body>
 
 
-<div class="show-monster-box">
+<div class="show-monster-box" th:with="N=${FightRequestDto.N}, OptionIndex=${FightRequestDto.OptionIndex}">
     <div th:replace="~{parts/fight/fragments-fight.html :: constant-fight-options}"></div>
 
-    <div class="next" th:with="OptionIndex=${OptionIndex+1}">
+    <div class="next" th:with="OptionIndex=${FightRequestDto.OptionIndex+1}">
         <div th:replace="~{parts/fight/fragments-fight.html :: fightInformation(requestOrOffer='request')}"></div>
     </div>
 
@@ -26,18 +26,18 @@
     </div>
 
     <div class="my-chance-box">
-        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, MyChanceBarAmount)}">
+        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, FightRequestDto.MyChanceBarAmount)}">
             <img th:src="@{/images/fight/request/chance-bar-full.png}" alt="chance-bar-full">
         </div>
-        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, (10 - MyChanceBarAmount))}">
+        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, (10 - FightRequestDto.MyChanceBarAmount))}">
             <img th:src="@{/images/fight/request/chance-bar-empty.png}" alt="chance-bar-empty">
         </div>
     </div>
     <div class="opponent-chance-box">
-        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, (10 - MyChanceBarAmount))}">
+        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, (10 - FightRequestDto.MyChanceBarAmount))}">
             <img th:src="@{/images/fight/request/chance-bar-full.png}" alt="chance-bar-full">
         </div>
-        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, MyChanceBarAmount)}">
+        <div class="chance-bars" th:each="i: ${#numbers.sequence(1, FightRequestDto.MyChanceBarAmount)}">
             <img th:src="@{/images/fight/request/chance-bar-empty.png}" alt="chance-bar-empty">
         </div>
     </div>
@@ -47,20 +47,20 @@
         <img th:src="@{/images/fight/request/general-option-fight-request.png}" alt="general-option-fight-request">
     </div>
 
-    <div th:if="${OptionIndex == 1}">
+    <div th:if="${FightRequestDto.OptionIndex == 1}">
         <div class="select-monster">
             <img th:src="@{/images/fight/request/option1-select-monster.png}" alt="option1-select-monster">
 
-            <div class="left-button" th:with="N=${N-1}">
+            <div class="left-button" th:with="N=${FightRequestDto.N-1}">
                 <div th:replace="~{parts/fight/fragments-fight.html :: fightInformation(requestOrOffer='request')}"></div>
             </div>
-            <div class="right-button" th:with="N=${N+1}">
+            <div class="right-button" th:with="N=${FightRequestDto.N+1}">
                 <div th:replace="~{parts/fight/fragments-fight.html :: fightInformation(requestOrOffer='request')}"></div>
             </div>
         </div>
     </div>
 
-    <div th:if="${OptionIndex == 2}">
+    <div th:if="${FightRequestDto.OptionIndex == 2}">
         <div class="eat-bite-collect">
             <img th:src="@{/images/fight/request/option2-bite-collect-eat.png}" alt="option2-bite-collect-eat">
 
@@ -86,7 +86,7 @@
         </div>
     </div>
 
-    <div th:if="${OptionIndex == 3}">
+    <div th:if="${FightRequestDto.OptionIndex == 3}">
         <div class="offer-nuggets">
             <img th:src="@{/images/fight/request/option3-offer-nuggets.png}" alt="option3-offer-nuggets">
         </div>
@@ -94,9 +94,9 @@
             <form th:action="@{/fmm/messages/send-message}" th:object="${MessageDto}" method="post">
                 <input type="hidden" th:value="${OpponentUser.id}" name="ToAccountId"/>
                 <input type="hidden" th:value="${TypeOfFight}" name="TypeOfFight"/>
-                <input type="hidden" th:value="${OpponentMonster.name}" name="ToMonsterName"/>
-                <input type="hidden" th:value="${MyMonsters[N].name}" name="FromMonsterName"/>
-                <input type="text" th:value="${NuggetsForAccepting}" name="NuggetsForAccepting"/>
+                <input type="hidden" th:value="${FightRequestDto.OpponentMonsterName}" name="ToMonsterName"/>
+                <input type="hidden" th:value="${MyMonsters[FightRequestDto.N].name}" name="FromMonsterName"/>
+                <input type="text" th:value="${FightRequestDto.NuggetsForAccepting}" name="NuggetsForAccepting"/>
                 <button></button>
             </form>
         </div>

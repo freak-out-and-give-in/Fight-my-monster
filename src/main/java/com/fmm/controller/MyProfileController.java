@@ -48,7 +48,7 @@ public class MyProfileController {
     public ModelAndView showMyProfilePage(HttpServletRequest request) {
         User myUser = userService.getUser(request.getUserPrincipal().getName());
         Long myId = myUser.getId();
-        UserInfo userInfo = userInfoService.getUserInfo(myId);
+        UserInfo myUserInfo = userInfoService.getUserInfo(myId);
 
         List<Monster> aliveMonsterList = monsterService.getAliveMonsters(myId);
         List<MonsterDto> monsterDtoList = new ArrayList<>();
@@ -70,8 +70,8 @@ public class MyProfileController {
         ModelAndView mav = new ModelAndView("/parts/profile/my-profile");
         mav.addObject("User", myUser);
         mav.addObject("Monsters", monsterDtoList);
-        mav.addObject("Background", userInfo.getCurrentBackground());
-        mav.addObject("Nuggets", userInfo.getNuggets());
+        mav.addObject("Background", myUserInfo.getCurrentBackground());
+        mav.addObject("Nuggets", myUserInfo.getNuggets());
         mav.addObject("MessagesReceivedCount", (long) messageService.getMessagesForMe(myId).size());
         mav.addObject("pageNumber", 1);
         mav.addObject("totalPages", totalPages);
@@ -83,7 +83,7 @@ public class MyProfileController {
     public ModelAndView showMyProfilePage(HttpServletRequest request, @ModelAttribute("pageNumber") int pageNumber) {
         User myUser = userService.getUser(request.getUserPrincipal().getName());
         Long myId = myUser.getId();
-        UserInfo userInfo = userInfoService.getUserInfo(myId);
+        UserInfo myUserInfo = userInfoService.getUserInfo(myId);
 
         List<Monster> aliveMonsterList = monsterService.getAliveMonsters(myId);
         List<MonsterDto> monsterDtoList = new ArrayList<>();
@@ -104,8 +104,8 @@ public class MyProfileController {
         ModelAndView mav = new ModelAndView("/parts/profile/my-profile");
         mav.addObject("User", myUser);
         mav.addObject("Monsters", monsterDtoList);
-        mav.addObject("Background", userInfo.getCurrentBackground());
-        mav.addObject("Nuggets", userInfo.getNuggets());
+        mav.addObject("Background", myUserInfo.getCurrentBackground());
+        mav.addObject("Nuggets", myUserInfo.getNuggets());
         mav.addObject("MessagesReceivedCount", (long) messageService.getMessagesForMe(myId).size());
         mav.addObject("pageNumber", pageNumber);
         mav.addObject("totalPages", totalPages);

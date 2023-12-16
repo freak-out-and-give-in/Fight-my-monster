@@ -12,31 +12,56 @@
 <div class="show-monster-box" th:with="N=${SelectPotionDto.N}">
     <div th:replace="~{/parts/fragments-base.html :: my-monsters}"></div>
 
-    <div class="cross">
-        <form th:action="@{/fmm/village/potions-pete}">
-            <button><img th:src="@{/images/village/go-back.png}" alt="go-back"></button>
-        </form>
-    </div>
-
     <div class="select-monster">
         <img th:src="@{/images/fight/request/option1-select-monster.png}" alt="select-monster">
 
         <div class="left-button">
             <form th:action="@{/fmm/village/potions-pete/{potion}}">
                 <input type="hidden" th:value="${selectPotionDto.N - 1}" name="N"/>
-                <input type="hidden" th:value="${selectPotionDto.Potion}" name="potion"/>
+                <input type="hidden" th:value="${selectPotionDto.potionName}" name="potionName"/>
+                <input type="hidden" th:value="${selectPotionDto.potionCost}" name="potionCost"/>
                 <button class="next-button"></button>
             </form>
         </div>
         <div class="right-button">
             <form th:action="@{/fmm/village/potions-pete/{potion}}">
                 <input type="hidden" th:value="${selectPotionDto.N + 1}" name="N"/>
-                <input type="hidden" th:value="${selectPotionDto.Potion}" name="potion"/>
+                <input type="hidden" th:value="${selectPotionDto.potionName}" name="potionName"/>
+                <input type="hidden" th:value="${selectPotionDto.potionCost}" name="potionCost"/>
                 <button class="next-button"></button>
             </form>
         </div>
     </div>
 
+</div>
+
+<div class="buy-close-div">
+    <form th:action="@{/fmm/village/potions-pete/{potion}}" method="post">
+        <input type="hidden" th:value="${selectPotionDto.N}" name="N"/>
+        <input type="hidden" th:value="${selectPotionDto.potionName}" name="potionName"/>
+        <input type="hidden" th:value="${selectPotionDto.potionCost}" name="potionCost"/>
+        <button th:if="${#strings.isEmpty(MyMonsters[selectPotionDto.N].potion)}" class="buy-close-button"> Buy!</button>
+        <button th:unless="${#strings.isEmpty(MyMonsters[selectPotionDto.N].potion)}" class="buy-close-button"
+                style="opacity: 0.3;" disabled="disabled"> Buy!</button>
+    </form>
+    <form th:action="@{/fmm/village/potions-pete}">
+        <button class="buy-close-button"> Close</button>
+    </form>
+</div>
+
+<div class="nugget-cost">
+    <span style="color: black;" th:text="${selectPotionDto.potionCost}"></span>
+    <br>
+    <span style="color: #FFDF00;"> nuggets</span>
+</div>
+
+<div class="potion-arrow">
+    <img th:src="@{/images/village/potions-pete/shop-pictures/potion-arrow.png}" alt="potion arrow">
+</div>
+
+<div class="potion-shop-picture">
+    <img th:src="@{/images/village/potions-pete/shop-pictures/{potionName}-shop-picture.png(potionName=${selectPotionDto.potionName})}"
+         alt="shop-picture">
 </div>
 
 <div style="position: absolute;">

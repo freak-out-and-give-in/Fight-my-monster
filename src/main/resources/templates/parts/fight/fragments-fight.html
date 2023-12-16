@@ -9,12 +9,12 @@
 <div th:fragment="fightInformation(requestOrOffer)">
     <form th:action="@{/fmm/fight-{requestOrOffer}(requestOrOffer=${requestOrOffer})}">
         <input type="hidden" th:value="${OpponentUser.username}" name="OpponentUsername"/>
-        <input type="hidden" th:value="${OpponentMonster.name}" name="OpponentMonsterName"/>
+        <input type="hidden" th:value="${FightRequestDto.OpponentMonsterName}" name="OpponentMonsterName"/>
         <input type="hidden" th:value="${N}" name="N"/>
         <input type="hidden" th:value="${OptionIndex}" name="OptionIndex"/>
         <input type="hidden" th:value="${TypeOfFight}" name="TypeOfFight"/>
-        <input type="hidden" th:value="${NuggetsForAccepting}" name="NuggetsForAccepting"/>
-        <input type="hidden" th:value="${MyChanceBarAmount}" name="MyChanceBarAmount"/>
+        <input type="hidden" th:value="${FightRequestDto.NuggetsForAccepting}" name="NuggetsForAccepting"/>
+        <input type="hidden" th:value="${FightRequestDto.MyChanceBarAmount}" name="MyChanceBarAmount"/>
         <button class="next-button"></button>
     </form>
 </div>

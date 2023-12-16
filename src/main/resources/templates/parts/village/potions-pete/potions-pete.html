@@ -13,31 +13,31 @@
 <div class="potion-box">
     <div class="potion-div">
         <form th:action="@{/fmm/village/potions-pete/{potion}}">
-            <input type="hidden" th:value="DEMON_ATTACK" name="potion"/>
+            <input type="hidden" th:value="DEMON_ATTACK" name="potionName"/>
             <button class="potion-button"></button>
         </form>
-        <span class="potion-description" style="left: 85px;"> Increases Attack X4. Lasts for 2 fights</span>
+        <span class="potion-description" style="left: 85px;" th:text="${T(com.fmm.enumeration.Potion).DEMON_ATTACK.description}"></span>
     </div>
     <div class="potion-div">
         <form th:action="@{/fmm/village/potions-pete/{potion}}">
-            <input type="hidden" th:value="TRICKS_MAKER" name="potion"/>
+            <input type="hidden" th:value="TRICKS_MAKER" name="potionName"/>
             <button class="potion-button"></button>
         </form>
-        <span class="potion-description" style="left: -203px;"> Increases Tricks X4. Lasts for 2 fights</span>
+        <span class="potion-description" style="left: -203px;"  th:text="${T(com.fmm.enumeration.Potion).TRICKS_MAKER.description}"></span>
     </div>
     <div class="potion-div">
         <form th:action="@{/fmm/village/potions-pete/{potion}}">
-            <input type="hidden" th:value="TOUGH_GUY" name="potion"/>
+            <input type="hidden" th:value="TOUGH_GUY" name="potionName"/>
             <button class="potion-button"></button>
         </form>
-        <span class="potion-description" style="left: -473px;"> Increases Defense and Brains X2. Lasts for 4 fights</span>
+        <span class="potion-description" style="left: -473px;"  th:text="${T(com.fmm.enumeration.Potion).TOUGH_GUY.description}"></span>
     </div>
     <div class="potion-div">
         <form th:action="@{/fmm/village/potions-pete/{potion}}">
-            <input type="hidden" th:value="ADVANTAGE_KILLER" name="potion"/>
+            <input type="hidden" th:value="ADVANTAGE_KILLER" name="potionName"/>
             <button class="potion-button"></button>
         </form>
-        <span class="potion-description" style="left: -768px;"> Cancel the advantage of the opponent. Lasts for 3 fights</span>
+        <span class="potion-description" style="left: -768px;"  th:text="${T(com.fmm.enumeration.Potion).ADVANTAGE_KILLER.description}"></span>
     </div>
 </div>
 

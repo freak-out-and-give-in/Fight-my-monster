@@ -1,0 +1,7 @@
+Potions related stuff not added yet:
+- Member only is ignored
+- Mysterio/Mysterio Rage "your opponent cannot see their fight odds" doesn't do anything rn
+
+
+write tests for battle-methods
+potion changes stats in battle & potion is used up (need to confirm)
