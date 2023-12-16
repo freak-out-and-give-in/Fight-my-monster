@@ -70,7 +70,7 @@
 
 <div th:fragment="messages-notification">
     <div class="message-count" th:if="${MessagesReceivedCount &gt;= 1}">
-        <img th:src="@{/images/messages/fight-message-pink-dot.png}">
+        <img th:src="@{/images/messages/fight-message-pink-dot.png}" alt="pink-dot">
         <div class="message-number">
             <div th:text="${MessagesReceivedCount}"></div>
         </div>
@@ -106,6 +106,10 @@
         <div class="brains" th:text="${monster.brains}"></div>
         <div class="tricks" th:text="${monster.tricks}"></div>
         <div class="total" th:text="${totalStats}"></div>
+    </div>
+
+    <div class="potion-picture" th:unless="${#strings.isEmpty(monster.potion)}">
+        <img th:src="@{/images/cards/potion-icons/{potion}-icon.png(potion=${monster.potion})}" th:alt="@{{potion}-icon(potion=${monster.potion})}">
     </div>
 </div>
 

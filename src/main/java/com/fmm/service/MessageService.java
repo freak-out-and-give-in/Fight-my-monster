@@ -51,7 +51,7 @@ public class MessageService {
         }
     }
 
-    private List<Message> getMyMessages(Long id) {
+    public List<Message> getMyMessages(Long id) {
         List<Message> messageList = new ArrayList<>();
         for (Message message : messageRepository.findAll()) {
             if (Objects.equals(message.getToAccountId(), id) || Objects.equals(message.getUser().getId(), id)) {

@@ -46,8 +46,11 @@ public class Monster {
     @Column(name = "alive", nullable = false)
     private boolean alive = true;
 
-    @Column(name = "potion_equipped")
-    private String potionEquipped;
+    @Column(name = "potion")
+    private String potion;
+
+    @Column(name = "potion_uses")
+    private int potionUses;
 
     public Monster() {
     }
@@ -146,12 +149,20 @@ public class Monster {
         this.alive = alive;
     }
 
-    public String getPotionEquipped() {
-        return potionEquipped;
+    public String getPotion() {
+        return potion;
     }
 
-    public void setPotionEquipped(String potionEquipped) {
-        this.potionEquipped = potionEquipped;
+    public void setPotion(String potion) {
+        this.potion = potion;
+    }
+
+    public int getPotionUses() {
+        return potionUses;
+    }
+
+    public void setPotionUses(int potionUses) {
+        this.potionUses = potionUses;
     }
 
     private long generateRandomStat(Level level) {

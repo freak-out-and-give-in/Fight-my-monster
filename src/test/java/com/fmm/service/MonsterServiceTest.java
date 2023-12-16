@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -131,7 +130,7 @@ class MonsterServiceTest {
         assertThat(captor.getValue().getBrains()).isEqualTo(monster.getBrains());
         assertThat(captor.getValue().getTricks()).isEqualTo(monster.getTricks());
         assertThat(captor.getValue().isAlive()).isEqualTo(monster.isAlive());
-        assertThat(captor.getValue().getPotionEquipped()).isEqualTo(monster.getPotionEquipped());
+        assertThat(captor.getValue().getPotion()).isEqualTo(monster.getPotion());
     }
 
     @Test
@@ -140,6 +139,7 @@ class MonsterServiceTest {
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
         Monster monster = new Monster(user, "er", Level.STANDARD);
+        monster.setPotion("TRICKS_MAKER");
 
         monsterService.addMonster(monster);
 
@@ -156,6 +156,6 @@ class MonsterServiceTest {
         assertThat(captor.getValue().getBrains()).isEqualTo(monster.getBrains());
         assertThat(captor.getValue().getTricks()).isEqualTo(monster.getTricks());
         assertThat(captor.getValue().isAlive()).isEqualTo(monster.isAlive());
-        assertThat(captor.getValue().getPotionEquipped()).isEqualTo(monster.getPotionEquipped());
+        assertThat(captor.getValue().getPotion()).isEqualTo(monster.getPotion());
     }
 }

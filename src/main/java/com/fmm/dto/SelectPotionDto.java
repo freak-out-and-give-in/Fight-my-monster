@@ -4,7 +4,9 @@ public class SelectPotionDto {
 
     private int n;
 
-    private String potion;
+    private String potionName;
+
+    private int potionCost;
 
     public int getN() {
         return n;
@@ -14,11 +16,19 @@ public class SelectPotionDto {
         this.n = n;
     }
 
-    public String getPotion() {
-        return potion;
+    public String getPotionName() {
+        return potionName;
     }
 
-    public void setPotion(String potion) {
-        this.potion = potion;
+    public void setPotionName(String potionName) {
+        this.potionName = potionName;
+    }
+
+    public int getPotionCost() {
+        return potionCost;
+    }
+
+    public void setPotionCost(int potionCost) {
+        this.potionCost = potionCost;
     }
 }

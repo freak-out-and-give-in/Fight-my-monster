@@ -20,7 +20,7 @@ public class MonsterDto {
 
     private boolean alive;
 
-    private String potionEquipped;
+    private String potion;
 
     public Long getId() {
         return id;
@@ -94,11 +94,11 @@ public class MonsterDto {
         this.alive = alive;
     }
 
-    public String getPotionEquipped() {
-        return potionEquipped;
+    public String getPotion() {
+        return potion;
     }
 
-    public void setPotionEquipped(String potionEquipped) {
-        this.potionEquipped = potionEquipped;
+    public void setPotion(String potion) {
+        this.potion = potion;
     }
 }

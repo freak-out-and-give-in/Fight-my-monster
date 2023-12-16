@@ -175,6 +175,16 @@ div.monster-fight-request button {
 
 /* end stats */
 
+/* potion-picture */
+
+.potion-picture {
+    position: absolute;
+
+    top: 5px;
+}
+
+/* end potion-picture */
+
 /* right-side */
 
 .right-side-box form {

@@ -3,7 +3,6 @@ package com.fmm.service;
 import com.fmm.model.User;
 import com.fmm.model.UserInfo;
 import com.fmm.repository.UserInfoRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
