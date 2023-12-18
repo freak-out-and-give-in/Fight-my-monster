@@ -21,13 +21,13 @@ public class Message {
     @Column(name = "to_account_id", nullable = false)
     private Long toAccountId;
 
-    @Column(name = "typeOfFight", nullable = false)
+    @Column(name = "type_of_fight", nullable = false)
     private TypeOfFight typeOfFight;
 
-    @Column(name = "toMonsterName", nullable = false)
+    @Column(name = "to_monster_name", nullable = false)
     private String toMonsterName;
 
-    @Column(name = "fromMonsterName", nullable = false)
+    @Column(name = "from_monster_name", nullable = false)
     private String fromMonsterName;
 
     @Column(name = "nuggets_for_accepting")

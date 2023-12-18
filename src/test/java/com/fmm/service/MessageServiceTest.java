@@ -6,6 +6,7 @@ import com.fmm.model.Message;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
 import com.fmm.repository.MessageRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -29,8 +30,9 @@ class MessageServiceTest {
     @Mock
     private MessageRepository messageRepository;
 
+    @DisplayName("Get my messages")
     @Test
-    void testGetMessagesForMe() {
+    void GetMessagesForMe() {
         User user1 = new User("meerkat", "insects");
         user1.setAcceptTermsAndConditions(true);
         user1.setEnabled(true);
@@ -58,8 +60,9 @@ class MessageServiceTest {
         verify(messageRepository, times(1)).findAll();
     }
 
+    @DisplayName("Get a message")
     @Test
-    void testGetMessage() {
+    void GetMessage() {
         User user = new User("meerkat", "insects");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
@@ -75,8 +78,9 @@ class MessageServiceTest {
         verify(messageRepository, times(1)).findById(13L);
     }
 
+    @DisplayName("Add a message")
     @Test
-    void testAddMessage() {
+    void AddMessage() {
         User user = new User("12jack", "bug");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
@@ -96,8 +100,9 @@ class MessageServiceTest {
         assertThat(captor.getValue().getNuggetsForAccepting()).isEqualTo(52L);
     }
 
+    @DisplayName("Delete a message")
     @Test
-    void testDeleteMessage() {
+    void DeleteMessage() {
         User user = new User("tree", "55");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
@@ -111,8 +116,9 @@ class MessageServiceTest {
         verify(messageRepository, times(1)).delete(eq(message));
     }
 
+    @DisplayName("Delete all messages with this monster")
     @Test
-    void testDeleteMessagesWithThisMonster() {
+    void DeleteMessagesWithThisMonster() {
         User user1 = new User("tree", "55");
         user1.setAcceptTermsAndConditions(true);
         user1.setEnabled(true);

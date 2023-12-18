@@ -55,6 +55,20 @@ public class Monster {
     public Monster() {
     }
 
+    public Monster(User user, Level level) {
+        this.user = user;
+
+        this.species = returnWordAsEnum(generateRandomSpecies());
+        this.genus = returnWordAsEnum(String.valueOf(Species.valueOf(species).getGenus()));
+
+        this.name = returnWordAsPascalCase(String.valueOf(species)) + " " + generateRandomEndOfName();
+
+        this.attack = generateRandomStat(level);
+        this.defence = generateRandomStat(level);
+        this.brains = generateRandomStat(level);
+        this.tricks = generateRandomStat(level);
+    }
+
     public Monster(User user, String name, Level level) {
         this.user = user;
 
@@ -75,6 +89,10 @@ public class Monster {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {

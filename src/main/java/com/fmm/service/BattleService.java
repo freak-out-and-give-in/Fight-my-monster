@@ -72,7 +72,6 @@ public class BattleService {
             case("MYSTERIO") -> monsterTotalStats = (attack * 2) + defence + (tricks * 2) + brains;
             case("INCREDIBLE_HULK") -> monsterTotalStats = (attack * 4) + (defence * 4) + (tricks * 4) + (brains * 4);
             case("MYSTERIO_RAGE") -> monsterTotalStats = (attack * 5) + defence + (tricks * 5) + brains;
-
         }
 
         return monsterTotalStats;
@@ -124,8 +123,7 @@ public class BattleService {
         return didIWin;
     }
 
-    public void executeWinCondition(User winningUser, User losingUser, TypeOfFight typeOfFight, Monster winningMonster,
-                                    Monster losingMonster) {
+    public void executeWinCondition(User winningUser, User losingUser, TypeOfFight typeOfFight, Monster winningMonster, Monster losingMonster) {
         if (typeOfFight == TypeOfFight.COLLECT) {
             messageService.deleteMessagesWithThisMonster(losingUser.getId(), losingMonster);
 

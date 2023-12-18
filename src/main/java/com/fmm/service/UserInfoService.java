@@ -37,11 +37,11 @@ public class UserInfoService {
         BigInteger bigIntegerNuggetsForAccepting = BigInteger.valueOf(nuggetsForAccepting);
 
         if (nuggetsForAccepting > 0) {
-            UserInfo sentRequestUserInfo = getUserInfo(sentRequestUserId);
+            UserInfo sentRequestUserInfo = userInfoRepository.findById(sentRequestUserId).get();
             sentRequestUserInfo.setNuggets(sentRequestUserInfo.getNuggets().subtract(bigIntegerNuggetsForAccepting));
             userInfoRepository.save(sentRequestUserInfo);
 
-            UserInfo acceptedRequestUserInfo = getUserInfo(acceptedRequestUserId);
+            UserInfo acceptedRequestUserInfo = userInfoRepository.findById(acceptedRequestUserId).get();
             acceptedRequestUserInfo.setNuggets(acceptedRequestUserInfo.getNuggets().add(bigIntegerNuggetsForAccepting));
             userInfoRepository.save(acceptedRequestUserInfo);
         }

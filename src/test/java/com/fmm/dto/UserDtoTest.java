@@ -16,12 +16,12 @@ class UserDtoTest {
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    void testConvertUserToDto() {
+    void ConvertUserToDto() {
         User user = new User("lake", "new322");
         user.setId(1L);
         user.setRoles(List.of(new Role("ROLE_USER")));
 
-        Monster monster1 = new Monster(user, "", Level.STANDARD);
+        Monster monster1 = new Monster(user, Level.STANDARD);
         Monster monster2 = new Monster(user, "pokemon", Level.EXTRA);
         user.setMonsters(Arrays.asList(monster1 ,monster2));
 

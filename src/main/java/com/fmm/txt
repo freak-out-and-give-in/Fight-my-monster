@@ -1,6 +1,13 @@
+-------------------------------------------------------------
+General stuff of note:
 Potions related stuff not added yet:
 - Member only is ignored
 - Mysterio/Mysterio Rage "your opponent cannot see their fight odds" doesn't do anything rn
 
+UserInfoServiceTest has testing information in comments
 
-potion changes stats in battle & potion is used up (need to confirm)
+-------------------------------------------------------------
+Things to do:
+incorporate potions into chance bars
+remake the win-wheel so its cleaner and fits the wheel better
+fix the monster-cards being in individual pieces in battle (only in battle i think, nowhere else)
