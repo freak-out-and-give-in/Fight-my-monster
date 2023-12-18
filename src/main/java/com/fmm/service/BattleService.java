@@ -2,6 +2,7 @@ package com.fmm.service;
 
 import com.fmm.dto.MessageDto;
 import com.fmm.dto.MonsterDto;
+import com.fmm.enumeration.TypeOfFight;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
 import com.fmm.model.UserInfo;
@@ -30,24 +31,12 @@ public class BattleService {
     }
 
     public void fight(MessageDto messageDto, boolean didIWin, User myUser, User opponentUser, Monster myMonster, Monster opponentMonster) {
-        exchangeNuggetsForAccepting(messageDto, myUser, opponentUser);
+        userInfoService.exchangeNuggetsForAccepting(messageDto.getNuggetsForAccepting(), opponentUser.getId(), myUser.getId());
 
         if (didIWin) {
             executeWinCondition(myUser, opponentUser, messageDto.getTypeOfFight(), myMonster, opponentMonster);
         } else {
             executeWinCondition(opponentUser, myUser, messageDto.getTypeOfFight(), opponentMonster, myMonster);
-        }
-    }
-
-    public void exchangeNuggetsForAccepting(MessageDto messageDto, User myUser, User opponentUser) {
-        if (messageDto.getNuggetsForAccepting() > 0) {
-            UserInfo opponentUserInfo = userInfoService.getUserInfo(opponentUser.getId());
-            opponentUserInfo.setNuggets(opponentUserInfo.getNuggets().subtract(BigInteger.valueOf(messageDto.getNuggetsForAccepting())));
-            userInfoService.updateUserInfo(opponentUserInfo);
-
-            UserInfo myUserInfo = userInfoService.getUserInfo(myUser.getId());
-            myUserInfo.setNuggets(myUserInfo.getNuggets().add(BigInteger.valueOf(messageDto.getNuggetsForAccepting())));
-            userInfoService.updateUserInfo(myUserInfo);
         }
     }
 
@@ -58,19 +47,23 @@ public class BattleService {
         myMonsterTotalStats = changeStatsByComplexPotion(myMonsterDto, myMonsterTotalStats, opponentMonsterDto.getPotion());
         opponentMonsterTotalStats = changeStatsByComplexPotion(opponentMonsterDto, opponentMonsterTotalStats, myMonsterDto.getPotion());
 
-        minusPotion(myMonster);
-        minusPotion(opponentMonster);
+        monsterService.decreasePotionUse(myMonster);
+        monsterService.decreasePotionUse(opponentMonster);
 
         return (double) myMonsterTotalStats / (myMonsterTotalStats + opponentMonsterTotalStats) * 100;
     }
 
     public long changeStatsByPotion(MonsterDto monsterDto) {
-        long monsterTotalStats;
-
         long attack = monsterDto.getAttack();
         long defence = monsterDto.getDefence();
         long tricks = monsterDto.getTricks();
         long brains = monsterDto.getBrains();
+
+        long monsterTotalStats = attack + defence + tricks + brains;
+
+        if (monsterDto.getPotion() == null) {
+            return monsterTotalStats;
+        }
 
         switch (monsterDto.getPotion()) {
             case("DEMON_ATTACK") ->  monsterTotalStats = (attack * 4) + defence + tricks + brains;
@@ -80,14 +73,16 @@ public class BattleService {
             case("INCREDIBLE_HULK") -> monsterTotalStats = (attack * 4) + (defence * 4) + (tricks * 4) + (brains * 4);
             case("MYSTERIO_RAGE") -> monsterTotalStats = (attack * 5) + defence + (tricks * 5) + brains;
 
-            default -> monsterTotalStats = attack + defence + tricks + brains;
-
         }
 
         return monsterTotalStats;
     }
 
     public long changeStatsByComplexPotion(MonsterDto myMonsterDto, long myMonsterTotalStats, String opponentPotionName) {
+        if (opponentPotionName == null) {
+            return myMonsterTotalStats;
+        }
+
         switch (opponentPotionName) {
             case("ADVANTAGE_KILLER") -> myMonsterTotalStats = myMonsterDto.getAttack() + myMonsterDto.getDefence() +
                     myMonsterDto.getTricks() + myMonsterDto.getBrains();
@@ -96,20 +91,6 @@ public class BattleService {
         }
 
         return myMonsterTotalStats;
-    }
-
-    public void minusPotion(Monster monster) {
-        if (!monster.getPotion().isEmpty()) {
-            int newPotionUses = monster.getPotionUses() - 1;
-            if (newPotionUses <= 0) {
-                monster.setPotion("");
-                monster.setPotionUses(0);
-            } else {
-                monster.setPotionUses(newPotionUses);
-            }
-
-            monsterService.updateMonster(monster);
-        }
     }
 
     public List<Integer> calculateDegrees(double percentageChanceToWin) {
@@ -123,11 +104,11 @@ public class BattleService {
         return Arrays.asList(degreesWinOneSide, degreesWinLowerLimit, degreesWinUpperLimit);
     }
 
-    public int calculateDegreesChance() {
+    public int calculateRandomDegrees() {
         return (int) ((new Random().nextDouble(100) + 1) * 3.6);
     }
 
-    public boolean calculateTheWinner(int degreesChance, double percentageChanceToWin) {
+    public boolean calculateTheWinner(int randomDegrees, double percentageChanceToWin) {
         List<Integer> listOfDegrees = calculateDegrees(percentageChanceToWin);
         int degreesWinOneSide = listOfDegrees.get(0);
         int degreesWinLowerLimit = listOfDegrees.get(1);
@@ -135,24 +116,24 @@ public class BattleService {
 
         boolean didIWin;
         if (degreesWinOneSide < 90) {
-            didIWin = (degreesChance >= degreesWinLowerLimit && degreesChance <= degreesWinUpperLimit);
+            didIWin = (randomDegrees >= degreesWinLowerLimit && randomDegrees <= degreesWinUpperLimit);
         } else {
-            didIWin = (degreesChance <= degreesWinUpperLimit || degreesChance >= degreesWinLowerLimit);
+            didIWin = (randomDegrees <= degreesWinUpperLimit || randomDegrees >= degreesWinLowerLimit);
         }
 
         return didIWin;
     }
 
-    public void executeWinCondition(User winningUser, User losingUser, String typeOfFight, Monster winningMonster,
-                                     Monster losingMonster) {
-        if (typeOfFight.equals("COLLECT")) {
+    public void executeWinCondition(User winningUser, User losingUser, TypeOfFight typeOfFight, Monster winningMonster,
+                                    Monster losingMonster) {
+        if (typeOfFight == TypeOfFight.COLLECT) {
             messageService.deleteMessagesWithThisMonster(losingUser.getId(), losingMonster);
 
             losingMonster.setUser(winningUser);
             monsterService.updateMonster(losingMonster);
         } else { // BITE || EAT
             double divisor;
-            if (typeOfFight.equals("BITE")) {
+            if (typeOfFight == TypeOfFight.BITE) {
                 divisor = 4;
             } else { //EAT
                 messageService.deleteMessagesWithThisMonster(losingUser.getId(), losingMonster);

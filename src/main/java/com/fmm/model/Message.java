@@ -1,5 +1,6 @@
 package com.fmm.model;
 
+import com.fmm.enumeration.TypeOfFight;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -21,7 +22,7 @@ public class Message {
     private Long toAccountId;
 
     @Column(name = "typeOfFight", nullable = false)
-    private String typeOfFight = "BITE";
+    private TypeOfFight typeOfFight;
 
     @Column(name = "toMonsterName", nullable = false)
     private String toMonsterName;
@@ -38,7 +39,7 @@ public class Message {
     public Message() {
     }
 
-    public Message(User fromUser, Long toAccountId, String typeOfFight, String toMonsterName, String fromMonsterName, Long nuggetsForAccepting) {
+    public Message(User fromUser, Long toAccountId, TypeOfFight typeOfFight, String toMonsterName, String fromMonsterName, Long nuggetsForAccepting) {
         this.fromUser = fromUser;
         this.toAccountId = toAccountId;
         this.typeOfFight = typeOfFight;
@@ -55,8 +56,12 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public User getUser() {
+    public User getFromUser() {
         return fromUser;
+    }
+
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
     }
 
     public Long getToAccountId() {
@@ -67,11 +72,11 @@ public class Message {
         this.toAccountId = toAccountId;
     }
 
-    public String getTypeOfFight() {
+    public TypeOfFight getTypeOfFight() {
         return typeOfFight;
     }
 
-    public void setTypeOfFight(String typeOfFight) {
+    public void setTypeOfFight(TypeOfFight typeOfFight) {
         this.typeOfFight = typeOfFight;
     }
 

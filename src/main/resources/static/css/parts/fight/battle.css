@@ -12,10 +12,11 @@
     position: absolute;
 
     top: 303px;
-    left: 705px;
+    left: 708px;
 
-    height: 502px;
+    height: 499px;
 
+    transform: scale(0.97);
     background-image: url(/images/fight/battle/win-wheel.png);
 }
 

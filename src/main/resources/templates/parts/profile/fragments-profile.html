@@ -16,7 +16,7 @@
                     <input type="hidden" th:value="${monster.name}" name="OpponentMonsterName"/>
                     <input type="hidden" th:value="0" name="N"/>
                     <input type="hidden" th:value="1" name="OptionIndex"/>
-                    <input type="hidden" th:value="BITE" name="TypeOfFight"/>
+                    <input type="hidden" th:value="${T(com.fmm.enumeration.TypeOfFight).BITE}" name="TypeOfFight"/>
                     <input type="hidden" th:value="0" name="NuggetsForAccepting"/>
                     <input type="hidden" th:value="-1" name="MyChanceBarAmount"/>
                     <button></button>

@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,6 +77,31 @@ class UserInfoServiceTest {
         verify(userInfoRepository).save(captor.capture());
         assertThat(captor.getValue().getNuggets()).isEqualTo(BigInteger.valueOf(100));
         assertThat(captor.getValue().getCurrentBackground()).isEqualTo("metal");
+    }
+
+    @Test
+    void testExchangeNuggetsForAccepting() {
+        User userSentRequest = new User("abcd", "time");
+        userSentRequest.setId(1L);
+        UserInfo userInfoSentRequest = new UserInfo(userSentRequest);
+        userInfoSentRequest.setNuggets(BigInteger.valueOf(340));
+
+        User userAcceptedRequest = new User("Run", "89");
+        userAcceptedRequest.setId(2L);
+        UserInfo userInfoAcceptedRequest = new UserInfo(userAcceptedRequest);
+        userInfoAcceptedRequest.setNuggets(BigInteger.valueOf(4));
+
+        when(userInfoRepository.findById(1L)).thenReturn(Optional.of(userInfoSentRequest));
+        when(userInfoRepository.findById(2L)).thenReturn(Optional.of(userInfoAcceptedRequest));
+
+        userInfoService.exchangeNuggetsForAccepting(30L, 1L, 2L);
+
+        ArgumentCaptor<UserInfo> captor = ArgumentCaptor.forClass(UserInfo.class);
+        verify(userInfoRepository, times(2)).save(captor.capture());
+
+        List<UserInfo> capturedUserInfo = captor.getAllValues();
+        assertThat(capturedUserInfo.get(0).getNuggets()).isEqualTo(310);
+        assertThat(capturedUserInfo.get(1).getNuggets()).isEqualTo(34);
     }
 
 }

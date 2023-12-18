@@ -1,10 +1,12 @@
 package com.fmm.dto;
 
+import com.fmm.enumeration.TypeOfFight;
+
 public class MessageDto {
 
     private Long toAccountId;
 
-    private String typeOfFight;
+    private TypeOfFight typeOfFight;
 
     private String toMonsterName;
 
@@ -20,11 +22,11 @@ public class MessageDto {
         this.toAccountId = toAccountId;
     }
 
-    public String getTypeOfFight() {
+    public TypeOfFight getTypeOfFight() {
         return typeOfFight;
     }
 
-    public void setTypeOfFight(String typeOfFight) {
+    public void setTypeOfFight(TypeOfFight typeOfFight) {
         this.typeOfFight = typeOfFight;
     }
 

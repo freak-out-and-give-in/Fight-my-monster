@@ -1,10 +1,14 @@
 package com.fmm.service;
 
 import com.fmm.enumeration.Level;
+import com.fmm.enumeration.Potion;
 import com.fmm.exception.CouldNotFindMonsterException;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
 import com.fmm.repository.MonsterRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -14,9 +18,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -106,6 +111,62 @@ class MonsterServiceTest {
     void testGetMonsterByCouldNotFindMonster() {
         when(monsterRepository.findAll()).thenReturn(List.of());
         assertThrows(CouldNotFindMonsterException.class, () -> monsterService.getMonster(1L, "b"));
+    }
+
+    @DisplayName("Decrease potion use with ")
+    @Nested
+    class decreasePotionClass {
+
+        private Monster monster;
+
+        @BeforeEach
+        void setupMonster() {
+            monster = new Monster(new User("win", "crashing"), "", Level.STANDARD);
+        }
+
+        @DisplayName(" a potion")
+        @Test
+        void testDecreasePotionUse_WithPotion() {
+            Potion potion = Potion.TRICKS_MAKER;
+            monster.setPotion(potion.toString());
+            monster.setPotionUses(potion.getUses());
+
+            monsterService.decreasePotionUse(monster);
+
+            ArgumentCaptor<Monster> captor = ArgumentCaptor.forClass(Monster.class);
+            verify(monsterRepository).save(captor.capture());
+
+            assertThat(captor.getValue().getPotionUses()).isEqualTo(potion.getUses() - 1);
+        }
+
+        @DisplayName(" a potion with 1 use left")
+        @Test
+        void testDecreasePotionUse_WithPotionWith1UseLeft() {
+            monster.setPotion(String.valueOf(Potion.DEMON_ATTACK));
+            monster.setPotionUses(1);
+
+            monsterService.decreasePotionUse(monster);
+
+            ArgumentCaptor<Monster> captor = ArgumentCaptor.forClass(Monster.class);
+            verify(monsterRepository).save(captor.capture());
+
+            assertThat(captor.getValue().getPotion()).isEqualTo("");
+            assertThat(captor.getValue().getPotionUses()).isEqualTo(0);
+        }
+
+        @DisplayName(" no potion")
+        @Test
+        void testDecreasePotionUse_WithoutPotion() {
+            monster.setPotion("");
+
+            monsterService.decreasePotionUse(monster);
+
+            when(monsterRepository.findById(1L)).thenReturn(Optional.of(monster));
+            Monster resultMonster = monsterRepository.findById(1L).get();
+
+            assertThat(resultMonster.getPotion()).isEqualTo("");
+        }
+
     }
 
     @Test

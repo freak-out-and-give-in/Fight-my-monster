@@ -23,9 +23,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(
                                 "/",
-                                "/landing-page",
-                                "/login",
-                                "/registration",
+                                "/fmm/landing-page",
+                                "/fmm/login",
+                                "/fmm/registration",
                                 "/users",
                                 "/fmm/opponent-profile",
                                 "/css/**",
@@ -33,7 +33,7 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin((form ) -> form
-                        .loginPage("/login")
+                        .loginPage("/fmm/login")
                         .defaultSuccessUrl("/fmm/my-profile")
                         .permitAll()
                 )

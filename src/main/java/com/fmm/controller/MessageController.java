@@ -2,6 +2,7 @@ package com.fmm.controller;
 
 import com.fmm.dto.MessageDto;
 import com.fmm.dto.MonsterDto;
+import com.fmm.enumeration.TypeOfFight;
 import com.fmm.model.Message;
 import com.fmm.model.Monster;
 import com.fmm.model.User;

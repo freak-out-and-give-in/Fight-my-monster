@@ -14,22 +14,22 @@ public class BaseController {
     @GetMapping("/")
     public ResponseEntity<Map<String, String>> userAutomaticallyRedirectedToLandingPage() {
         return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT)
-                .header("Location", "/landing-page").build();
+                .header("Location", "/fmm/landing-page").build();
     }
 
-    @GetMapping("/landing-page")
+    @GetMapping("/fmm/landing-page")
     public ModelAndView showLandingPage() {
 
         return new ModelAndView("/base/landing-page");
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/fmm/registration")
     public ModelAndView showRegistrationPage() {
 
         return new ModelAndView("/base/registration");
     }
 
-    @GetMapping("/login")
+    @GetMapping("/fmm/login")
     public ModelAndView showLoginPage() {
 
         return new ModelAndView("/base/login");

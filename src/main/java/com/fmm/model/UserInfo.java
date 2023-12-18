@@ -49,7 +49,7 @@ public class UserInfo {
 
     public void setNuggets(BigInteger nuggets) {
         if (nuggets.compareTo(BigInteger.ZERO) < 0) {
-            throw new NotEnoughNuggetsException("Not enough money for this purchase");
+            throw new NotEnoughNuggetsException("Not enough nuggets");
         } else {
             this.nuggets = nuggets;
         }

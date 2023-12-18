@@ -1,5 +1,6 @@
 package com.fmm.service;
 
+import com.fmm.enumeration.Potion;
 import com.fmm.exception.CouldNotFindMonsterException;
 import com.fmm.model.Monster;
 import com.fmm.repository.MonsterRepository;
@@ -50,6 +51,20 @@ public class MonsterService {
         }
 
         throw new CouldNotFindMonsterException("No monster for this account has the name " + monsterName);
+    }
+
+    public void decreasePotionUse(Monster monster) {
+        if (monster.getPotion() != null) {
+            int newPotionUses = monster.getPotionUses() - 1;
+            if (newPotionUses <= 0) {
+                monster.setPotion("");
+                monster.setPotionUses(0);
+            } else {
+                monster.setPotionUses(newPotionUses);
+            }
+
+            monsterRepository.save(monster);
+        }
     }
 
     public void addMonster(Monster monster) {

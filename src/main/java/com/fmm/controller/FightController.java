@@ -109,7 +109,7 @@ public class FightController {
 
         List<MonsterDto> myMonsters = Stream.of
                 (monsterService.getMonster(myId, message.getToMonsterName())).map(this::convertToDto).collect(Collectors.toList());
-        MonsterDto opponentMonster = convertToDto(monsterService.getMonster(message.getUser().getId(), message.getFromMonsterName()));
+        MonsterDto opponentMonster = convertToDto(monsterService.getMonster(message.getFromUser().getId(), message.getFromMonsterName()));
 
         int myChanceBarAmount = getMyChanceBarAmount(myMonsters.get(0), opponentMonster);
 
