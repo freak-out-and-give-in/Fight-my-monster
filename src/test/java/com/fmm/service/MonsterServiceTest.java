@@ -33,8 +33,9 @@ class MonsterServiceTest {
     @Mock
     private MonsterRepository monsterRepository;
 
+    @DisplayName("Get a users monsters")
     @Test
-    void testGetMonsters() {
+    void GetMonsters() {
         User user1 = new User("one", "free3");
         user1.setAcceptTermsAndConditions(true);
         user1.setEnabled(true);
@@ -45,11 +46,11 @@ class MonsterServiceTest {
         user2.setEnabled(true);
         user2.setId(2L);
 
-        Monster monster1 = new Monster(user2, "", Level.CUSTOM);
+        Monster monster1 = new Monster(user2, Level.CUSTOM);
         monster1.setAlive(false);
-        Monster monster2 = new Monster(user1, "", Level.SUPER);
+        Monster monster2 = new Monster(user1, Level.SUPER);
         Monster monster3 = new Monster(user2, "pumpkin", Level.EXTRA);
-        Monster monster4 = new Monster(user1, "", Level.STANDARD);
+        Monster monster4 = new Monster(user1, Level.STANDARD);
 
         when(monsterRepository.findAll()).thenReturn(Arrays.asList(monster1, monster2, monster3, monster4));
         List<Monster> resultMonsterList = monsterService.getMonsters(1L);
@@ -58,8 +59,9 @@ class MonsterServiceTest {
         verify(monsterRepository, times(1)).findAll();
     }
 
+    @DisplayName("Get alive monsters")
     @Test
-    void testGetAliveMonsters() {
+    void GetAliveMonsters() {
         User user1 = new User("liberty", "123");
         user1.setAcceptTermsAndConditions(true);
         user1.setEnabled(true);
@@ -70,11 +72,11 @@ class MonsterServiceTest {
         user2.setEnabled(true);
         user2.setId(2L);
 
-        Monster monster1 = new Monster(user2, "", Level.CUSTOM);
-        Monster monster2 = new Monster(user1, "", Level.SUPER);
-        Monster monster3 = new Monster(user2, "", Level.EXTRA);
+        Monster monster1 = new Monster(user2, Level.CUSTOM);
+        Monster monster2 = new Monster(user1, Level.SUPER);
+        Monster monster3 = new Monster(user2, Level.EXTRA);
         monster3.setAlive(false);
-        Monster monster4 = new Monster(user1, "", Level.STANDARD);
+        Monster monster4 = new Monster(user1, Level.STANDARD);
 
         when(monsterRepository.findAll()).thenReturn(Arrays.asList(monster1, monster2, monster3, monster4));
         List<Monster> resultMonsterList = monsterService.getAliveMonsters(2L);
@@ -82,8 +84,9 @@ class MonsterServiceTest {
         assertThat(resultMonsterList).isEqualTo(List.of(monster1));
     }
 
+    @DisplayName("Get a monster")
     @Test
-    void testGetMonster() {
+    void GetMonster() {
         User user1 = new User("hoped", "56");
         user1.setAcceptTermsAndConditions(true);
         user1.setEnabled(true);
@@ -95,10 +98,10 @@ class MonsterServiceTest {
         user2.setId(2L);
 
         Monster monster1 = new Monster(user2, "kin", Level.CUSTOM);
-        Monster monster2 = new Monster(user1, "", Level.SUPER);
-        Monster monster3 = new Monster(user2, "", Level.EXTRA);
+        Monster monster2 = new Monster(user1, Level.SUPER);
+        Monster monster3 = new Monster(user2, Level.EXTRA);
         monster3.setAlive(false);
-        Monster monster4 = new Monster(user1, "", Level.STANDARD);
+        Monster monster4 = new Monster(user1, Level.STANDARD);
 
         when(monsterRepository.findAll()).thenReturn(Arrays.asList(monster1, monster2, monster3, monster4));
         Monster resultMonster = monsterService.getMonster(2L, monster3.getName());
@@ -107,8 +110,9 @@ class MonsterServiceTest {
         verify(monsterRepository, times(1)).findAll();
     }
 
+    @DisplayName("Throw exception finding non-existent monster")
     @Test
-    void testGetMonsterByCouldNotFindMonster() {
+    void GetMonsterByCouldNotFindMonster() {
         when(monsterRepository.findAll()).thenReturn(List.of());
         assertThrows(CouldNotFindMonsterException.class, () -> monsterService.getMonster(1L, "b"));
     }
@@ -121,12 +125,12 @@ class MonsterServiceTest {
 
         @BeforeEach
         void setupMonster() {
-            monster = new Monster(new User("win", "crashing"), "", Level.STANDARD);
+            monster = new Monster(new User("win", "crashing"), Level.STANDARD);
         }
 
         @DisplayName(" a potion")
         @Test
-        void testDecreasePotionUse_WithPotion() {
+        void DecreasePotionUse_WithPotion() {
             Potion potion = Potion.TRICKS_MAKER;
             monster.setPotion(potion.toString());
             monster.setPotionUses(potion.getUses());
@@ -141,7 +145,7 @@ class MonsterServiceTest {
 
         @DisplayName(" a potion with 1 use left")
         @Test
-        void testDecreasePotionUse_WithPotionWith1UseLeft() {
+        void DecreasePotionUse_WithPotionWith1UseLeft() {
             monster.setPotion(String.valueOf(Potion.DEMON_ATTACK));
             monster.setPotionUses(1);
 
@@ -156,7 +160,7 @@ class MonsterServiceTest {
 
         @DisplayName(" no potion")
         @Test
-        void testDecreasePotionUse_WithoutPotion() {
+        void DecreasePotionUse_WithoutPotion() {
             monster.setPotion("");
 
             monsterService.decreasePotionUse(monster);
@@ -169,8 +173,9 @@ class MonsterServiceTest {
 
     }
 
+    @DisplayName("Add a monster")
     @Test
-    void testAddMonster() {
+    void AddMonster() {
         User user = new User("drums", "21");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
@@ -194,12 +199,13 @@ class MonsterServiceTest {
         assertThat(captor.getValue().getPotion()).isEqualTo(monster.getPotion());
     }
 
+    @DisplayName("Update a monster")
     @Test
-    void testUpdateMonster() {
+    void UpdateMonster() {
         User user = new User("drums", "21");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
-        Monster monster = new Monster(user, "er", Level.STANDARD);
+        Monster monster = new Monster(user, "dvc", Level.STANDARD);
         monster.setPotion("TRICKS_MAKER");
 
         monsterService.addMonster(monster);

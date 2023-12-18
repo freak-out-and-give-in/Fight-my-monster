@@ -2,6 +2,7 @@ package com.fmm.service;
 
 import com.fmm.model.User;
 import com.fmm.repository.UserRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,8 +26,9 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @DisplayName("Get other users")
     @Test
-    void testGetOtherUsers() {
+    void GetOtherUsers() {
         User user1 = new User("pedal", "numbers45");
         user1.setAcceptTermsAndConditions(true);
         user1.setEnabled(true);
@@ -46,8 +48,9 @@ class UserServiceTest {
         verify(userRepository, times(1)).findAll();
     }
 
+    @DisplayName("Get a user by id")
     @Test
-    void testGetUserById() {
+    void GetUserById() {
         User user = new User("pedal", "numbers45");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
@@ -59,8 +62,9 @@ class UserServiceTest {
         verify(userRepository, times(1)).findById(1L);
     }
 
+    @DisplayName("Get a user by username")
     @Test
-    void testGetUserByUsername() {
+    void GetUserByUsername() {
         User user = new User("frank", "passw");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);

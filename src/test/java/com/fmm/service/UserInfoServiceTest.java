@@ -3,6 +3,7 @@ package com.fmm.service;
 import com.fmm.model.User;
 import com.fmm.model.UserInfo;
 import com.fmm.repository.UserInfoRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -32,8 +33,9 @@ class UserInfoServiceTest {
     @Mock
     private UserInfoRepository userInfoRepository;
 
+    @DisplayName("Get a user info by id")
     @Test
-    void testGetUserInfoById() {
+    void GetUserInfoById() {
         User user = new User("destroy57", "snake");
         UserInfo userInfo = new UserInfo(user);
         userInfo.setNuggets(BigInteger.valueOf(100));
@@ -49,8 +51,9 @@ class UserInfoServiceTest {
         verify(userInfoRepository, times(1)).findById(1L);
     }
 
+    @DisplayName("Add user info")
     @Test
-    void testAddUserInfo() {
+    void AddUserInfo() {
         User user = new User("plane6", "piggg");
         UserInfo userInfo = new UserInfo(user);
         userInfo.setNuggets(BigInteger.valueOf(100));
@@ -64,8 +67,9 @@ class UserInfoServiceTest {
         assertThat(captor.getValue().getCurrentBackground()).isEqualTo("metal");
     }
 
+    @DisplayName("Update user info")
     @Test
-    void testUpdateUserInfo() {
+    void UpdateUserInfo() {
         User user = new User("plane6", "piggg");
         UserInfo userInfo = new UserInfo(user);
         userInfo.setNuggets(BigInteger.valueOf(100));
@@ -79,8 +83,9 @@ class UserInfoServiceTest {
         assertThat(captor.getValue().getCurrentBackground()).isEqualTo("metal");
     }
 
+    @DisplayName("Exchange nuggets between users")
     @Test
-    void testExchangeNuggetsForAccepting() {
+    void ExchangeNuggetsForAccepting() {
         User userSentRequest = new User("abcd", "time");
         userSentRequest.setId(1L);
         UserInfo userInfoSentRequest = new UserInfo(userSentRequest);

@@ -1,6 +1,5 @@
 package com.fmm.service;
 
-import com.fmm.enumeration.Potion;
 import com.fmm.exception.CouldNotFindMonsterException;
 import com.fmm.model.Monster;
 import com.fmm.repository.MonsterRepository;

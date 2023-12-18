@@ -13,11 +13,11 @@ class MonsterDtoTest {
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    void testConvertMonsterToDto() {
+    void ConvertMonsterToDto() {
         User user = new User("fig", "tree");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
-        Monster monster = new Monster(user, "", Level.CUSTOM);
+        Monster monster = new Monster(user, Level.CUSTOM);
         monster.setPotion("DEMON_ATTACK");
 
         MonsterDto monsterDto = modelMapper.map(monster, MonsterDto.class);

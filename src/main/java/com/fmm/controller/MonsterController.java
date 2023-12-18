@@ -59,7 +59,7 @@ public class MonsterController {
 
         //max of 42 monsters (7 pages)
         if ((long) monsterService.getAliveMonsters(myId).size() < 42) {
-            monsterService.addMonster(new Monster(myUser, "", level));
+            monsterService.addMonster(new Monster(myUser, level));
 
             UserInfo userInfo = userInfoService.getUserInfo(myId);
             userInfo.setNuggets(userInfo.getNuggets().subtract(BigInteger.valueOf(level.getCost())));

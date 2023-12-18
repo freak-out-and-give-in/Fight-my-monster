@@ -1,10 +1,7 @@
 package com.fmm.service;
 
 import com.fmm.dto.MonsterDto;
-import com.fmm.enumeration.Genus;
-import com.fmm.enumeration.Level;
-import com.fmm.enumeration.Species;
-import com.fmm.enumeration.TypeOfFight;
+import com.fmm.enumeration.*;
 import com.fmm.model.Message;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
@@ -17,28 +14,23 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BattleServiceTest {
 
-    @InjectMocks
-    private UserInfoService userInfoService;
-
-    @Mock
-    private UserInfoRepository userInfoRepository;
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @InjectMocks
-    private MessageService messageService;
-
-    @Mock
-    private MessageRepository messageRepository;
+    private BattleService battleService;
 
     @InjectMocks
     private MonsterService monsterService;
@@ -47,7 +39,16 @@ class BattleServiceTest {
     private MonsterRepository monsterRepository;
 
     @InjectMocks
-    private BattleService battleService;
+    private MessageService messageService;
+
+    @Mock
+    private MessageRepository messageRepository;
+
+    @InjectMocks
+    private UserInfoService userInfoService;
+
+    @Mock
+    private UserInfoRepository userInfoRepository;
 
 
     @DisplayName("Change monster stats with ")
@@ -300,7 +301,6 @@ class BattleServiceTest {
         }
     }
 
-    /*
     @DisplayName("Execute the win condition of ")
     @Nested
     class executeWinConditions {
@@ -313,9 +313,9 @@ class BattleServiceTest {
 
         private Monster losingMonster;
 
-        private Message winnerMessageRelevant;
-
         private Message loserMessageRelevant;
+
+        private BattleService battleServiceInjected;
 
         @BeforeEach
         void setup() {
@@ -325,45 +325,94 @@ class BattleServiceTest {
             losingUser = new User("234", "jhkuerf");
             losingUser.setId(2L);
 
-            winningMonster = new Monster(winningUser, "", Level.SUPER);
+            winningMonster = new Monster(winningUser, Level.SUPER);
+            winningMonster.setId(1L);
             losingMonster = new Monster(losingUser, "eep", Level.STANDARD);
+            losingMonster.setId(2L);
 
-            winnerMessageRelevant = new Message(winningUser, 2L, TypeOfFight.COLLECT, "", "", 0L);
-            loserMessageRelevant = new Message(losingUser, 1L, TypeOfFight.EAT, "", "", 4L);
+            loserMessageRelevant = new Message
+                    (losingUser, 1L, TypeOfFight.EAT, "HIJKL 234", losingMonster.getName(), 4L);
+
+            battleServiceInjected = new BattleService(userInfoService, messageService, monsterService);
+        }
+
+        @DisplayName("collecting")
+        @Test
+        void executeWinCondition_Collecting() {
+            when(messageRepository.findAll()).thenReturn(Collections.singletonList(loserMessageRelevant));
+
+            battleServiceInjected.executeWinCondition(winningUser, losingUser, TypeOfFight.COLLECT, winningMonster, losingMonster);
+            verify(messageRepository, times(1)).delete(loserMessageRelevant);
+            ArgumentCaptor<Monster> captor = ArgumentCaptor.forClass(Monster.class);
+            verify(monsterRepository, times(1)).save(captor.capture());
+
+            assertThat(captor.getValue().getUser()).isEqualTo(winningUser);
         }
 
         @DisplayName("biting")
         @Test
-        void executeWinCondition() {
-            long winningMonsterAttack = winningMonster.getAttack() + (losingMonster.getAttack() / 4);
-            long winningMonsterDefence = winningMonster.getDefence() + (losingMonster.getDefence() / 4);
-            long winningMonsterBrains = winningMonster.getBrains() + (losingMonster.getBrains() / 4);
-            long winningMonsterTricks = winningMonster.getTricks() + (losingMonster.getTricks() / 4);
+        void executeWinCondition_Biting() {
+            long winningMonsterAttack = (long) (winningMonster.getAttack() + (losingMonster.getAttack() / 4.0));
+            long winningMonsterDefence = (long) (winningMonster.getDefence() + (losingMonster.getDefence() / 4.0));
+            long winningMonsterBrains = (long) (winningMonster.getBrains() + (losingMonster.getBrains() / 4.0));
+            long winningMonsterTricks = (long) (winningMonster.getTricks() + (losingMonster.getTricks() / 4.0));
 
-            long losingMonsterAttack = losingMonster.getAttack() - (losingMonster.getAttack() / 4);
-            long losingMonsterDefence = losingMonster.getDefence() - (losingMonster.getDefence() / 4);
-            long losingMonsterBrains = losingMonster.getBrains() - (losingMonster.getBrains() / 4);
-            long losingMonsterTricks = losingMonster.getTricks() - (losingMonster.getTricks() / 4);
+            long losingMonsterAttack = (long) (losingMonster.getAttack() - (losingMonster.getAttack() / 4.0));
+            long losingMonsterDefence = (long) (losingMonster.getDefence() - (losingMonster.getDefence() / 4.0));
+            long losingMonsterBrains = (long) (losingMonster.getBrains() - (losingMonster.getBrains() / 4.0));
+            long losingMonsterTricks = (long) (losingMonster.getTricks() - (losingMonster.getTricks() / 4.0));
 
-            battleService.executeWinCondition(winningUser, losingUser, TypeOfFight.BITE, winningMonster, losingMonster);
+            battleServiceInjected.executeWinCondition(winningUser, losingUser, TypeOfFight.BITE, winningMonster, losingMonster);
 
             ArgumentCaptor<Monster> captor = ArgumentCaptor.forClass(Monster.class);
-            verify(monsterRepository).save(captor.capture());
+            verify(monsterRepository, times(2)).save(captor.capture());
 
-            List<Monster> captureList = captor.getAllValues();
-            assertThat(captureList.get(0).getAttack()).isEqualTo(losingMonsterAttack);
-            assertThat(captureList.get(0).getDefence()).isEqualTo(losingMonsterDefence);
-            assertThat(captureList.get(0).getBrains()).isEqualTo(losingMonsterBrains);
-            assertThat(captureList.get(0).getTricks()).isEqualTo(losingMonsterTricks);
+            Monster losingMonster = captor.getAllValues().get(0);
+            assertThat(losingMonster.getAttack()).isEqualTo(losingMonsterAttack);
+            assertThat(losingMonster.getDefence()).isEqualTo(losingMonsterDefence);
+            assertThat(losingMonster.getBrains()).isEqualTo(losingMonsterBrains);
+            assertThat(losingMonster.getTricks()).isEqualTo(losingMonsterTricks);
 
-            assertThat(captureList.get(1).getAttack()).isEqualTo(winningMonsterAttack);
-            assertThat(captureList.get(1).getDefence()).isEqualTo(winningMonsterDefence);
-            assertThat(captureList.get(1).getBrains()).isEqualTo(winningMonsterBrains);
-            assertThat(captureList.get(1).getTricks()).isEqualTo(winningMonsterTricks);
+            Monster winningMonster = captor.getAllValues().get(1);
+            assertThat(winningMonster.getAttack()).isEqualTo(winningMonsterAttack);
+            assertThat(winningMonster.getDefence()).isEqualTo(winningMonsterDefence);
+            assertThat(winningMonster.getBrains()).isEqualTo(winningMonsterBrains);
+            assertThat(winningMonster.getTricks()).isEqualTo(winningMonsterTricks);
+        }
+
+        @DisplayName(" eating")
+        @Test
+        void executeWinCondition_Eating() {
+            long winningMonsterAttack = (long) (winningMonster.getAttack() + (losingMonster.getAttack() / 1.5));
+            long winningMonsterDefence = (long) (winningMonster.getDefence() + (losingMonster.getDefence() / 1.5));
+            long winningMonsterBrains = (long) (winningMonster.getBrains() + (losingMonster.getBrains() / 1.5));
+            long winningMonsterTricks = (long) (winningMonster.getTricks() + (losingMonster.getTricks() / 1.5));
+
+            long losingMonsterAttack = (long) (losingMonster.getAttack() - (losingMonster.getAttack() / 1.5));
+            long losingMonsterDefence = (long) (losingMonster.getDefence() - (losingMonster.getDefence() / 1.5));
+            long losingMonsterBrains = (long) (losingMonster.getBrains() - (losingMonster.getBrains() / 1.5));
+            long losingMonsterTricks = (long) (losingMonster.getTricks() - (losingMonster.getTricks() / 1.5));
+
+            when(messageRepository.findAll()).thenReturn(Collections.singletonList(loserMessageRelevant));
+
+            battleServiceInjected.executeWinCondition(winningUser, losingUser, TypeOfFight.EAT, winningMonster, losingMonster);
+            verify(messageRepository, times(1)).delete(loserMessageRelevant);
+            ArgumentCaptor<Monster> captor = ArgumentCaptor.forClass(Monster.class);
+            verify(monsterRepository, times(2)).save(captor.capture());
+
+            Monster losingMonster = captor.getAllValues().get(0);
+            assertThat(losingMonster.getAttack()).isEqualTo(losingMonsterAttack);
+            assertThat(losingMonster.getDefence()).isEqualTo(losingMonsterDefence);
+            assertThat(losingMonster.getBrains()).isEqualTo(losingMonsterBrains);
+            assertThat(losingMonster.getTricks()).isEqualTo(losingMonsterTricks);
+
+            Monster winningMonster = captor.getAllValues().get(1);
+            assertThat(winningMonster.getAttack()).isEqualTo(winningMonsterAttack);
+            assertThat(winningMonster.getDefence()).isEqualTo(winningMonsterDefence);
+            assertThat(winningMonster.getBrains()).isEqualTo(winningMonsterBrains);
+            assertThat(winningMonster.getTricks()).isEqualTo(winningMonsterTricks);
         }
     }
-
-     */
 
     @DisplayName("Calculate a random degree >= 0 and < 360")
     @RepeatedTest(10)
@@ -373,10 +422,40 @@ class BattleServiceTest {
         assertThat(randomDegrees).isBetween(0, 359);
     }
 
+    @DisplayName("Calculate percentage chance to win")
+    @Test
+    void calculatePercentageChanceToWin() {
+        Monster myMonster = new Monster(new User("dsfad4", "45129"), Level.STANDARD);
+        Monster opponentMonster = new Monster(new User("dcvxc", "frittgfd"), Level.STANDARD);
+        opponentMonster.setPotion(String.valueOf(Potion.TOUGH_GUY));
+        opponentMonster.setPotionUses(Potion.TOUGH_GUY.getUses());
+
+        MonsterDto myMonsterDto = convertToDto(myMonster);
+        MonsterDto opponentMonsterDto = convertToDto(opponentMonster);
+
+        long myMonsterTotalStats = myMonster.getAttack() + myMonster.getDefence() + myMonster.getBrains() + myMonster.getTricks();
+        long opponentMonsterTotalStats =
+                opponentMonster.getAttack() + (opponentMonster.getDefence() * 2) + (opponentMonster.getBrains() * 2) + opponentMonster.getTricks();
+
+        BattleService battleServiceInjected = new BattleService(userInfoService, messageService, monsterService);
+        double percentageChanceToWin = battleServiceInjected.calculatePercentageChanceToWin(myMonster, opponentMonster, myMonsterDto, opponentMonsterDto);
+        ArgumentCaptor<Monster> captor = ArgumentCaptor.forClass(Monster.class);
+        verify(monsterRepository, times(1)).save(captor.capture());
+
+        assertThat(percentageChanceToWin).isEqualTo((double) myMonsterTotalStats / (myMonsterTotalStats + opponentMonsterTotalStats) * 100);
+
+        assertThat(opponentMonster.getPotion()).isEqualTo(captor.getValue().getPotion());
+        assertThat(opponentMonster.getPotionUses()).isEqualTo(Potion.TOUGH_GUY.getUses() - 1);
+
+        assertThat(myMonster.getPotion()).isEqualTo(null);
+        assertThat(myMonster.getPotionUses()).isEqualTo(0);
+    }
+
     void fight() {
     }
 
-    void calculatePercentageChanceToWin() {
+    private MonsterDto convertToDto(Monster monster) {
+        return modelMapper.map(monster, MonsterDto.class);
     }
 
 }
