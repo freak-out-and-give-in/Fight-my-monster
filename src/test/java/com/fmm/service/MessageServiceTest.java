@@ -1,6 +1,7 @@
 package com.fmm.service;
 
 import com.fmm.enumeration.Level;
+import com.fmm.enumeration.TypeOfFight;
 import com.fmm.model.Message;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
@@ -40,13 +41,13 @@ class MessageServiceTest {
         user2.setEnabled(true);
         user2.setId(2L);
 
-        Message message1 = new Message(user1, 2L, "EAT",
+        Message message1 = new Message(user1, 2L, TypeOfFight.EAT,
                 "monster1", "monster2", 5L);
 
-        Message message2 = new Message(user2, 1L, "BITE",
+        Message message2 = new Message(user2, 1L, TypeOfFight.BITE,
                 "monster3", "monster4", 1111L);
 
-        Message message3 = new Message(user1, 2L, "COLLECT",
+        Message message3 = new Message(user1, 2L, TypeOfFight.COLLECT,
                 "monster5", "monster6", 0L);
 
 
@@ -63,7 +64,7 @@ class MessageServiceTest {
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
 
-        Message message = new Message(user, 2L, "EAT",
+        Message message = new Message(user, 2L, TypeOfFight.EAT,
                 "toMonsterName", "fromMonsterName", 5L);
         message.setMessageId(13L);
         when(messageRepository.findById(13L)).thenReturn(Optional.of(message));
@@ -80,16 +81,16 @@ class MessageServiceTest {
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
 
-        Message message = new Message(user, 2L, "COLLECT",
+        Message message = new Message(user, 2L, TypeOfFight.COLLECT,
                 "toMonsterName", "fromMonsterName", 52L);
 
         messageService.addMessage(message);
 
         ArgumentCaptor<Message> captor = ArgumentCaptor.forClass(Message.class);
         verify(messageRepository).save(captor.capture());
-        assertThat(captor.getValue().getUser()).isEqualTo(user);
+        assertThat(captor.getValue().getFromUser()).isEqualTo(user);
         assertThat(captor.getValue().getToAccountId()).isEqualTo(2L);
-        assertThat(captor.getValue().getTypeOfFight()).isEqualTo("COLLECT");
+        assertThat(captor.getValue().getTypeOfFight()).isEqualTo(TypeOfFight.COLLECT);
         assertThat(captor.getValue().getToMonsterName()).isEqualTo("toMonsterName");
         assertThat(captor.getValue().getFromMonsterName()).isEqualTo("fromMonsterName");
         assertThat(captor.getValue().getNuggetsForAccepting()).isEqualTo(52L);
@@ -101,7 +102,7 @@ class MessageServiceTest {
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
 
-        Message message = new Message(user, 1L, "EAT",
+        Message message = new Message(user, 1L, TypeOfFight.EAT,
                 "toMonsterName", "fromMonsterName", 0L);
         message.setMessageId(3L);
 
@@ -122,16 +123,16 @@ class MessageServiceTest {
         user2.setEnabled(true);
         user2.setId(2L);
 
-        Message message1 = new Message(user1, 2L, "EAT",
+        Message message1 = new Message(user1, 2L, TypeOfFight.EAT,
                 "Ridley", "Batman", 100000L);
 
-        Message message2 = new Message(user1, 2L, "BITE",
+        Message message2 = new Message(user1, 2L, TypeOfFight.BITE,
                 "Scott", "Batman", 0L);
 
-        Message message3 = new Message(user1, 2L, "EAT",
+        Message message3 = new Message(user1, 2L, TypeOfFight.EAT,
                 "Matt", "Bob", 888L);
 
-        Message message4 = new Message(user2, 1L, "BITE",
+        Message message4 = new Message(user2, 1L, TypeOfFight.BITE,
                 "Batman", "Joseph", 0L);
 
         Monster batmanMonster = new Monster(user1, "Batman", Level.EXTRA);

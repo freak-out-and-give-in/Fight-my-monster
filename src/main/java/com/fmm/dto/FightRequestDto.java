@@ -1,5 +1,7 @@
 package com.fmm.dto;
 
+import com.fmm.enumeration.TypeOfFight;
+
 public class FightRequestDto {
 
     private String opponentUsername;
@@ -10,7 +12,7 @@ public class FightRequestDto {
 
     private int optionIndex;
 
-    private String typeOfFight;
+    private TypeOfFight typeOfFight;
 
     private long nuggetsForAccepting;
 
@@ -48,11 +50,11 @@ public class FightRequestDto {
         this.optionIndex = optionIndex;
     }
 
-    public String getTypeOfFight() {
+    public TypeOfFight getTypeOfFight() {
         return typeOfFight;
     }
 
-    public void setTypeOfFight(String typeOfFight) {
+    public void setTypeOfFight(TypeOfFight typeOfFight) {
         this.typeOfFight = typeOfFight;
     }
 

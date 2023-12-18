@@ -64,23 +64,23 @@
         <div class="eat-bite-collect">
             <img th:src="@{/images/fight/request/option2-bite-collect-eat.png}" alt="option2-bite-collect-eat">
 
-            <div class="bite-button" th:with="TypeOfFight=${'BITE'}">
+            <div class="bite-button" th:with="TypeOfFight=${T(com.fmm.enumeration.TypeOfFight).BITE}">
                 <div th:replace="~{parts/fight/fragments-fight.html :: fightInformation(requestOrOffer='request')}"></div>
             </div>
-            <div class="collect-button" th:with="TypeOfFight=${'COLLECT'}">
+            <div class="collect-button" th:with="TypeOfFight=${T(com.fmm.enumeration.TypeOfFight).COLLECT}">
                 <div th:replace="~{parts/fight/fragments-fight.html :: fightInformation(requestOrOffer='request')}"></div>
             </div>
-            <div class="eat-button" th:with="TypeOfFight=${'EAT'}">
+            <div class="eat-button" th:with="TypeOfFight=${T(com.fmm.enumeration.TypeOfFight).EAT}">
                 <div th:replace="~{parts/fight/fragments-fight.html :: fightInformation(requestOrOffer='request')}"></div>
             </div>
 
-            <div class="black-dot-bite" th:if="${TypeOfFight == 'BITE'}">
+            <div class="black-dot-bite" th:if="${TypeOfFight == T(com.fmm.enumeration.TypeOfFight).BITE}">
                 <img th:src="@{/images/fight/request/black-dot.png}" alt="black-dot">
             </div>
-            <div class="black-dot-collect" th:if="${TypeOfFight == 'COLLECT'}">
+            <div class="black-dot-collect" th:if="${TypeOfFight == T(com.fmm.enumeration.TypeOfFight).COLLECT}">
                 <img th:src="@{/images/fight/request/black-dot.png}" alt="black-dot">
             </div>
-            <div class="black-dot-eat" th:if="${TypeOfFight == 'EAT'}">
+            <div class="black-dot-eat" th:if="${TypeOfFight == T(com.fmm.enumeration.TypeOfFight).EAT}">
                 <img th:src="@{/images/fight/request/black-dot.png}" alt="black-dot">
             </div>
         </div>

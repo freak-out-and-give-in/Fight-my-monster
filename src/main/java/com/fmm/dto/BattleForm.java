@@ -16,7 +16,7 @@ public class BattleForm {
 
     private boolean didIWin;
 
-    private int degreesChance;
+    private int randomDegrees;
 
     private int chanceToWinGraphic;
 
@@ -78,12 +78,12 @@ public class BattleForm {
         this.didIWin = didIWin;
     }
 
-    public int getDegreesChance() {
-        return degreesChance;
+    public int getRandomDegrees() {
+        return randomDegrees;
     }
 
-    public void setDegreesChance(int degreesChance) {
-        this.degreesChance = degreesChance;
+    public void setRandomDegrees(int randomDegrees) {
+        this.randomDegrees = randomDegrees;
     }
 
     public int getChanceToWinGraphic() {

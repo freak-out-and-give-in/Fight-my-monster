@@ -45,15 +45,15 @@ public class UserCreationController {
         }
 
         if (!user.isAcceptTermsAndConditions()) {
-            return new RedirectView("/registration");
+            return new RedirectView("/fmm/registration");
         }
 
         if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
-            return new RedirectView("/registration");
+            return new RedirectView("/fmm/registration");
         }
 
         if (user.getUsername().length() > 20 || user.getPassword().length() > 30) {
-            return new RedirectView("/registration");
+            return new RedirectView("/fmm/registration");
         }
 
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));

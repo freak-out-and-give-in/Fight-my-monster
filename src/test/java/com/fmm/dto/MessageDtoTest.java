@@ -1,5 +1,6 @@
 package com.fmm.dto;
 
+import com.fmm.enumeration.TypeOfFight;
 import com.fmm.model.Message;
 import com.fmm.model.User;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ class MessageDtoTest {
         user.setId(1L);
 
         Message message =  new Message
-                (user, 5L, "EAT", "mouse 4223", "fridge", 3L);
+                (user, 5L, TypeOfFight.EAT, "mouse 4223", "fridge", 3L);
 
 
         MessageDto messageDto = modelMapper.map(message, MessageDto.class);

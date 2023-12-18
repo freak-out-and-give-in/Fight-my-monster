@@ -26,9 +26,9 @@
             <br>
 
             <span> Winner</span>
-            <span th:if="${Message.typeOfFight == 'BITE'}"> bites</span>
-            <span th:if="${Message.typeOfFight == 'COLLECT'}"> collects</span>
-            <span th:if="${Message.typeOfFight == 'EAT'}"> eats</span>
+            <span th:if="${Message.typeOfFight == T(com.fmm.enumeration.TypeOfFight).BITE}"> Bites</span>
+            <span th:if="${Message.typeOfFight == T(com.fmm.enumeration.TypeOfFight).COLLECT}"> Collects</span>
+            <span th:if="${Message.typeOfFight == T(com.fmm.enumeration.TypeOfFight).EAT}"> Eats</span>
             <span> the loser</span>
         </div>
 
@@ -47,7 +47,7 @@
         </div>
 
         <div class="from-user">
-            <u th:text="${Message.user.username}"></u>
+            <u th:text="${Message.fromUser.username}"></u>
             <span> said to you</span>
             <br>
 
