@@ -66,7 +66,7 @@ public class BattleController {
         BattleForm battleForm = new BattleForm();
         battleForm.setMyMonsterBefore(myMonsterDto);
         battleForm.setOpponentMonsterBefore(opponentMonsterDto);
-        battleForm.setChanceToWinGraphic((int) (realPercentageChanceToWin * 5.08)); //the width of the win-wheel is 508px
+        battleForm.setChanceToWinGraphic((int) (realPercentageChanceToWin * 4.51)); //the width of the win-wheel is 451px
         battleForm.setBattleBackground(new Random().nextInt(17));
         battleForm.setBattleIndex(1);
 
