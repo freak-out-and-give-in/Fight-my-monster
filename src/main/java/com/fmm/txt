@@ -8,6 +8,4 @@ UserInfoServiceTest has testing information in comments
 
 -------------------------------------------------------------
 Things to do:
-incorporate potions into chance bars
-remake the win-wheel so its cleaner and fits the wheel better
-fix the monster-cards being in individual pieces in battle (only in battle i think, nowhere else)
+incorporate potions into chance bars, changing stats and percentage chance to win

@@ -11,13 +11,20 @@
 .win-wheel {
     position: absolute;
 
-    top: 303px;
-    left: 708px;
+    top: 335px;
+    left: 735px;
 
-    height: 499px;
+    width: 451px;
+    height: 449px;
 
-    transform: scale(0.97);
     background-image: url(/images/fight/battle/win-wheel.png);
+}
+
+.wheel-arrow {
+    position: absolute;
+
+    top: 355px;
+    left: 912px
 }
 
 /* end background-images */
@@ -59,6 +66,7 @@
 
 .win-lose {
     position: absolute;
+
     top: 179px;
     right: 886px;
 

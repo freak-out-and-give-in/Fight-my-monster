@@ -7,6 +7,7 @@
     <link th:href="@{/css/parts/profile.css}" rel="stylesheet"/>
     <link th:href="@{/css/parts/fight/battle.css}" rel="stylesheet"/>
     <link th:href="@{/css/parts/fight/fight.css}" rel="stylesheet"/>
+    <link th:href="@{/css/parts/standard.css}" rel="stylesheet"/>
 </head>
 <body>
 
@@ -47,7 +48,7 @@
     <div class="next-button">
         <form th:action="@{/fmm/battle/2}">
             <div th:replace="~{parts/fight/fragments-fight.html :: battle-form-and-monsters}"></div>
-            <button> <img th:src="@{/images/fight/battle/next-button.png}" alt="next-button"></button>
+            <button><img th:src="@{/images/fight/battle/next-button.png}" alt="next-button"></button>
         </form>
     </div>
 </div>
@@ -56,7 +57,7 @@
     <div class="next-button">
         <form th:action="@{/fmm/battle/3}">
             <div th:replace="~{parts/fight/fragments-fight.html :: battle-form-and-monsters}"></div>
-            <button> <img th:src="@{/images/fight/battle/next-button.png}" alt="you-win"></button>
+            <button><img th:src="@{/images/fight/battle/next-button.png}" alt="you-win"></button>
         </form>
     </div>
 </div>
@@ -74,15 +75,17 @@
 
     </div>
     <div class="background-container">
-        <img th:src="@{/images/fight/battle/wheel-arrow.png}" alt="wheel-arrow"
-             th:style="'top: 351px; right: 908px; transform: rotate('+@{${BattleForm.randomDegrees}}+'deg);'">
+        <div class="wheel-arrow">
+            <img th:src="@{/images/fight/battle/wheel-arrow.png}" alt="wheel-arrow"
+                 th:style="'transform: rotate('+@{${BattleForm.randomDegrees}}+'deg);'">
+        </div>
     </div>
 </div>
 
 <div th:if="${BattleForm.battleIndex == 3}">
     <div class="next-button">
         <form th:action="@{/fmm/my-profile}">
-            <button> <img th:src="@{/images/fight/battle/next-button.png}" alt="you-win"></button>
+            <button><img th:src="@{/images/fight/battle/next-button.png}" alt="you-win"></button>
         </form>
     </div>
 </div>
