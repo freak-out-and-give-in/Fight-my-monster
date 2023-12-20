@@ -1,10 +1,12 @@
 package com.fmm.service;
 
+import com.fmm.dto.MessageDto;
 import com.fmm.dto.MonsterDto;
 import com.fmm.enumeration.*;
 import com.fmm.model.Message;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
+import com.fmm.model.UserInfo;
 import com.fmm.repository.MessageRepository;
 import com.fmm.repository.MonsterRepository;
 import com.fmm.repository.UserInfoRepository;
@@ -14,20 +16,16 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BattleServiceTest {
-
-    private final ModelMapper modelMapper = new ModelMapper();
 
     @InjectMocks
     private BattleService battleService;
@@ -76,7 +74,7 @@ class BattleServiceTest {
             monsterDto.setPotion("");
             long monsterDtoTotalStats = monsterDto.getAttack() + monsterDto.getDefence() + monsterDto.getTricks() + monsterDto.getBrains();
 
-            long resultStats = battleService.changeStatsByPotion(monsterDto);
+            long resultStats = battleService.changeStatsByPotion(monsterDto, "");
 
             assertThat(resultStats).isEqualTo(monsterDtoTotalStats);
         }
@@ -87,7 +85,7 @@ class BattleServiceTest {
             monsterDto.setPotion("DEMON_ATTACK");
             long monsterDtoTotalStats = (monsterDto.getAttack() * 4) + monsterDto.getDefence() + monsterDto.getTricks() + monsterDto.getBrains();
 
-            long resultStats = battleService.changeStatsByPotion(monsterDto);
+            long resultStats = battleService.changeStatsByPotion(monsterDto, "");
 
             assertThat(resultStats).isEqualTo(monsterDtoTotalStats);
         }
@@ -98,7 +96,7 @@ class BattleServiceTest {
             monsterDto.setPotion("TRICKS_MAKER");
             long monsterDtoTotalStats = monsterDto.getAttack() + monsterDto.getDefence() + (monsterDto.getTricks() * 4) + monsterDto.getBrains();
 
-            long resultStats = battleService.changeStatsByPotion(monsterDto);
+            long resultStats = battleService.changeStatsByPotion(monsterDto, "");
 
             assertThat(resultStats).isEqualTo(monsterDtoTotalStats);
         }
@@ -109,7 +107,7 @@ class BattleServiceTest {
             monsterDto.setPotion("TOUGH_GUY");
             long monsterDtoTotalStats = monsterDto.getAttack() + (monsterDto.getDefence() * 2) + monsterDto.getTricks() + (monsterDto.getBrains() * 2);
 
-            long resultStats = battleService.changeStatsByPotion(monsterDto);
+            long resultStats = battleService.changeStatsByPotion(monsterDto, "");
 
             assertThat(resultStats).isEqualTo(monsterDtoTotalStats);
         }
@@ -120,7 +118,7 @@ class BattleServiceTest {
             monsterDto.setPotion("MYSTERIO");
             long monsterDtoTotalStats = (monsterDto.getAttack() * 2) + monsterDto.getDefence() + (monsterDto.getTricks() * 2) + monsterDto.getBrains();
 
-            long resultStats = battleService.changeStatsByPotion(monsterDto);
+            long resultStats = battleService.changeStatsByPotion(monsterDto, "");
 
             assertThat(resultStats).isEqualTo(monsterDtoTotalStats);
         }
@@ -131,7 +129,7 @@ class BattleServiceTest {
             monsterDto.setPotion("INCREDIBLE_HULK");
             long monsterDtoTotalStats = 4 * (monsterDto.getAttack() + monsterDto.getDefence() + monsterDto.getTricks() + monsterDto.getBrains());
 
-            long resultStats = battleService.changeStatsByPotion(monsterDto);
+            long resultStats = battleService.changeStatsByPotion(monsterDto, "");
 
             assertThat(resultStats).isEqualTo(monsterDtoTotalStats);
         }
@@ -142,66 +140,29 @@ class BattleServiceTest {
             monsterDto.setPotion("MYSTERIO_RAGE");
             long monsterDtoTotalStats = (monsterDto.getAttack() * 5) + monsterDto.getDefence() + (monsterDto.getTricks() * 5) + monsterDto.getBrains();
 
-            long resultStats = battleService.changeStatsByPotion(monsterDto);
-
-            assertThat(resultStats).isEqualTo(monsterDtoTotalStats);
-        }
-    }
-
-    @DisplayName("Change monster stats with ")
-    @Nested
-    class changeStatsByComplexPotionClass {
-
-        private MonsterDto monsterDto = new MonsterDto();
-
-        @BeforeEach
-        void setup() {
-            monsterDto.setId(1L);
-            monsterDto.setName("");
-            monsterDto.setGenus(String.valueOf(Genus.ROBOTS));
-            monsterDto.setSpecies(String.valueOf(Species.MECHANOID));
-            monsterDto.setAttack(7);
-            monsterDto.setDefence(43);
-            monsterDto.setBrains(67);
-            monsterDto.setTricks(83);
-            monsterDto.setAlive(true);
-        }
-
-        @DisplayName("no potion")
-        @Test
-        void changeStatsByComplexPotion_NoPotion() {
-            monsterDto.setPotion("TRICKS_MAKER");
-            long monsterDtoTotalStats = monsterDto.getAttack() + monsterDto.getDefence() + (monsterDto.getTricks() * 4) + monsterDto.getBrains();
-
-            long resultStats = battleService.changeStatsByComplexPotion(monsterDto, monsterDtoTotalStats, "");
+            long resultStats = battleService.changeStatsByPotion(monsterDto, "");
 
             assertThat(resultStats).isEqualTo(monsterDtoTotalStats);
         }
 
         @DisplayName("advantage killer")
         @Test
-        void changeStatsByComplexPotion_AdvantageKiller() {
+        void changeStatsByPotion_AdvantageKiller() {
             monsterDto.setPotion("TOUGH_GUY");
-            long monsterDtoTotalStatsNoPotion =
-                    monsterDto.getAttack() + monsterDto.getDefence() + monsterDto.getTricks() + monsterDto.getBrains();
-            long monsterDtoTotalStatsWithPotion =
-                    monsterDto.getAttack() + (monsterDto.getDefence() * 2) + monsterDto.getTricks() + (monsterDto.getBrains() * 2);
+            long monsterDtoTotalStatsNoPotion = monsterDto.getAttack() + monsterDto.getDefence() + monsterDto.getTricks() + monsterDto.getBrains();
 
-            long resultStats = battleService.changeStatsByComplexPotion(monsterDto, monsterDtoTotalStatsWithPotion, "ADVANTAGE_KILLER");
+            long resultStats = battleService.changeStatsByPotion(monsterDto, "ADVANTAGE_KILLER");
 
             assertThat(resultStats).isEqualTo(monsterDtoTotalStatsNoPotion);
         }
 
         @DisplayName("giant slayer")
         @Test
-        void changeStatsByComplexPotion_GiantSlayer() {
+        void changeStatsByPotion_GiantSlayer() {
             monsterDto.setPotion("DEMON_ATTACK");
-            long monsterDtoTotalStatsNoPotion =
-                    monsterDto.getAttack() + monsterDto.getDefence() + monsterDto.getTricks() + monsterDto.getBrains();
-            long monsterDtoTotalStatsWithPotion =
-                    (monsterDto.getAttack() * 4) + monsterDto.getDefence() + monsterDto.getTricks() + monsterDto.getBrains();
+            long monsterDtoTotalStatsNoPotion = monsterDto.getAttack() + monsterDto.getDefence() + monsterDto.getTricks() + monsterDto.getBrains();
 
-            long resultStats = battleService.changeStatsByComplexPotion(monsterDto, monsterDtoTotalStatsWithPotion, "GIANT_SLAYER");
+            long resultStats = battleService.changeStatsByPotion(monsterDto, "GIANT_SLAYER");
 
             assertThat(resultStats).isEqualTo((long) (0.1 * monsterDtoTotalStatsNoPotion));
         }
@@ -216,7 +177,7 @@ class BattleServiceTest {
         void calculateDegrees_NoChance() {
             double percentChance = 0;
 
-            //(int) ((percentageChanceToWin * 3.6) / 2) = 54
+            //(int) ((percentageChanceToWin * 3.6) / 2) = 0
 
             List<Integer> listOfDegrees = battleService.calculateDegrees(percentChance);
             assertThat(listOfDegrees.get(0)).isEqualTo(0);
@@ -255,7 +216,7 @@ class BattleServiceTest {
         void calculateDegrees_CompleteCertainty() {
             double percentChance = 100;
 
-            //(int) ((percentageChanceToWin * 3.6) / 2) = 54
+            //(int) ((percentageChanceToWin * 3.6) / 2) = 180
 
             List<Integer> listOfDegrees = battleService.calculateDegrees(percentChance);
             assertThat(listOfDegrees.get(0)).isEqualTo(180);
@@ -422,40 +383,124 @@ class BattleServiceTest {
         assertThat(randomDegrees).isBetween(0, 359);
     }
 
-    @DisplayName("Calculate percentage chance to win")
+    @DisplayName("Calculate percentage chance to win with ")
+    @Nested
+    class calculatePercentageChanceToWin {
+
+        @DisplayName(" even odds")
+        @Test
+        void calculatePercentageChanceToWin_WithEvenOdds() {
+            MonsterDto myMonsterDto = new MonsterDto();
+            myMonsterDto.setAttack(100);
+            myMonsterDto.setDefence(100);
+            myMonsterDto.setTricks(100);
+            myMonsterDto.setBrains(100);
+            MonsterDto opponentMonsterDto = new MonsterDto();
+            opponentMonsterDto.setAttack(100);
+            opponentMonsterDto.setDefence(100);
+            opponentMonsterDto.setTricks(100);
+            opponentMonsterDto.setBrains(100);
+
+            BattleService battleServiceInjected = new BattleService(userInfoService, messageService, monsterService);
+            double percentageChanceToWin = battleServiceInjected.calculatePercentageChanceToWin(myMonsterDto, opponentMonsterDto);
+
+            assertThat(percentageChanceToWin).isEqualTo((50));
+        }
+
+        @DisplayName(" a potion")
+        @Test
+        void calculatePercentageChanceToWin_WithPotion() {
+            MonsterDto myMonsterDto = new MonsterDto();
+            myMonsterDto.setAttack(100);
+            myMonsterDto.setDefence(100);
+            myMonsterDto.setTricks(100);
+            myMonsterDto.setBrains(100);
+            MonsterDto opponentMonsterDto = new MonsterDto();
+            opponentMonsterDto.setAttack(100);
+            opponentMonsterDto.setDefence(100);
+            opponentMonsterDto.setTricks(100);
+            opponentMonsterDto.setBrains(100);
+            opponentMonsterDto.setPotion("TOUGH_GUY");
+
+            BattleService battleServiceInjected = new BattleService(userInfoService, messageService, monsterService);
+            double percentageChanceToWin = battleServiceInjected.calculatePercentageChanceToWin(myMonsterDto, opponentMonsterDto);
+
+            assertThat(percentageChanceToWin).isEqualTo((40));
+        }
+
+        @DisplayName(" certain odds")
+        @Test
+        void calculatePercentageChanceToWin_WithCertainOdds() {
+            MonsterDto myMonsterDto = new MonsterDto();
+            myMonsterDto.setAttack(100);
+            myMonsterDto.setDefence(100);
+            myMonsterDto.setTricks(100);
+            myMonsterDto.setBrains(100);
+            MonsterDto opponentMonsterDto = new MonsterDto();
+            opponentMonsterDto.setAttack(0);
+            opponentMonsterDto.setDefence(0);
+            opponentMonsterDto.setTricks(0);
+            opponentMonsterDto.setBrains(0);
+
+            BattleService battleServiceInjected = new BattleService(userInfoService, messageService, monsterService);
+            double percentageChanceToWin = battleServiceInjected.calculatePercentageChanceToWin(myMonsterDto, opponentMonsterDto);
+
+            assertThat(percentageChanceToWin).isEqualTo((100));
+        }
+
+        @DisplayName(" impossible odds")
+        @Test
+        void calculatePercentageChanceToWin_WithImpossibleOdds() {
+            MonsterDto myMonsterDto = new MonsterDto();
+            myMonsterDto.setAttack(0);
+            myMonsterDto.setDefence(0);
+            myMonsterDto.setTricks(0);
+            myMonsterDto.setBrains(0);
+            MonsterDto opponentMonsterDto = new MonsterDto();
+            opponentMonsterDto.setAttack(100);
+            opponentMonsterDto.setDefence(100);
+            opponentMonsterDto.setTricks(100);
+            opponentMonsterDto.setBrains(100);
+
+            BattleService battleServiceInjected = new BattleService(userInfoService, messageService, monsterService);
+            double percentageChanceToWin = battleServiceInjected.calculatePercentageChanceToWin(myMonsterDto, opponentMonsterDto);
+
+            assertThat(percentageChanceToWin).isEqualTo((0));
+        }
+    }
+
+    @DisplayName("That the entire fight occurred")
     @Test
-    void calculatePercentageChanceToWin() {
-        Monster myMonster = new Monster(new User("dsfad4", "45129"), Level.STANDARD);
-        Monster opponentMonster = new Monster(new User("dcvxc", "frittgfd"), Level.STANDARD);
+    void fight() {
+        User myUser = new User("c", "45129");
+        myUser.setId(1L);
+        User opponentUser = new User("f", "123");
+        opponentUser.setId(2L);
+        Monster myMonster = new Monster(myUser, Level.STANDARD);
+        Monster opponentMonster = new Monster(opponentUser, Level.STANDARD);
+
         opponentMonster.setPotion(String.valueOf(Potion.TOUGH_GUY));
         opponentMonster.setPotionUses(Potion.TOUGH_GUY.getUses());
 
-        MonsterDto myMonsterDto = convertToDto(myMonster);
-        MonsterDto opponentMonsterDto = convertToDto(opponentMonster);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setNuggetsForAccepting(5L);
 
-        long myMonsterTotalStats = myMonster.getAttack() + myMonster.getDefence() + myMonster.getBrains() + myMonster.getTricks();
-        long opponentMonsterTotalStats =
-                opponentMonster.getAttack() + (opponentMonster.getDefence() * 2) + (opponentMonster.getBrains() * 2) + opponentMonster.getTricks();
+        when(userInfoRepository.findById(1L)).thenReturn(Optional.of(new UserInfo(myUser)));
+        when(userInfoRepository.findById(2L)).thenReturn(Optional.of(new UserInfo(opponentUser)));
 
         BattleService battleServiceInjected = new BattleService(userInfoService, messageService, monsterService);
-        double percentageChanceToWin = battleServiceInjected.calculatePercentageChanceToWin(myMonster, opponentMonster, myMonsterDto, opponentMonsterDto);
-        ArgumentCaptor<Monster> captor = ArgumentCaptor.forClass(Monster.class);
-        verify(monsterRepository, times(1)).save(captor.capture());
+        battleServiceInjected.fight(messageDto, true, myUser, opponentUser, myMonster, opponentMonster);
+        verify(userInfoRepository, times(2)).save(any());
+        ArgumentCaptor<Monster> monsterCaptor = ArgumentCaptor.forClass(Monster.class);
+        verify(monsterRepository, times(3)).save(monsterCaptor.capture());
 
-        assertThat(percentageChanceToWin).isEqualTo((double) myMonsterTotalStats / (myMonsterTotalStats + opponentMonsterTotalStats) * 100);
+        List<Monster> monsterCaptors = monsterCaptor.getAllValues();
 
-        assertThat(opponentMonster.getPotion()).isEqualTo(captor.getValue().getPotion());
+        assertThat(opponentMonster.getPotion()).isEqualTo(monsterCaptors.get(2).getPotion());
         assertThat(opponentMonster.getPotionUses()).isEqualTo(Potion.TOUGH_GUY.getUses() - 1);
 
         assertThat(myMonster.getPotion()).isEqualTo(null);
         assertThat(myMonster.getPotionUses()).isEqualTo(0);
-    }
-
-    void fight() {
-    }
-
-    private MonsterDto convertToDto(Monster monster) {
-        return modelMapper.map(monster, MonsterDto.class);
     }
 
 }

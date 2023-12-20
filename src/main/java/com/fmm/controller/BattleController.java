@@ -61,7 +61,7 @@ public class BattleController {
         MonsterDto myMonsterDto = convertToDto(myMonster);
         MonsterDto opponentMonsterDto = convertToDto(opponentMonster);
 
-        double realPercentageChanceToWin = battleService.calculatePercentageChanceToWin(myMonster, opponentMonster, myMonsterDto, opponentMonsterDto);
+        double realPercentageChanceToWin = battleService.calculatePercentageChanceToWin(myMonsterDto, opponentMonsterDto);
 
         BattleForm battleForm = new BattleForm();
         battleForm.setMyMonsterBefore(myMonsterDto);

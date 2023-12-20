@@ -8,6 +8,7 @@ import com.fmm.model.User;
 import com.fmm.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class BattleService {
         this.monsterService = monsterService;
     }
 
+    @Transactional
     public void fight(MessageDto messageDto, boolean didIWin, User myUser, User opponentUser, Monster myMonster, Monster opponentMonster) {
         userInfoService.exchangeNuggetsForAccepting(messageDto.getNuggetsForAccepting(), opponentUser.getId(), myUser.getId());
 
@@ -38,58 +40,45 @@ public class BattleService {
         } else {
             executeWinCondition(opponentUser, myUser, messageDto.getTypeOfFight(), opponentMonster, myMonster);
         }
-    }
-
-    public double calculatePercentageChanceToWin(Monster myMonster, Monster opponentMonster, MonsterDto myMonsterDto, MonsterDto opponentMonsterDto) {
-        long myMonsterTotalStats = changeStatsByPotion(myMonsterDto);
-        long opponentMonsterTotalStats = changeStatsByPotion(opponentMonsterDto);
-
-        myMonsterTotalStats = changeStatsByComplexPotion(myMonsterDto, myMonsterTotalStats, opponentMonsterDto.getPotion());
-        opponentMonsterTotalStats = changeStatsByComplexPotion(opponentMonsterDto, opponentMonsterTotalStats, myMonsterDto.getPotion());
 
         monsterService.decreasePotionUse(myMonster);
         monsterService.decreasePotionUse(opponentMonster);
+    }
+
+    public double calculatePercentageChanceToWin(MonsterDto myMonsterDto, MonsterDto opponentMonsterDto) {
+        long myMonsterTotalStats = changeStatsByPotion(myMonsterDto, opponentMonsterDto.getPotion());
+        long opponentMonsterTotalStats = changeStatsByPotion(opponentMonsterDto, myMonsterDto.getPotion());
 
         return (double) myMonsterTotalStats / (myMonsterTotalStats + opponentMonsterTotalStats) * 100;
     }
 
-    public long changeStatsByPotion(MonsterDto monsterDto) {
-        long attack = monsterDto.getAttack();
-        long defence = monsterDto.getDefence();
-        long tricks = monsterDto.getTricks();
-        long brains = monsterDto.getBrains();
+    public long changeStatsByPotion(MonsterDto myMonsterDto, String opponentPotionName) {
+        long attack = myMonsterDto.getAttack();
+        long defence = myMonsterDto.getDefence();
+        long tricks = myMonsterDto.getTricks();
+        long brains = myMonsterDto.getBrains();
 
         long monsterTotalStats = attack + defence + tricks + brains;
 
-        if (monsterDto.getPotion() == null) {
-            return monsterTotalStats;
+        if (myMonsterDto.getPotion() != null) {
+            switch (myMonsterDto.getPotion()) {
+                case("DEMON_ATTACK") ->  monsterTotalStats = (attack * 4) + defence + tricks + brains;
+                case("TRICKS_MAKER") -> monsterTotalStats = attack + defence + (tricks * 4) + brains;
+                case("TOUGH_GUY") -> monsterTotalStats = attack + (defence * 2) + tricks + (brains * 2);
+                case("MYSTERIO") -> monsterTotalStats = (attack * 2) + defence + (tricks * 2) + brains;
+                case("INCREDIBLE_HULK") -> monsterTotalStats = (attack * 4) + (defence * 4) + (tricks * 4) + (brains * 4);
+                case("MYSTERIO_RAGE") -> monsterTotalStats = (attack * 5) + defence + (tricks * 5) + brains;
+            }
         }
 
-        switch (monsterDto.getPotion()) {
-            case("DEMON_ATTACK") ->  monsterTotalStats = (attack * 4) + defence + tricks + brains;
-            case("TRICKS_MAKER") -> monsterTotalStats = attack + defence + (tricks * 4) + brains;
-            case("TOUGH_GUY") -> monsterTotalStats = attack + (defence * 2) + tricks + (brains * 2);
-            case("MYSTERIO") -> monsterTotalStats = (attack * 2) + defence + (tricks * 2) + brains;
-            case("INCREDIBLE_HULK") -> monsterTotalStats = (attack * 4) + (defence * 4) + (tricks * 4) + (brains * 4);
-            case("MYSTERIO_RAGE") -> monsterTotalStats = (attack * 5) + defence + (tricks * 5) + brains;
+        if (opponentPotionName != null) {
+            switch (opponentPotionName) {
+                case("ADVANTAGE_KILLER") -> monsterTotalStats = attack + defence + tricks + brains;
+                case("GIANT_SLAYER") -> monsterTotalStats = (long) (0.1 * (attack + defence + tricks + brains));
+            }
         }
 
         return monsterTotalStats;
-    }
-
-    public long changeStatsByComplexPotion(MonsterDto myMonsterDto, long myMonsterTotalStats, String opponentPotionName) {
-        if (opponentPotionName == null) {
-            return myMonsterTotalStats;
-        }
-
-        switch (opponentPotionName) {
-            case("ADVANTAGE_KILLER") -> myMonsterTotalStats = myMonsterDto.getAttack() + myMonsterDto.getDefence() +
-                    myMonsterDto.getTricks() + myMonsterDto.getBrains();
-            case("GIANT_SLAYER") -> myMonsterTotalStats = (long) (0.1 * (myMonsterDto.getAttack() + myMonsterDto.getDefence() +
-                    myMonsterDto.getTricks() + myMonsterDto.getBrains()));
-        }
-
-        return myMonsterTotalStats;
     }
 
     public List<Integer> calculateDegrees(double percentageChanceToWin) {
