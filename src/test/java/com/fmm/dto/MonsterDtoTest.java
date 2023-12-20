@@ -25,6 +25,7 @@ class MonsterDtoTest {
         assertThat(monster.getId()).isEqualTo(monsterDto.getId());
         assertThat(monster.getName()).isEqualTo(monsterDto.getName());
         assertThat(monster.getGenus()).isEqualTo(monsterDto.getGenus());
+        assertThat(monster.getSpecies()).isEqualTo(monsterDto.getSpecies());
         assertThat(monster.getAttack()).isEqualTo(monsterDto.getAttack());
         assertThat(monster.getDefence()).isEqualTo(monsterDto.getDefence());
         assertThat(monster.getBrains()).isEqualTo(monsterDto.getBrains());

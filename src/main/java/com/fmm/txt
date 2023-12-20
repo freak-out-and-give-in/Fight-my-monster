@@ -7,5 +7,4 @@ Potions related stuff not added yet:
 UserInfoServiceTest has testing information in comments
 
 -------------------------------------------------------------
-Things to do:
-incorporate potions into chance bars, changing stats and percentage chance to win
+// TODO

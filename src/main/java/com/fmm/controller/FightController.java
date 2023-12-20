@@ -1,32 +1,21 @@
 package com.fmm.controller;
 
-import com.fmm.dto.BattleForm;
 import com.fmm.dto.FightRequestDto;
-import com.fmm.dto.MessageDto;
 import com.fmm.dto.MonsterDto;
-import com.fmm.enumeration.Potion;
 import com.fmm.model.Message;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
-import com.fmm.model.UserInfo;
-import com.fmm.service.MessageService;
-import com.fmm.service.MonsterService;
-import com.fmm.service.UserInfoService;
-import com.fmm.service.UserService;
+import com.fmm.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -42,15 +31,18 @@ public class FightController {
 
     private final MessageService messageService;
 
+    private final FightService fightService;
+
     private final ModelMapper modelMapper;
 
     @Autowired
     public FightController(UserService userService, MonsterService monsterService, UserInfoService userInfoService,
-                           MessageService messageService, ModelMapper modelMapper) {
+                           MessageService messageService, FightService fightService, ModelMapper modelMapper) {
         this.userService = userService;
         this.monsterService = monsterService;
         this.userInfoService = userInfoService;
         this.messageService = messageService;
+        this.fightService = fightService;
         this.modelMapper = modelMapper;
     }
 
@@ -61,17 +53,12 @@ public class FightController {
 
         User opponentUser = userService.getUser(fightRequestDto.getOpponentUsername());
         MonsterDto opponentMonster = convertToDto(monsterService.getMonster(opponentUser.getId(), fightRequestDto.getOpponentMonsterName()));
-
         List<MonsterDto> myMonsters = monsterService.getMonsters(myId).stream().map(this::convertToDto).collect(Collectors.toList());
 
-        if (fightRequestDto.getN() >= myMonsters.size()) {
-            fightRequestDto.setN(0);
-        } else if (fightRequestDto.getN() < 0) {
-            fightRequestDto.setN(myMonsters.size() - 1);
-        }
+        fightRequestDto = fightService.calculateN(fightRequestDto, myMonsters.size());
 
         MonsterDto myCurrentMonster = myMonsters.get(fightRequestDto.getN());
-        int myChanceBarAmount = getMyChanceBarAmount(myCurrentMonster, opponentMonster);
+        int myChanceBarAmount = fightService.calculateMyChanceBarAmount(myCurrentMonster, opponentMonster);
         fightRequestDto.setMyChanceBarAmount(myChanceBarAmount);
 
 
@@ -88,20 +75,6 @@ public class FightController {
         return mav;
     }
 
-    private int getMyChanceBarAmount(MonsterDto myCurrentMonster, MonsterDto opponentMonster) {
-        long myTotalStats = myCurrentMonster.getAttack() + myCurrentMonster.getDefence() + myCurrentMonster.getTricks() + myCurrentMonster.getBrains();
-        long opponentTotalStats = opponentMonster.getAttack() + opponentMonster.getDefence() + opponentMonster.getTricks() + opponentMonster.getBrains();
-        int myChanceBarAmount = (int) Math.round(((double) myTotalStats / (myTotalStats + opponentTotalStats) * 10));
-
-        if (myChanceBarAmount <= 0) {
-            myChanceBarAmount = 1;
-        } else if (myChanceBarAmount >= 10) {
-            myChanceBarAmount = 9;
-        }
-
-        return myChanceBarAmount;
-    }
-
     @GetMapping("/messages/fight-offer")
     public ModelAndView showFightOfferPage(HttpServletRequest request, @ModelAttribute("MessageId") long messageId) {
         Message message = messageService.getMessage(messageId);
@@ -111,7 +84,7 @@ public class FightController {
                 (monsterService.getMonster(myId, message.getToMonsterName())).map(this::convertToDto).collect(Collectors.toList());
         MonsterDto opponentMonster = convertToDto(monsterService.getMonster(message.getFromUser().getId(), message.getFromMonsterName()));
 
-        int myChanceBarAmount = getMyChanceBarAmount(myMonsters.get(0), opponentMonster);
+        int myChanceBarAmount = fightService.calculateMyChanceBarAmount(myMonsters.get(0), opponentMonster);
 
         ModelAndView mav = new ModelAndView("/parts/fight/fight-offer");
         mav.addObject("Message", message);
