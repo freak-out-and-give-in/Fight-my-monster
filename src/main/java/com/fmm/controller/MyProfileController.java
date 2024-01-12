@@ -3,11 +3,8 @@ package com.fmm.controller;
 import com.fmm.dto.MonsterDto;
 import com.fmm.model.Monster;
 import com.fmm.model.UserInfo;
-import com.fmm.service.MessageService;
-import com.fmm.service.MonsterService;
-import com.fmm.service.UserInfoService;
+import com.fmm.service.*;
 import com.fmm.model.User;
-import com.fmm.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +29,18 @@ public class MyProfileController {
 
     private final MessageService messageService;
 
+    private final OpponentProfileService opponentProfileService;
+
     private final ModelMapper modelMapper;
 
     @Autowired
-    public MyProfileController(UserService userService, MonsterService monsterService, UserInfoService userInfoService,
-                               MessageService messageService, ModelMapper modelMapper) {
+    public MyProfileController(UserService userService, MonsterService monsterService, UserInfoService userInfoService, MessageService messageService,
+                               OpponentProfileService opponentProfileService, ModelMapper modelMapper) {
         this.userService = userService;
         this.monsterService = monsterService;
         this.userInfoService = userInfoService;
         this.messageService = messageService;
+        this.opponentProfileService = opponentProfileService;
         this.modelMapper = modelMapper;
     }
 
@@ -51,21 +51,9 @@ public class MyProfileController {
         UserInfo myUserInfo = userInfoService.getUserInfo(myId);
 
         List<Monster> aliveMonsterList = monsterService.getAliveMonsters(myId);
-        List<MonsterDto> monsterDtoList = new ArrayList<>();
+        List<MonsterDto> monsterDtoList = opponentProfileService.getFirstPageAliveMonsters(aliveMonsterList);
 
-        for (Monster monster: aliveMonsterList) {
-            monsterDtoList.add(convertToDto(monster));
-
-            if (monsterDtoList.size() >= 6) {
-                break;
-            }
-        }
-
-        int totalPages = 1 + (aliveMonsterList.size() / 6);
-
-        if (totalPages >= 8) {
-            totalPages = 7;
-        }
+        int totalPages = opponentProfileService.calculateTotalPagesWithLimit(aliveMonsterList);
 
         ModelAndView mav = new ModelAndView("/parts/profile/my-profile");
         mav.addObject("User", myUser);
@@ -86,20 +74,9 @@ public class MyProfileController {
         UserInfo myUserInfo = userInfoService.getUserInfo(myId);
 
         List<Monster> aliveMonsterList = monsterService.getAliveMonsters(myId);
-        List<MonsterDto> monsterDtoList = new ArrayList<>();
-        for (int i = ((pageNumber - 1) * 6); i < 6 + ((pageNumber - 1) * 6); i++) {
-            if (i >= aliveMonsterList.size()) {
-                break;
-            }
+        List<MonsterDto> monsterDtoList = opponentProfileService.getSpecificPageAliveMonsters(pageNumber, aliveMonsterList);
 
-            monsterDtoList.add(convertToDto(aliveMonsterList.get(i)));
-        }
-
-        int totalPages = 1 + (aliveMonsterList.size() / 6);
-
-        if (totalPages >= 8) {
-            totalPages = 7;
-        }
+        int totalPages = opponentProfileService.calculateTotalPagesWithLimit(aliveMonsterList);
 
         ModelAndView mav = new ModelAndView("/parts/profile/my-profile");
         mav.addObject("User", myUser);

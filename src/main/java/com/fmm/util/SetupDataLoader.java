@@ -59,9 +59,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         //default admin made on creation is below
         Role adminRole = roleRepository.findByName("ROLE_ADMIN");
-        User user = new User();
-        user.setUsername("a");
-        user.setPassword(new BCryptPasswordEncoder().encode("b"));
+        User user = new User("a", new BCryptPasswordEncoder().encode("b"));
         user.setRoles(Collections.singletonList(adminRole));
         user.setEnabled(true);
 
@@ -69,7 +67,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         // and so throws error after 2nd+ starting of program
         if (userRepository.findByUsername(user.getUsername()) == null) {
             userRepository.save(user);
-            userInfoRepository.save(new UserInfo(user));
+            UserInfo userInfo = new UserInfo(user);
+            userInfoRepository.save(userInfo);
             //add in anything that needs to be created on startup (but only once) here
         }
 

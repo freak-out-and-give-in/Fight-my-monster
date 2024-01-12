@@ -4,22 +4,28 @@ import com.fmm.exception.NotEnoughNuggetsException;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Entity
 @Table(name = "user_info")
 public class UserInfo {
 
     @Id
-    @Column(name = "account_id", nullable = false, unique = true)
-    private Long account_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "account_id")
-    @MapsId
+    @OneToOne(mappedBy = "userInfo")
     private User user;
 
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Monster> monsters;
+
+    @OneToMany(mappedBy = "fromUserInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Message> message;
+
     @Column(name = "nuggets", nullable = false)
-    private BigInteger nuggets = BigInteger.valueOf(100000);  //BigInteger.ZERO;
+    private BigInteger nuggets = BigInteger.valueOf(100000);  //starting nugget amount for an account
 
     @Column(name = "current_background", nullable = false)
     private String currentBackground = "spots";
@@ -31,8 +37,12 @@ public class UserInfo {
         this.user = user;
     }
 
-    public Long getAccount_id() {
-        return account_id;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -41,6 +51,22 @@ public class UserInfo {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Monster> getMonsters() {
+        return monsters;
+    }
+
+    public void setMonsters(List<Monster> monsters) {
+        this.monsters = monsters;
+    }
+
+    public List<Message> getMessage() {
+        return message;
+    }
+
+    public void setMessage(List<Message> message) {
+        this.message = message;
     }
 
     public BigInteger getNuggets() {

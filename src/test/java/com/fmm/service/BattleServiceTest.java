@@ -270,6 +270,8 @@ class BattleServiceTest {
 
         private User losingUser;
 
+        private UserInfo winningUserInfo;
+
         private Monster winningMonster;
 
         private Monster losingMonster;
@@ -282,17 +284,19 @@ class BattleServiceTest {
         void setup() {
             winningUser = new User("56Frank", "spi1der");
             winningUser.setId(1L);
+            winningUserInfo = new UserInfo(winningUser);
 
             losingUser = new User("234", "jhkuerf");
             losingUser.setId(2L);
+            UserInfo losingUserInfo = new UserInfo(losingUser);
 
-            winningMonster = new Monster(winningUser, Level.SUPER);
+            winningMonster = new Monster(winningUserInfo, Level.SUPER);
             winningMonster.setId(1L);
-            losingMonster = new Monster(losingUser, "eep", Level.STANDARD);
+            losingMonster = new Monster(losingUserInfo, "eep", Level.STANDARD);
             losingMonster.setId(2L);
 
             loserMessageRelevant = new Message
-                    (losingUser, 1L, TypeOfFight.EAT, "HIJKL 234", losingMonster.getName(), 4L);
+                    (losingUserInfo, 1L, TypeOfFight.EAT, "HIJKL 234", losingMonster.getName(), 4L);
 
             battleServiceInjected = new BattleService(userInfoService, messageService, monsterService);
         }
@@ -301,13 +305,14 @@ class BattleServiceTest {
         @Test
         void executeWinCondition_Collecting() {
             when(messageRepository.findAll()).thenReturn(Collections.singletonList(loserMessageRelevant));
+            when(userInfoRepository.findById(1L)).thenReturn(Optional.ofNullable(winningUserInfo));
 
             battleServiceInjected.executeWinCondition(winningUser, losingUser, TypeOfFight.COLLECT, winningMonster, losingMonster);
             verify(messageRepository, times(1)).delete(loserMessageRelevant);
             ArgumentCaptor<Monster> captor = ArgumentCaptor.forClass(Monster.class);
             verify(monsterRepository, times(1)).save(captor.capture());
 
-            assertThat(captor.getValue().getUser()).isEqualTo(winningUser);
+            assertThat(captor.getValue().getUserInfo()).isEqualTo(winningUserInfo);
         }
 
         @DisplayName("biting")
@@ -341,7 +346,7 @@ class BattleServiceTest {
             assertThat(winningMonster.getTricks()).isEqualTo(winningMonsterTricks);
         }
 
-        @DisplayName(" eating")
+        @DisplayName("eating")
         @Test
         void executeWinCondition_Eating() {
             long winningMonsterAttack = (long) (winningMonster.getAttack() + (losingMonster.getAttack() / 1.5));
@@ -474,10 +479,14 @@ class BattleServiceTest {
     void fight() {
         User myUser = new User("c", "45129");
         myUser.setId(1L);
+        UserInfo myUserInfo = new UserInfo(myUser);
+
         User opponentUser = new User("f", "123");
         opponentUser.setId(2L);
-        Monster myMonster = new Monster(myUser, Level.STANDARD);
-        Monster opponentMonster = new Monster(opponentUser, Level.STANDARD);
+        UserInfo opponentUserInfo = new UserInfo(opponentUser);
+
+        Monster myMonster = new Monster(myUserInfo, Level.STANDARD);
+        Monster opponentMonster = new Monster(opponentUserInfo, Level.STANDARD);
 
         opponentMonster.setPotion(String.valueOf(Potion.TOUGH_GUY));
         opponentMonster.setPotionUses(Potion.TOUGH_GUY.getUses());
@@ -485,8 +494,8 @@ class BattleServiceTest {
         MessageDto messageDto = new MessageDto();
         messageDto.setNuggetsForAccepting(5L);
 
-        when(userInfoRepository.findById(1L)).thenReturn(Optional.of(new UserInfo(myUser)));
-        when(userInfoRepository.findById(2L)).thenReturn(Optional.of(new UserInfo(opponentUser)));
+        when(userInfoRepository.findById(1L)).thenReturn(Optional.of(myUserInfo));
+        when(userInfoRepository.findById(2L)).thenReturn(Optional.of(opponentUserInfo));
 
         BattleService battleServiceInjected = new BattleService(userInfoService, messageService, monsterService);
         battleServiceInjected.fight(messageDto, true, myUser, opponentUser, myMonster, opponentMonster);

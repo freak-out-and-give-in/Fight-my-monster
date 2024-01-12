@@ -23,7 +23,7 @@ public class MonsterService {
     public List<Monster> getMonsters(Long id) {
         List<Monster> monsterList = new ArrayList<>();
         for (Monster monster : monsterRepository.findAll()) {
-            if (Objects.equals(monster.getUser().getId(), id)) {
+            if (Objects.equals(monster.getUserInfo().getId(), id)) {
                 monsterList.add(monster);
             }
         }
@@ -34,7 +34,7 @@ public class MonsterService {
     public List<Monster> getAliveMonsters(Long id) {
         List<Monster> monsterList = new ArrayList<>();
         for (Monster monster : monsterRepository.findAll()) {
-            if (Objects.equals(monster.getUser().getId(), id) && monster.isAlive()) {
+            if (Objects.equals(monster.getUserInfo().getId(), id) && monster.isAlive()) {
                 monsterList.add(monster);
             }
         }
@@ -44,7 +44,7 @@ public class MonsterService {
 
     public Monster getMonster(Long id, String monsterName) {
         for (Monster monster : monsterRepository.findAll()) {
-            if (Objects.equals(monster.getUser().getId(), id) && monster.getName().equals(monsterName)) {
+            if (Objects.equals(monster.getUserInfo().getId(), id) && monster.getName().equals(monsterName)) {
                 return monster;
             }
         }

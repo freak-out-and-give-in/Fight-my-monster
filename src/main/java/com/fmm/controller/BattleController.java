@@ -52,7 +52,7 @@ public class BattleController {
     public ModelAndView showBattlePagePart1(HttpServletRequest request, @ModelAttribute("MessageId") long messageId) {
         Message message = messageService.getMessage(messageId);
         User myUser = userService.getUser(request.getUserPrincipal().getName());
-        User opponentUser = message.getFromUser();
+        User opponentUser = message.getFromUserInfo().getUser();
         MessageDto messageDto = convertToDto(message);
 
         Monster myMonster = monsterService.getMonster(myUser.getId(), messageDto.getToMonsterName());
