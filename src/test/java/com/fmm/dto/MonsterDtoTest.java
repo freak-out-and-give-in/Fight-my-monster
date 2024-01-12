@@ -3,6 +3,7 @@ package com.fmm.dto;
 import com.fmm.enumeration.Level;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
+import com.fmm.model.UserInfo;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 
@@ -17,7 +18,9 @@ class MonsterDtoTest {
         User user = new User("fig", "tree");
         user.setAcceptTermsAndConditions(true);
         user.setEnabled(true);
-        Monster monster = new Monster(user, Level.CUSTOM);
+        UserInfo userInfo = new UserInfo(user);
+
+        Monster monster = new Monster(userInfo, Level.CUSTOM);
         monster.setPotion("DEMON_ATTACK");
 
         MonsterDto monsterDto = modelMapper.map(monster, MonsterDto.class);

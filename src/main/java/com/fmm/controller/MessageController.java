@@ -6,10 +6,8 @@ import com.fmm.enumeration.TypeOfFight;
 import com.fmm.model.Message;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
-import com.fmm.service.MessageService;
-import com.fmm.service.MonsterService;
-import com.fmm.service.UserInfoService;
-import com.fmm.service.UserService;
+import com.fmm.model.UserInfo;
+import com.fmm.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +30,16 @@ public class MessageController {
 
     private final MonsterService monsterService;
 
-    private final ModelMapper modelMapper;
+    private final OpponentProfileService opponentProfileService;
 
     @Autowired
-    public MessageController(UserService userService, UserInfoService userInfoService, MonsterService monsterService,
-                             MessageService messageService, ModelMapper modelMapper) {
+    public MessageController(UserService userService, UserInfoService userInfoService, MonsterService monsterService,  MessageService messageService,
+                             OpponentProfileService opponentProfileService) {
         this.userService = userService;
         this.userInfoService = userInfoService;
         this.monsterService = monsterService;
         this.messageService = messageService;
-        this.modelMapper = modelMapper;
+        this.opponentProfileService = opponentProfileService;
     }
 
     @GetMapping("")
@@ -62,8 +60,9 @@ public class MessageController {
     @PostMapping("/send-message")
     public ModelAndView sendMessage(HttpServletRequest request, @ModelAttribute("MessageDto") MessageDto messageDto) {
         User myUser = userService.getUser(request.getUserPrincipal().getName());
+        UserInfo myUserInfo = userInfoService.getUserInfo(myUser.getId());
 
-        messageService.addMessage(new Message(myUser, messageDto.getToAccountId(), messageDto.getTypeOfFight(),
+        messageService.addMessage(new Message(myUserInfo, messageDto.getToAccountId(), messageDto.getTypeOfFight(),
                 messageDto.getToMonsterName(), messageDto.getFromMonsterName(), messageDto.getNuggetsForAccepting()));
 
 
@@ -72,16 +71,9 @@ public class MessageController {
         Long opponentId = opponentUser.getId();
 
         List<Monster> aliveMonsterList = monsterService.getAliveMonsters(opponentId);
-        List<MonsterDto> monsterDtoList = new ArrayList<>();
-        for (Monster monster: aliveMonsterList) {
-            monsterDtoList.add(convertToDto(monster));
+        List<MonsterDto> monsterDtoList = opponentProfileService.getFirstPageAliveMonsters(aliveMonsterList);
 
-            if (monsterDtoList.size() >= 6) {
-                break;
-            }
-        }
-
-        int totalPages = 1 + (aliveMonsterList.size() / 6);
+        int totalPages = opponentProfileService.calculateTotalPages(aliveMonsterList);
 
         ModelAndView mav = new ModelAndView("/parts/profile/opponent-profile");
         mav.addObject("User", opponentUser);
@@ -103,7 +95,4 @@ public class MessageController {
         return new RedirectView("/fmm/messages");
     }
 
-    private MonsterDto convertToDto(Monster monster) {
-        return modelMapper.map(monster, MonsterDto.class);
-    }
 }

@@ -5,6 +5,7 @@ import com.fmm.enumeration.Potion;
 import com.fmm.exception.CouldNotFindMonsterException;
 import com.fmm.model.Monster;
 import com.fmm.model.User;
+import com.fmm.model.UserInfo;
 import com.fmm.repository.MonsterRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,24 +34,35 @@ class MonsterServiceTest {
     @Mock
     private MonsterRepository monsterRepository;
 
-    @DisplayName("Get a users monsters")
-    @Test
-    void GetMonsters() {
+    private UserInfo userInfo1;
+
+    private UserInfo userInfo2;
+
+    @BeforeEach
+    void setup() {
         User user1 = new User("one", "free3");
         user1.setAcceptTermsAndConditions(true);
         user1.setEnabled(true);
         user1.setId(1L);
+
+        userInfo1 = new UserInfo(user1);
 
         User user2 = new User("try", "55");
         user2.setAcceptTermsAndConditions(true);
         user2.setEnabled(true);
         user2.setId(2L);
 
-        Monster monster1 = new Monster(user2, Level.CUSTOM);
+        userInfo2 = new UserInfo(user2);
+    }
+
+    @DisplayName("Get a users monsters")
+    @Test
+    void GetMonsters() {
+        Monster monster1 = new Monster(userInfo2, Level.CUSTOM);
         monster1.setAlive(false);
-        Monster monster2 = new Monster(user1, Level.SUPER);
-        Monster monster3 = new Monster(user2, "pumpkin", Level.EXTRA);
-        Monster monster4 = new Monster(user1, Level.STANDARD);
+        Monster monster2 = new Monster(userInfo1, Level.SUPER);
+        Monster monster3 = new Monster(userInfo2, "pumpkin", Level.EXTRA);
+        Monster monster4 = new Monster(userInfo1, Level.STANDARD);
 
         when(monsterRepository.findAll()).thenReturn(Arrays.asList(monster1, monster2, monster3, monster4));
         List<Monster> resultMonsterList = monsterService.getMonsters(1L);
@@ -62,21 +74,11 @@ class MonsterServiceTest {
     @DisplayName("Get alive monsters")
     @Test
     void GetAliveMonsters() {
-        User user1 = new User("liberty", "123");
-        user1.setAcceptTermsAndConditions(true);
-        user1.setEnabled(true);
-        user1.setId(1L);
-
-        User user2 = new User("g5", "uuu");
-        user2.setAcceptTermsAndConditions(true);
-        user2.setEnabled(true);
-        user2.setId(2L);
-
-        Monster monster1 = new Monster(user2, Level.CUSTOM);
-        Monster monster2 = new Monster(user1, Level.SUPER);
-        Monster monster3 = new Monster(user2, Level.EXTRA);
+        Monster monster1 = new Monster(userInfo2, Level.CUSTOM);
+        Monster monster2 = new Monster(userInfo1, Level.SUPER);
+        Monster monster3 = new Monster(userInfo2, Level.EXTRA);
         monster3.setAlive(false);
-        Monster monster4 = new Monster(user1, Level.STANDARD);
+        Monster monster4 = new Monster(userInfo1, Level.STANDARD);
 
         when(monsterRepository.findAll()).thenReturn(Arrays.asList(monster1, monster2, monster3, monster4));
         List<Monster> resultMonsterList = monsterService.getAliveMonsters(2L);
@@ -87,21 +89,11 @@ class MonsterServiceTest {
     @DisplayName("Get a monster")
     @Test
     void GetMonster() {
-        User user1 = new User("hoped", "56");
-        user1.setAcceptTermsAndConditions(true);
-        user1.setEnabled(true);
-        user1.setId(1L);
-
-        User user2 = new User("aa", "for");
-        user2.setAcceptTermsAndConditions(true);
-        user2.setEnabled(true);
-        user2.setId(2L);
-
-        Monster monster1 = new Monster(user2, "kin", Level.CUSTOM);
-        Monster monster2 = new Monster(user1, Level.SUPER);
-        Monster monster3 = new Monster(user2, Level.EXTRA);
+        Monster monster1 = new Monster(userInfo2, "kin", Level.CUSTOM);
+        Monster monster2 = new Monster(userInfo1, Level.SUPER);
+        Monster monster3 = new Monster(userInfo2, Level.EXTRA);
         monster3.setAlive(false);
-        Monster monster4 = new Monster(user1, Level.STANDARD);
+        Monster monster4 = new Monster(userInfo1, Level.STANDARD);
 
         when(monsterRepository.findAll()).thenReturn(Arrays.asList(monster1, monster2, monster3, monster4));
         Monster resultMonster = monsterService.getMonster(2L, monster3.getName());
@@ -125,7 +117,7 @@ class MonsterServiceTest {
 
         @BeforeEach
         void setupMonster() {
-            monster = new Monster(new User("win", "crashing"), Level.STANDARD);
+            monster = new Monster(userInfo1, Level.STANDARD);
         }
 
         @DisplayName(" a potion")
@@ -176,10 +168,7 @@ class MonsterServiceTest {
     @DisplayName("Add a monster")
     @Test
     void AddMonster() {
-        User user = new User("drums", "21");
-        user.setAcceptTermsAndConditions(true);
-        user.setEnabled(true);
-        Monster monster = new Monster(user, "er", Level.STANDARD);
+        Monster monster = new Monster(userInfo1, "er", Level.STANDARD);
 
         monsterService.addMonster(monster);
 
@@ -187,7 +176,7 @@ class MonsterServiceTest {
         verify(monsterRepository).save(captor.capture());
 
         assertThat(captor.getValue().getId()).isEqualTo(monster.getId());
-        assertThat(captor.getValue().getUser()).isEqualTo(user);
+        assertThat(captor.getValue().getUserInfo()).isEqualTo(monster.getUserInfo());
         assertThat(captor.getValue().getName()).isEqualTo(monster.getName());
         assertThat(captor.getValue().getGenus()).isEqualTo(monster.getGenus());
         assertThat(captor.getValue().getSpecies()).isEqualTo(monster.getSpecies());
@@ -202,10 +191,7 @@ class MonsterServiceTest {
     @DisplayName("Update a monster")
     @Test
     void UpdateMonster() {
-        User user = new User("drums", "21");
-        user.setAcceptTermsAndConditions(true);
-        user.setEnabled(true);
-        Monster monster = new Monster(user, "dvc", Level.STANDARD);
+        Monster monster = new Monster(userInfo1, "dvc", Level.STANDARD);
         monster.setPotion("TRICKS_MAKER");
 
         monsterService.addMonster(monster);
@@ -214,7 +200,7 @@ class MonsterServiceTest {
         verify(monsterRepository).save(captor.capture());
 
         assertThat(captor.getValue().getId()).isEqualTo(monster.getId());
-        assertThat(captor.getValue().getUser()).isEqualTo(user);
+        assertThat(captor.getValue().getUserInfo()).isEqualTo(userInfo1);
         assertThat(captor.getValue().getName()).isEqualTo(monster.getName());
         assertThat(captor.getValue().getGenus()).isEqualTo(monster.getGenus());
         assertThat(captor.getValue().getSpecies()).isEqualTo(monster.getSpecies());

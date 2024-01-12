@@ -19,8 +19,8 @@ public class Monster {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "id", nullable = false)
+    private UserInfo userInfo;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -55,8 +55,8 @@ public class Monster {
     public Monster() {
     }
 
-    public Monster(User user, Level level) {
-        this.user = user;
+    public Monster(UserInfo userInfo, Level level) {
+        this.userInfo = userInfo;
 
         this.species = returnWordAsEnum(generateRandomSpecies());
         this.genus = returnWordAsEnum(String.valueOf(Species.valueOf(species).getGenus()));
@@ -69,8 +69,8 @@ public class Monster {
         this.tricks = generateRandomStat(level);
     }
 
-    public Monster(User user, String name, Level level) {
-        this.user = user;
+    public Monster(UserInfo userInfo, String name, Level level) {
+        this.userInfo = userInfo;
 
         this.species = returnWordAsEnum(generateRandomSpecies());
         this.genus = returnWordAsEnum(String.valueOf(Species.valueOf(species).getGenus()));
@@ -95,12 +95,12 @@ public class Monster {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     public String getName() {

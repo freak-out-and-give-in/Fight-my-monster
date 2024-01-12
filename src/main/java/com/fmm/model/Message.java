@@ -15,10 +15,10 @@ public class Message {
     private Long messageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_account_id", nullable = false)
-    private User fromUser;
+    @JoinColumn(name = "from_id", nullable = false)
+    private UserInfo fromUserInfo;
 
-    @Column(name = "to_account_id", nullable = false)
+    @Column(name = "to_id", nullable = false)
     private Long toAccountId;
 
     @Column(name = "type_of_fight", nullable = false)
@@ -39,8 +39,8 @@ public class Message {
     public Message() {
     }
 
-    public Message(User fromUser, Long toAccountId, TypeOfFight typeOfFight, String toMonsterName, String fromMonsterName, Long nuggetsForAccepting) {
-        this.fromUser = fromUser;
+    public Message(UserInfo fromUserInfo, Long toAccountId, TypeOfFight typeOfFight, String toMonsterName, String fromMonsterName, Long nuggetsForAccepting) {
+        this.fromUserInfo = fromUserInfo;
         this.toAccountId = toAccountId;
         this.typeOfFight = typeOfFight;
         this.toMonsterName = toMonsterName;
@@ -56,12 +56,12 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public User getFromUser() {
-        return fromUser;
+    public UserInfo getFromUserInfo() {
+        return fromUserInfo;
     }
 
-    public void setFromUser(User fromUser) {
-        this.fromUser = fromUser;
+    public void setFromUserInfo(UserInfo fromUserInfo) {
+        this.fromUserInfo = fromUserInfo;
     }
 
     public Long getToAccountId() {

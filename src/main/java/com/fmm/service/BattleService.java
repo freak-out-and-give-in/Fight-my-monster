@@ -93,7 +93,7 @@ public class BattleService {
     }
 
     public int calculateRandomDegrees() {
-        return (int) ((new Random().nextDouble(100) + 1) * 3.6);
+        return (int) (new Random().nextDouble(100) * 3.6);
     }
 
     public boolean calculateTheWinner(int randomDegrees, double percentageChanceToWin) {
@@ -116,7 +116,7 @@ public class BattleService {
         if (typeOfFight == TypeOfFight.COLLECT) {
             messageService.deleteMessagesWithThisMonster(losingUser.getId(), losingMonster);
 
-            losingMonster.setUser(winningUser);
+            losingMonster.setUserInfo(userInfoService.getUserInfo(winningUser.getId()));
             monsterService.updateMonster(losingMonster);
         } else { // BITE || EAT
             double divisor;
